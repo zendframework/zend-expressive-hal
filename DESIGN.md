@@ -77,6 +77,62 @@ $link = new Link($rel, $uri, $isTemplated);
 $link = $link->withAttribute('title', 'Book');
 ```
 
+### CURIEs
+
+CURIE stands for "Compact URI", and is somewhat analogous to XML namespaces: you
+link a CURIE namespace to a templated URI, and then other links will use that
+namespace as part of their relation, and their URI will be relative to the
+templated URI. As an example:
+
+```json
+"_links": {
+  "curies": [
+    {
+      "name": "doc",
+      "href": "https://example.com/api/doc/{rel}",
+      "templated": true
+    },
+    {
+      "name": "book",
+      "href": "https://example.com/api/book/{rel}",
+      "templated": true
+    }
+  ],
+  "doc:book": {
+    "href": "/book"
+  },
+  "book:author": {
+    "href": "/{book_id}/author",
+    "templated": true
+  },
+},
+"book_id": "XXXX-YYYY-ZZZZ"
+```
+
+In the above cases, two CURIE is defined, one with the namespace `doc`, and
+another with the namespace `book`. Our two other links
+expand on each of these, and ultimately resolve to:
+
+- `doc:book`: `https://example.com/api/doc/book`
+- `book:author`: `https://example.com/api/book/XXXX-YYYY-ZZZZ/author`
+
+Interestingly, CURIE support can be expressed already in terms of PSR-13
+interfaces.
+
+To create a CURIE link, we create a normal `LinkInterface` instance with the
+relation `curies` which is _templated_, and where the `href` contains the string
+`{rel}`; this is the template that is expanded by a CURIE'd relational link.
+Finally, we ensure the link has an attribute `name` which is the namespace for
+any CURIE links we create.
+
+We then add such a link to a `LinkProviderInterface` instance. If we have
+multiple links with `curies` relations, these are aggregated.
+
+Finally, we can then add links where the relation is `<CURIE
+namespace>:<relation>`; when encountered, clients are expected to look up the
+namespace amongst the `curies` links, and then replace the `{rel}` template with
+the `href` of the link.
+
 ## Link generator
 
 Generating URLs from routes, however, requires access to either the router or
