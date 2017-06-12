@@ -13,7 +13,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0",
-        "zendframework/zend-coding-standard": "^1.0"
+        "zendframework/zend-coding-standard": "^1.0",
+        "zendframework/zend-expressive-helpers": "^4.0"
+    },
+    "suggest": {
+        "zendframework/zend-expressive-helpers": "^4.0 in order to use UrlHelper/ServerUrlHelper-based ExpressiveUrlGenerator with the LinkGenerator"
     },
     "autoload": {
         "psr-4": {
