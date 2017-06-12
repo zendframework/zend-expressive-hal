@@ -7,6 +7,8 @@
 >
 > This component is not yet registered on Packagist, as work is not yet
 > complete. It is provided to show progress as it is made.
+>
+> See the [TODO](TODO.md) file for progress.
 
 This library provides provides utilities for modeling HAL resources with links
 and generating [PSR-7](http://www.php-fig.org/psr/psr-7/) responses representing

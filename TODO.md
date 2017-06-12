@@ -1,0 +1,21 @@
+# TODO
+
+- [x] Link class
+  - [x] Link serialization to array
+  - [x] Link serialization to JSON via `JsonSerializable`
+- [x] LinkCollection trait
+- [x] Resource class
+- [x] UrlGenerator interface
+- [x] LinkGenerator class
+- [x] Expressive-based UrlGenerator (and related factory)
+- [ ] Metadata
+  - [ ] Basic resource metadata (PHP class, link collection)
+  - [ ] URL-based resources
+  - [ ] Route-based resources
+  - [ ] Basic collection metadata (embedded resource name + resource metadata)
+  - [ ] URL-based collections
+  - [ ] Route-based collections
+- [ ] ResourceGenerator class
+- [ ] Representation/response generation
+  - [ ] XML representations
+  - [ ] Content-negotiation-based response generator
