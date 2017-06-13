@@ -8,13 +8,13 @@
 - [x] UrlGenerator interface
 - [x] LinkGenerator class
 - [x] Expressive-based UrlGenerator (and related factory)
-- [ ] Metadata
-  - [ ] Basic resource metadata (PHP class, link collection)
-  - [ ] URL-based resources
-  - [ ] Route-based resources
-  - [ ] Basic collection metadata (embedded resource name + resource metadata)
-  - [ ] URL-based collections
-  - [ ] Route-based collections
+- [x] Metadata
+  - [x] Basic resource metadata (PHP class, link collection)
+  - [x] URL-based resources
+  - [x] Route-based resources
+  - [x] Basic collection metadata (embedded resource name + resource metadata)
+  - [x] URL-based collections
+  - [x] Route-based collections
 - [ ] ResourceGenerator class
 - [ ] Representation/response generation
   - [ ] XML representations
