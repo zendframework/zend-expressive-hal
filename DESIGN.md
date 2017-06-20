@@ -507,7 +507,7 @@ following:
 use Hal\ResponseFactory;
 use Zend\Diactoros\Response;
 
-$factory = new ResponseFactory(new Response());
+$factory = new HalResponseFactory(new Response());
 $response = $factory->createResponse($request, $resource, 'application/vnd.book');
 ```
 
@@ -515,7 +515,7 @@ You can force a representation by providing a request with an alternate `Accept`
 header:
 
 ```php
-// Force a JSON reprensentation:
+// Force a JSON representation:
 $response = $factory->createResponse(
     $request->withHeader('Accept', 'application/json'),
     $resource,
