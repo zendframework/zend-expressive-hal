@@ -16,6 +16,6 @@
   - [x] URL-based collections
   - [x] Route-based collections
 - [ ] ResourceGenerator class
-- [ ] Representation/response generation
-  - [ ] XML representations
-  - [ ] Content-negotiation-based response generator
+- [x] Representation/response generation
+  - [x] XML representations
+  - [x] Content-negotiation-based response generator

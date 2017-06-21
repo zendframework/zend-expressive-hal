@@ -6,6 +6,7 @@ use Hal\HalResponseFactory;
 use Hal\Link;
 use Hal\Resource;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -43,8 +44,8 @@ class HalResponseFactoryTest extends TestCase
                 'id' => 'XXXX-' . $i,
                 'baz' => true,
             ]);
-            $temp = $temp->withLink('self', '/baz/XXXX-' . $i);
-            $temp = $temp->withLink('doc', '/doc/baz');
+            $temp = $temp->withLink(new Link('self', '/baz/XXXX-' . $i));
+            $temp = $temp->withLink(new Link('doc', '/doc/baz'));
             $baz[] = $temp;
         }
 
@@ -71,31 +72,31 @@ class HalResponseFactoryTest extends TestCase
         $xml = '<?xml version="1.0" encoding="UTF-8"?' . ">\n";
         $xml .= <<< 'EOX'
 <resource rel="self" href="/example/XXXX-YYYY-ZZZZ-ABAB">
-    <link rel="shift" href="/example/XXXX-YYYY-ZZZZ-ABAB/shift"/>
-    <id>XXXX-YYYY-ZZZZ-ABAB</id>
-    <example>true</example>
-    <foo>bar</foo>
-    <resource rel="bar" href="/bar/BABA-ZZZZ-YYYY-XXXX">
-        <link rel="doc" href="/doc/bar"/>
-        <id>BABA-ZZZZ-YYYY-XXXX</id>
-        <bar>true</bar>
-        <some>data</some>
-    </resource>
-    <resource rel="baz" href="/bar/XXXX-0">
-        <link rel="doc" href="/doc/baz"/>
-        <id>XXXX-0</id>
-        <baz>true</baz>
-    </resource>
-    <resource rel="baz" href="/bar/XXXX-1">
-        <link rel="doc" href="/doc/baz"/>
-        <id>XXXX-1</id>
-        <baz>true</baz>
-    </resource>
-    <resource rel="baz" href="/bar/XXXX-2">
-        <link rel="doc" href="/doc/baz"/>
-        <id>XXXX-2</id>
-        <baz>true</baz>
-    </resource>
+  <link rel="shift" href="/example/XXXX-YYYY-ZZZZ-ABAB/shift"/>
+  <resource rel="bar" href="/bar/BABA-ZZZZ-YYYY-XXXX">
+    <link rel="doc" href="/doc/bar"/>
+    <id>BABA-ZZZZ-YYYY-XXXX</id>
+    <bar>true</bar>
+    <some>data</some>
+  </resource>
+  <resource rel="baz" href="/baz/XXXX-0">
+    <link rel="doc" href="/doc/baz"/>
+    <id>XXXX-0</id>
+    <baz>true</baz>
+  </resource>
+  <resource rel="baz" href="/baz/XXXX-1">
+    <link rel="doc" href="/doc/baz"/>
+    <id>XXXX-1</id>
+    <baz>true</baz>
+  </resource>
+  <resource rel="baz" href="/baz/XXXX-2">
+    <link rel="doc" href="/doc/baz"/>
+    <id>XXXX-2</id>
+    <baz>true</baz>
+  </resource>
+  <id>XXXX-YYYY-ZZZZ-ABAB</id>
+  <example>true</example>
+  <foo>bar</foo>
 </resource>
 EOX;
         return $xml;
@@ -105,7 +106,7 @@ EOX;
     {
         $this->request->getHeaderLine('Accept')->willReturn('');
         $response = $this->factory->createResponse(
-            $request,
+            $this->request->reveal(),
             $this->createExampleResource()
         );
         $this->assertInstanceOf(ResponseInterface::class, $response);
@@ -128,7 +129,16 @@ EOX;
      */
     public function testReturnsJsonResponseIfAcceptHeaderMatchesJson(string $header)
     {
-        $this->markTestIncomplete();
+        $resource = $this->createExampleResource();
+        $this->request->getHeaderLine('Accept')->willReturn($header);
+        $response = $this->factory->createResponse(
+            $this->request->reveal(),
+            $resource
+        );
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertContains('application/hal+json', $response->getHeaderLine('Content-Type'));
+        $json = (string) $response->getBody();
+        $this->assertEquals($this->createExampleJsonPayload(), $json);
     }
 
     public function xmlAcceptHeaders()
@@ -146,7 +156,16 @@ EOX;
      */
     public function testReturnsXmlResponseIfAcceptHeaderMatchesXml(string $header)
     {
-        $this->markTestIncomplete();
+        $resource = $this->createExampleResource();
+        $this->request->getHeaderLine('Accept')->willReturn($header);
+        $response = $this->factory->createResponse(
+            $this->request->reveal(),
+            $resource
+        );
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertContains('application/hal+xml', $response->getHeaderLine('Content-Type'));
+        $xml = (string) $response->getBody();
+        $this->assertEquals($this->createExampleXmlPayload(), $xml);
     }
 
     public function customMediaTypes()
@@ -168,21 +187,76 @@ EOX;
         string $responseBodyCallback,
         string $expectedMediaType
     ) {
-        $this->markTestIncomplete();
+        $resource = $this->createExampleResource();
+        $this->request->getHeaderLine('Accept')->willReturn($header);
+        $response = $this->factory->createResponse(
+            $this->request->reveal(),
+            $resource,
+            $mediaType
+        );
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertContains($expectedMediaType, $response->getHeaderLine('Content-Type'));
+        $payload = (string) $response->getBody();
+        $this->assertEquals($this->$responseBodyCallback(), $payload);
     }
 
     public function testAllowsProvidingFlagsForJsonSerializationToConstructor()
     {
-        $this->markTestIncomplete();
+        $response = $this->prophesize(ResponseInterface::class);
+        $response->withBody(Argument::type(StreamInterface::class))->will([$response, 'reveal']);
+        $response->withHeader('Content-Type', 'application/hal+json')->will([$response, 'reveal']);
+
+        $this->request->getHeaderLine('Accept')->willReturn('application/json');
+
+        $factory = new HalResponseFactory(
+            HalResponseFactory::DEFAULT_JSON_FLAGS,
+            $response->reveal()
+        );
+
+        $test = $factory->createResponse(
+            $this->request->reveal(),
+            $this->createExampleResource()
+        );
+
+        $this->assertSame($response->reveal(), $test);
     }
 
     public function testAllowsProvidingResponsePrototypeToConstructor()
     {
-        $this->markTestIncomplete();
+        $factory = new HalResponseFactory(0);
+        $this->request->getHeaderLine('Accept')->willReturn('application/json');
+        $response = $factory->createResponse(
+            $this->request->reveal(),
+            $this->createExampleResource()
+        );
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertContains('application/hal+json', $response->getHeaderLine('Content-Type'));
+        $payload = (string) $response->getBody();
+        $this->assertEquals($this->createExampleJsonPayload($factory), $payload);
     }
 
     public function testAllowsProvidingStreamFactoryToConstructor()
     {
-        $this->markTestIncomplete();
+        $stream = $this->prophesize(StreamInterface::class);
+        $stream->write($this->createExampleJsonPayload())->shouldBeCalled();
+
+        $streamFactory = function () use ($stream) {
+            return $stream->reveal();
+        };
+
+        $this->request->getHeaderLine('Accept')->willReturn('application/json');
+
+        $factory = new HalResponseFactory(
+            HalResponseFactory::DEFAULT_JSON_FLAGS,
+            null,
+            $streamFactory
+        );
+
+        $response = $factory->createResponse(
+            $this->request->reveal(),
+            $this->createExampleResource()
+        );
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertContains('application/hal+json', $response->getHeaderLine('Content-Type'));
     }
 }
