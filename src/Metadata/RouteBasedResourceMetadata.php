@@ -13,7 +13,7 @@ class RouteBasedResourceMetadata extends AbstractResourceMetadata
     /** @var string */
     private $routeIdentifierPlaceholder;
 
-    /** @var string */
+    /** @var array */
     private $routeParams;
 
     public function __construct(
@@ -39,16 +39,16 @@ class RouteBasedResourceMetadata extends AbstractResourceMetadata
 
     public function getResourceIdentifier() : string
     {
-        return $this->route;
+        return $this->resourceIdentifier;
     }
 
     public function getRouteIdentifierPlaceholder() : string
     {
-        return $this->route;
+        return $this->routeIdentifierPlaceholder;
     }
 
     public function getRouteParams() : array
     {
-        return $this->route;
+        return $this->routeParams;
     }
 }
