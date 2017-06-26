@@ -3,10 +3,9 @@
 namespace Hal\ResourceGenerator;
 
 use Hal\Link;
-use Hal\LinkGenerator;
 use Hal\Metadata;
 use Hal\Resource;
-use Psr\Container\ContainerInterface;
+use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 
 class UrlBasedResourceStrategy implements Strategy
@@ -16,8 +15,7 @@ class UrlBasedResourceStrategy implements Strategy
     public function createResource(
         $instance,
         Metadata\AbstractMetadata $metadata,
-        ContainerInterface $hydrators,
-        LinkGenerator $linkGenerator,
+        ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
     ) : Resource {
         if (! $metadata instanceof Metadata\UrlBasedResourceMetadata) {
@@ -29,7 +27,7 @@ class UrlBasedResourceStrategy implements Strategy
         }
 
         return new Resource(
-            $this->extractInstance($hydrators, $metadata, $instance),
+            $this->extractInstance($resourceGenerator->getHydrators(), $metadata, $instance),
             [new Link('self', $metadata->getUrl())]
         );
     }

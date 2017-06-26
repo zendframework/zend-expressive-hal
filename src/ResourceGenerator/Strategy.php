@@ -2,10 +2,9 @@
 
 namespace Hal\ResourceGenerator;
 
-use Hal\LinkGenerator;
 use Hal\Metadata;
 use Hal\Resource;
-use Psr\Container\ContainerInterface;
+use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 
 interface Strategy
@@ -18,8 +17,7 @@ interface Strategy
     public function createResource(
         $instance,
         Metadata\AbstractMetadata $metadata,
-        ContainerInterface $hydrators,
-        LinkGenerator $linkGenerator,
+        ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
     ) : Resource;
 }

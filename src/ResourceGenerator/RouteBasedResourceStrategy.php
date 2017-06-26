@@ -3,10 +3,9 @@
 namespace Hal\ResourceGenerator;
 
 use Hal\Link;
-use Hal\LinkGenerator;
 use Hal\Metadata;
 use Hal\Resource;
-use Psr\Container\ContainerInterface;
+use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RouteBasedResourceStrategy implements Strategy
@@ -16,8 +15,7 @@ class RouteBasedResourceStrategy implements Strategy
     public function createResource(
         $instance,
         Metadata\AbstractMetadata $metadata,
-        ContainerInterface $hydrators,
-        LinkGenerator $linkGenerator,
+        ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
     ) : Resource {
         if (! $metadata instanceof Metadata\RouteBasedResourceMetadata) {
@@ -28,7 +26,12 @@ class RouteBasedResourceStrategy implements Strategy
             );
         }
 
-        $data               = $this->extractInstance($hydrators, $metadata, $instance);
+        $data = $this->extractInstance(
+            $resourceGenerator->getHydrators(),
+            $metadata,
+            $instance
+        );
+
         $routeParams        = $metadata->getRouteParams();
         $resourceIdentifier = $metadata->getResourceIdentifier();
         $routeIdentifier    = $metadata->getRouteIdentifierPlaceholder();
@@ -38,7 +41,7 @@ class RouteBasedResourceStrategy implements Strategy
         }
 
         return new Resource($data, [
-            $linkGenerator->fromRoute(
+            $resourceGenerator->getLinkGenerator()->fromRoute(
                 'self',
                 $request,
                 $metadata->getRoute(),

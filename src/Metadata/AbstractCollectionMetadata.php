@@ -8,7 +8,7 @@ abstract class AbstractCollectionMetadata extends AbstractMetadata
     const TYPE_QUERY = 'query';
 
     /** @var string */
-    protected $collectionElementName;
+    protected $collectionRelation;
 
     /** @var string */
     protected $paginationParam;
@@ -16,9 +16,9 @@ abstract class AbstractCollectionMetadata extends AbstractMetadata
     /** @var string */
     protected $paginationParamType;
 
-    public function getCollectionElementName() : string
+    public function getCollectionRelation() : string
     {
-        return $this->collectionElementName;
+        return $this->collectionRelation;
     }
 
     public function getPaginationParam() : string

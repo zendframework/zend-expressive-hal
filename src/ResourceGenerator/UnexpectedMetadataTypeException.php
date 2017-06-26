@@ -2,6 +2,7 @@
 
 namespace Hal\ResourceGenerator;
 
+use Hal\Metadata\AbstractCollectionMetadata;
 use Hal\Metadata\AbstractMetadata;
 use RuntimeException;
 
@@ -14,6 +15,16 @@ class UnexpectedMetadataTypeException extends RuntimeException implements Except
             get_class($metadata),
             $strategy,
             $expected
+        ));
+    }
+
+    public static function forCollection(AbstractMetadata $metadata, string $strategyClass) : self
+    {
+        return new self(sprintf(
+            'Error extracting collection via strategy %s; expected %s instance, but received %s',
+            $strategyClass,
+            AbstractCollectionMetadata::class,
+            get_class($metadata)
         ));
     }
 }

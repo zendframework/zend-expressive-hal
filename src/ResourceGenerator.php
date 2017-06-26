@@ -47,6 +47,21 @@ class ResourceGenerator
         );
     }
 
+    public function getHydrators() : ContainerInterface
+    {
+        return $this->hydrators;
+    }
+
+    public function getLinkGenerator() : LinkGenerator
+    {
+        return $this->linkGenerator;
+    }
+
+    public function getMetadataMap() : Metadata\MetadataMap
+    {
+        return $this->metadataMap;
+    }
+
     /**
      * Link a metadata type to a strategy that can create a resource for it.
      *
@@ -119,8 +134,7 @@ class ResourceGenerator
         return $strategy->createResource(
             $instance,
             $metadata,
-            $this->hydrators,
-            $this->linkGenerator,
+            $this,
             $request
         );
     }
