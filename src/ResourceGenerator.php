@@ -104,9 +104,9 @@ class ResourceGenerator
         $this->strategies[$metadataType] = $strategy;
     }
 
-    public function fromArray(array $data, string $uri = null) : Resource
+    public function fromArray(array $data, string $uri = null) : HalResource
     {
-        $resource = new Resource($data);
+        $resource = new HalResource($data);
 
         if (null !== $uri) {
             return $resource->withLink(new Link('self', $uri));
@@ -120,7 +120,7 @@ class ResourceGenerator
      *     against types registered in the metadata map.
      * @param ServerRequestInterface $request
      */
-    public function fromObject($instance, ServerRequestInterface $request) : Resource
+    public function fromObject($instance, ServerRequestInterface $request) : HalResource
     {
         if (! is_object($instance)) {
             throw InvalidObjectException::forNonObject($instance);

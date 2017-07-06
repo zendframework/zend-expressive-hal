@@ -11,7 +11,7 @@ class InvalidResourceValueException extends RuntimeException implements Exceptio
         return new self(sprintf(
             'Encountered non-primitive type "%s" when serializing %s instance; unable to serialize',
             is_object($value) ? get_class($value) : gettype($value),
-            Resource::class
+            HalResource::class
         ));
     }
 }

@@ -2,9 +2,9 @@
 
 namespace HalTest;
 
+use Hal\HalResource;
 use Hal\HalResponseFactory;
 use Hal\Link;
-use Hal\Resource;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
@@ -22,7 +22,7 @@ class HalResponseFactoryTest extends TestCase
 
     public function createExampleResource()
     {
-        $resource = new Resource([
+        $resource = new HalResource([
             'id'      => 'XXXX-YYYY-ZZZZ-ABAB',
             'example' => true,
             'foo'     => 'bar',
@@ -30,7 +30,7 @@ class HalResponseFactoryTest extends TestCase
         $resource = $resource->withLink(new Link('self', '/example/XXXX-YYYY-ZZZZ-ABAB'));
         $resource = $resource->withLink(new Link('shift', '/example/XXXX-YYYY-ZZZZ-ABAB/shift'));
 
-        $bar = new Resource([
+        $bar = new HalResource([
             'id'   => 'BABA-ZZZZ-YYYY-XXXX',
             'bar'  => true,
             'some' => 'data',
@@ -40,7 +40,7 @@ class HalResponseFactoryTest extends TestCase
 
         $baz = [];
         for ($i = 0; $i < 3; $i += 1) {
-            $temp = new Resource([
+            $temp = new HalResource([
                 'id' => 'XXXX-' . $i,
                 'baz' => true,
             ]);

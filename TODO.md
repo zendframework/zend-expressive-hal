@@ -27,7 +27,7 @@
   - [x] XML representations
   - [x] Content-negotiation-based response generator
 - [ ] Considerations based on implementation:
-  - [ ] Rename `Resource` class to something else (as resource has a soft
+  - [x] Rename `Resource` class to something else (as resource has a soft
     reservation as a keyword starting in PHP 7)
   - [ ] Should UrlBasedResourceMetadata and related Strategy allow usage of
     placeholders within the URL for the identifier? This could be done in a

@@ -8,7 +8,14 @@ use Psr\Link\EvolvableLinkProviderInterface;
 use Psr\Link\LinkInterface;
 use RuntimeException;
 
-class Resource implements EvolvableLinkProviderInterface, JsonSerializable
+/**
+ * Object representation of Hypertext Application Language resource.
+ *
+ * The class name "HalResource" was chosen as "resource" has been given a
+ * soft designation as a future keyword in PHP as of PHP 7; choosing this
+ * name now makes the class future-proof.
+ */
+class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
 {
     use LinkCollection;
 
@@ -115,7 +122,7 @@ class Resource implements EvolvableLinkProviderInterface, JsonSerializable
      * @throws RuntimeException if $name is already in use for an embedded
      *     resource.
      */
-    public function withElement(string $name, $value) : Resource
+    public function withElement(string $name, $value) : HalResource
     {
         $this->validateElementName($name, __METHOD__);
 
@@ -138,7 +145,7 @@ class Resource implements EvolvableLinkProviderInterface, JsonSerializable
      * @throws InvalidArgumentException if $name is empty
      * @throws InvalidArgumentException if $name is a reserved keyword
      */
-    public function withoutElement(string $name) : Resource
+    public function withoutElement(string $name) : HalResource
     {
         $this->validateElementName($name, __METHOD__);
 
@@ -164,7 +171,7 @@ class Resource implements EvolvableLinkProviderInterface, JsonSerializable
      * resource, it will be replaced. Otherwise, the new elements are added to
      * the resource returned.
      */
-    public function withElements(array $elements) : Resource
+    public function withElements(array $elements) : HalResource
     {
         $resource = $this;
         foreach ($elements as $name => $value) {
@@ -179,7 +186,7 @@ class Resource implements EvolvableLinkProviderInterface, JsonSerializable
      * @param Resource|Resource[] $resource
      * @return Resource
      */
-    public function embed(string $name, $resource) : Resource
+    public function embed(string $name, $resource) : HalResource
     {
         $this->validateElementName($name, __METHOD__);
         $this->detectCollisionWithData($name, __METHOD__);

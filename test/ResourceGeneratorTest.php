@@ -3,11 +3,11 @@
 namespace HalTest;
 
 use ArrayIterator;
+use Hal\HalResource;
 use Hal\InvalidObjectException;
 use Hal\Link;
 use Hal\LinkGenerator;
 use Hal\Metadata;
-use Hal\Resource;
 use Hal\ResourceGenerator;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -34,7 +34,7 @@ class ResourceGeneratorTest extends TestCase
         );
     }
 
-    public static function getLinkByRel(string $rel, Resource $resource) : Link
+    public static function getLinkByRel(string $rel, HalResource $resource) : Link
     {
         $links = $resource->getLinksByRel($rel);
         self::assertInternalType('array', $links, sprintf("Did not receive list of links for rel %s", $rel));
@@ -76,7 +76,7 @@ class ResourceGeneratorTest extends TestCase
         $this->metadataMap->has()->shouldNotBeCalled();
 
         $resource = $this->generator->fromArray($data, '/api/example');
-        $this->assertInstanceOf(Resource::class, $resource);
+        $this->assertInstanceOf(HalResource::class, $resource);
 
         $self = $this->getLinkByRel('self', $resource);
         $this->assertLink('self', '/api/example', $self);
@@ -105,7 +105,7 @@ class ResourceGeneratorTest extends TestCase
 
         $resource = $this->generator->fromObject($instance, $this->request->reveal());
 
-        $this->assertInstanceOf(Resource::class, $resource);
+        $this->assertInstanceOf(HalResource::class, $resource);
 
         $self = $this->getLinkByRel('self', $resource);
         $this->assertLink('self', '/api/foo/XXXX-YYYY-ZZZZ', $self);
@@ -151,7 +151,7 @@ class ResourceGeneratorTest extends TestCase
 
         $resource = $this->generator->fromObject($instance, $this->request->reveal());
 
-        $this->assertInstanceOf(Resource::class, $resource);
+        $this->assertInstanceOf(HalResource::class, $resource);
 
         $self = $this->getLinkByRel('self', $resource);
         $this->assertLink('self', '/api/foo-bar/XXXX-YYYY-ZZZZ', $self);
@@ -200,7 +200,7 @@ class ResourceGeneratorTest extends TestCase
 
         $resource = $this->generator->fromObject($collection, $this->request->reveal());
 
-        $this->assertInstanceOf(Resource::class, $resource);
+        $this->assertInstanceOf(HalResource::class, $resource);
 
         $self = $this->getLinkByRel('self', $resource);
         $this->assertLink('self', '/api/foo', $self);
@@ -213,7 +213,7 @@ class ResourceGeneratorTest extends TestCase
 
         $ids = [];
         foreach ($embedded as $instance) {
-            $this->assertInstanceOf(Resource::class, $instance);
+            $this->assertInstanceOf(HalResource::class, $instance);
             $ids[] = $instance->getElement('id');
 
             $self = $this->getLinkByRel('self', $instance);
@@ -328,7 +328,7 @@ class ResourceGeneratorTest extends TestCase
 
         $resource = $this->generator->fromObject($collection, $this->request->reveal());
 
-        $this->assertInstanceOf(Resource::class, $resource);
+        $this->assertInstanceOf(HalResource::class, $resource);
 
         $self = $this->getLinkByRel('self', $resource);
         $this->assertLink('self', '/api/foo-bar?page=3', $self);

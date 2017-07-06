@@ -13,7 +13,7 @@ class InvalidObjectException extends InvalidArgumentException implements Excepti
     {
         return new self(sprintf(
             'Cannot generate %s for non-object value of type "%s"',
-            Resource::class,
+            HalResource::class,
             gettype($value)
         ));
     }
@@ -22,7 +22,7 @@ class InvalidObjectException extends InvalidArgumentException implements Excepti
     {
         return new self(sprintf(
             'Cannot generate %s for object of type %s; not in metadata map',
-            Resource::class,
+            HalResource::class,
             $class
         ));
     }

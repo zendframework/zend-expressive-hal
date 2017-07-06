@@ -2,9 +2,9 @@
 
 namespace Hal\ResourceGenerator;
 
+use Hal\HalResource;
 use Hal\Link;
 use Hal\Metadata;
-use Hal\Resource;
 use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
@@ -18,7 +18,7 @@ class RouteBasedCollectionStrategy implements Strategy
         Metadata\AbstractMetadata $metadata,
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
-    ) : Resource {
+    ) : HalResource {
         if (! $metadata instanceof Metadata\RouteBasedCollectionMetadata) {
             throw UnexpectedMetadataTypeException::forMetadata(
                 $metadata,

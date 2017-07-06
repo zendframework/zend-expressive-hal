@@ -2,9 +2,9 @@
 
 namespace Hal\ResourceGenerator;
 
+use Hal\HalResource;
 use Hal\Link;
 use Hal\Metadata;
-use Hal\Resource;
 use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
@@ -18,7 +18,7 @@ class UrlBasedCollectionStrategy implements Strategy
         Metadata\AbstractMetadata $metadata,
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
-    ) : Resource {
+    ) : HalResource {
         if (! $metadata instanceof Metadata\UrlBasedCollectionMetadata) {
             throw UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
@@ -40,7 +40,7 @@ class UrlBasedCollectionStrategy implements Strategy
      * @param Metadata\AbstractCollectionMetadata $metadata Used to provide the
      *     base URL, pagination parameter, and type of pagination used (query
      *     string, path parameter)
-     * @param ResourceGenerator $resourceGenerator Ignored; required to fulfill
+     * @param HalResourceGenerator $resourceGenerator Ignored; required to fulfill
      *     abstract.
      * @param ServerRequestInterface $request Ignored; required to fulfill
      *     abstract.

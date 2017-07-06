@@ -2,9 +2,9 @@
 
 namespace Hal\ResourceGenerator;
 
+use Hal\HalResource;
 use Hal\Link;
 use Hal\Metadata;
-use Hal\Resource;
 use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -17,7 +17,7 @@ class RouteBasedResourceStrategy implements Strategy
         Metadata\AbstractMetadata $metadata,
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
-    ) : Resource {
+    ) : HalResource {
         if (! $metadata instanceof Metadata\RouteBasedResourceMetadata) {
             throw UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
@@ -40,7 +40,7 @@ class RouteBasedResourceStrategy implements Strategy
             $routeParams[$routeIdentifier] = $data[$resourceIdentifier];
         }
 
-        return new Resource($data, [
+        return new HalResource($data, [
             $resourceGenerator->getLinkGenerator()->fromRoute(
                 'self',
                 $request,

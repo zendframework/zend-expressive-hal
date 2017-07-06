@@ -63,7 +63,7 @@ class HalResponseFactory
 
     public function createResponse(
         ServerRequestInterface $request,
-        Resource $resource,
+        HalResource $resource,
         string $mediaType = self::DEFAULT_CONTENT_TYPE
     ) : ResponseInterface {
         $accept      = $request->getHeaderLine('Accept') ?: '*/*';
@@ -107,7 +107,7 @@ class HalResponseFactory
         return new Stream('php://temp', 'wb+');
     }
 
-    private function generateJsonResponse(Resource $resource, string $mediaType) : ResponseInterface
+    private function generateJsonResponse(HalResource $resource, string $mediaType) : ResponseInterface
     {
         $body = ($this->streamFactory)();
         $body->write(json_encode($resource, $this->jsonFlags));
@@ -116,7 +116,7 @@ class HalResponseFactory
             ->withHeader('Content-Type', $mediaType . '+json');
     }
 
-    private function generateXmlResponse(Resource $resource, string $mediaType) : ResponseInterface
+    private function generateXmlResponse(HalResource $resource, string $mediaType) : ResponseInterface
     {
         $body = ($this->streamFactory)();
         $body->write($this->createXmlPayload($resource));
@@ -125,7 +125,7 @@ class HalResponseFactory
             ->withHeader('Content-Type', $mediaType . '+xml');
     }
 
-    private function createXmlPayload(Resource $resource) : string
+    private function createXmlPayload(HalResource $resource) : string
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;

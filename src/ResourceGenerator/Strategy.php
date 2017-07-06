@@ -2,8 +2,8 @@
 
 namespace Hal\ResourceGenerator;
 
+use Hal\HalResource;
 use Hal\Metadata;
-use Hal\Resource;
 use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -19,5 +19,5 @@ interface Strategy
         Metadata\AbstractMetadata $metadata,
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
-    ) : Resource;
+    ) : HalResource;
 }

@@ -3,11 +3,11 @@
 namespace Hal\ResourceGenerator;
 
 use Countable;
+use Hal\HalResource;
 use Hal\Link;
 use Hal\LinkGenerator;
 use Hal\Metadata\AbstractCollectionMetadata;
 use Hal\Metadata\RouteBasedCollectionMetadata;
-use Hal\Resource;
 use Hal\ResourceGenerator;
 use Traversable;
 use Psr\Container\ContainerInterface;
@@ -40,7 +40,7 @@ trait ExtractCollection
         AbstractCollectionMetadata $metadata,
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
-    ) : Resource {
+    ) : HalResource {
         if (! $metadata instanceof AbstractCollectionMetadata) {
             throw UnexpectedMetadataTypeException::forCollection($metadata, get_class($this));
         }
@@ -57,7 +57,7 @@ trait ExtractCollection
         AbstractCollectionMetadata $metadata,
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
-    ) : Resource {
+    ) : HalResource {
         $data  = ['_total_items' => $collection->getTotalItemCount()];
         $links = [];
 
@@ -96,7 +96,7 @@ trait ExtractCollection
             $resources[] = $resourceGenerator->fromObject($item, $request);
         }
 
-        return new Resource($data, $links, [
+        return new HalResource($data, $links, [
             $metadata->getCollectionRelation() => $resources,
         ]);
     }
@@ -106,7 +106,7 @@ trait ExtractCollection
         AbstractCollectionMetadata $metadata,
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
-    ) : Resource {
+    ) : HalResource {
         $isCountable = $collection instanceof Countable;
         $count = $isCountable ? $collection->count() : 0;
 
@@ -123,7 +123,7 @@ trait ExtractCollection
             $request
         )];
 
-        return new Resource($data, $links, [
+        return new HalResource($data, $links, [
             $metadata->getCollectionRelation() => $resources,
         ]);
     }
