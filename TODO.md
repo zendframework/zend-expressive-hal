@@ -32,7 +32,7 @@
   - [ ] Should UrlBasedResourceMetadata and related Strategy allow usage of
     placeholders within the URL for the identifier? This could be done in a
     fashion similar to pagination.
-  - [ ] Should RouteBasedCollectionMetadata allow specifying route parameters?
+  - [x] Should RouteBasedCollectionMetadata allow specifying route parameters?
     May be useful/required to allow creating sub-resources.
   - [x] Refactor ResourceGeneratorTest to use custom assertions (`getLinkByRel()`,
     `assertLink()`).

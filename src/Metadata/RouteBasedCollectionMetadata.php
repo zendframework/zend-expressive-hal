@@ -8,6 +8,9 @@ class RouteBasedCollectionMetadata extends AbstractCollectionMetadata
     private $route;
 
     /** @var array */
+    private $routeParams;
+
+    /** @var array */
     private $queryStringArguments;
 
     public function __construct(
@@ -16,6 +19,7 @@ class RouteBasedCollectionMetadata extends AbstractCollectionMetadata
         string $route,
         string $paginationParam = 'page',
         string $paginationParamType = self::TYPE_QUERY,
+        array $routeParams = [],
         array $queryStringArguments = []
     ) {
         $this->class = $class;
@@ -23,12 +27,18 @@ class RouteBasedCollectionMetadata extends AbstractCollectionMetadata
         $this->route = $route;
         $this->paginationParam = $paginationParam;
         $this->paginationParamType = $paginationParamType;
+        $this->routeParams = $routeParams;
         $this->queryStringArguments = $queryStringArguments;
     }
 
     public function getRoute() : string
     {
         return $this->route;
+    }
+
+    public function getRouteParams() : array
+    {
+        return $this->routeParams;
     }
 
     public function getQueryStringArguments() : array

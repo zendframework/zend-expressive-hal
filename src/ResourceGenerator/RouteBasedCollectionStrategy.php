@@ -56,12 +56,13 @@ class RouteBasedCollectionStrategy implements Strategy
         $route = $metadata->getRoute();
         $paginationType = $metadata->getPaginationParamType();
         $paginationParam = $metadata->getPaginationParam();
+        $routeParams = $metadata->getRouteParams();
         $queryStringArgs = $metadata->getQueryStringArguments();
 
         $paramsWithPage = [$paginationParam => $page];
         $routeParams = $paginationType === Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER
-            ? $paramsWithPage
-            : [];
+            ? array_merge($routeParams, $paramsWithPage)
+            : $routeParams;
         $queryParams = $paginationType === Metadata\AbstractCollectionMetadata::TYPE_QUERY
             ? array_merge($queryStringArgs, $paramsWithPage)
             : $queryStringArgs;
