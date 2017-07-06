@@ -78,12 +78,8 @@ class ResourceGeneratorTest extends TestCase
         $resource = $this->generator->fromArray($data, '/api/example');
         $this->assertInstanceOf(Resource::class, $resource);
 
-        $self = $resource->getLinksByRel('self');
-        $this->assertInternalType('array', $self);
-        $this->assertCount(1, $self);
-        $self = array_shift($self);
-        $this->assertInstanceOf(Link::class, $self);
-        $this->assertEquals('/api/example', $self->getHref());
+        $self = $this->getLinkByRel('self', $resource);
+        $this->assertLink('self', '/api/example', $self);
 
         $this->assertEquals($data, $resource->getElements());
     }
@@ -111,12 +107,8 @@ class ResourceGeneratorTest extends TestCase
 
         $this->assertInstanceOf(Resource::class, $resource);
 
-        $self = $resource->getLinksByRel('self');
-        $this->assertInternalType('array', $self);
-        $this->assertCount(1, $self);
-        $self = array_shift($self);
-        $this->assertInstanceOf(Link::class, $self);
-        $this->assertEquals('/api/foo/XXXX-YYYY-ZZZZ', $self->getHref());
+        $self = $this->getLinkByRel('self', $resource);
+        $this->assertLink('self', '/api/foo/XXXX-YYYY-ZZZZ', $self);
 
         $this->assertEquals([
             'id'  => 'XXXX-YYYY-ZZZZ',
@@ -161,12 +153,8 @@ class ResourceGeneratorTest extends TestCase
 
         $this->assertInstanceOf(Resource::class, $resource);
 
-        $self = $resource->getLinksByRel('self');
-        $this->assertInternalType('array', $self);
-        $this->assertCount(1, $self);
-        $self = array_shift($self);
-        $this->assertInstanceOf(Link::class, $self);
-        $this->assertEquals('/api/foo-bar/XXXX-YYYY-ZZZZ', $self->getHref());
+        $self = $this->getLinkByRel('self', $resource);
+        $this->assertLink('self', '/api/foo-bar/XXXX-YYYY-ZZZZ', $self);
 
         $this->assertEquals([
             'id'  => 'XXXX-YYYY-ZZZZ',
@@ -214,12 +202,8 @@ class ResourceGeneratorTest extends TestCase
 
         $this->assertInstanceOf(Resource::class, $resource);
 
-        $self = $resource->getLinksByRel('self');
-        $this->assertInternalType('array', $self);
-        $this->assertCount(1, $self);
-        $self = array_shift($self);
-        $this->assertInstanceOf(Link::class, $self);
-        $this->assertEquals('/api/foo', $self->getHref());
+        $self = $this->getLinkByRel('self', $resource);
+        $this->assertLink('self', '/api/foo', $self);
 
         $this->assertEquals(3, $resource->getElement('_total_items'));
 
@@ -232,17 +216,15 @@ class ResourceGeneratorTest extends TestCase
             $this->assertInstanceOf(Resource::class, $instance);
             $ids[] = $instance->getElement('id');
 
-            $self = $instance->getLinksByRel('self');
-            $this->assertInternalType('array', $self);
-            $this->assertCount(1, $self);
-            $self = array_shift($self);
-            $this->assertInstanceOf(Link::class, $self);
-            $this->assertEquals('/api/foo/XXXX-YYYY-ZZZZ', $self->getHref());
+            $self = $this->getLinkByRel('self', $instance);
+            $this->assertLink('self', '/api/foo/XXXX-YYYY-ZZZZ', $self);
         }
 
-        $this->assertContains('XXXX-YYYY-ZZZZ', $ids, var_export($ids, true));
-        $this->assertContains('XXXX-YYYY-ZZZA', $ids);
-        $this->assertContains('XXXX-YYYY-ZZZB', $ids);
+        $this->assertEquals([
+            'XXXX-YYYY-ZZZZ',
+            'XXXX-YYYY-ZZZA',
+            'XXXX-YYYY-ZZZB',
+        ], $ids);
     }
 
     public function testCanGenerateRouteBasedCollectionFromObjectDefinedInMetadataMap()

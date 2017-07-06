@@ -108,7 +108,7 @@ trait ExtractCollection
         ServerRequestInterface $request
     ) : Resource {
         $isCountable = $collection instanceof Countable;
-        $count = $isCountable  ? $collection->count() : 0;
+        $count = $isCountable ? $collection->count() : 0;
 
         $resources = [];
         foreach ($collection as $item) {
