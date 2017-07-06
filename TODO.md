@@ -15,13 +15,13 @@
   - [x] Basic collection metadata (embedded resource name + resource metadata)
   - [x] URL-based collections
   - [x] Route-based collections
-- [ ] ResourceGenerator class
-  - [ ] Tests
+- [x] ResourceGenerator class
+  - [x] Tests
     - [x] URL-based resources
     - [x] Route-based resources
     - [x] URL-based collections
     - [x] Route-based collections
-    - [ ] What happens to object properties of instances?
+    - [x] What happens to object properties of instances?
   - [x] Implementation
 - [x] Representation/response generation
   - [x] XML representations

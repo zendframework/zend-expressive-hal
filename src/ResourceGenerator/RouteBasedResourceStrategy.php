@@ -27,9 +27,10 @@ class RouteBasedResourceStrategy implements Strategy
         }
 
         $data = $this->extractInstance(
-            $resourceGenerator->getHydrators(),
+            $instance,
             $metadata,
-            $instance
+            $resourceGenerator,
+            $request
         );
 
         $routeParams        = $metadata->getRouteParams();

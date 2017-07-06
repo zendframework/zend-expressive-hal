@@ -27,7 +27,7 @@ class UrlBasedResourceStrategy implements Strategy
         }
 
         return new HalResource(
-            $this->extractInstance($resourceGenerator->getHydrators(), $metadata, $instance),
+            $this->extractInstance($instance, $metadata, $resourceGenerator, $request),
             [new Link('self', $metadata->getUrl())]
         );
     }
