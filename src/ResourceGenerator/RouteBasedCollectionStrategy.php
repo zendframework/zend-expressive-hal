@@ -7,6 +7,7 @@ use Hal\Metadata;
 use Hal\Resource;
 use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
+use Traversable;
 
 class RouteBasedCollectionStrategy implements Strategy
 {
@@ -26,11 +27,11 @@ class RouteBasedCollectionStrategy implements Strategy
             );
         }
 
-        if (! $collection instanceof Traversable) {
-            throw InvalidCollectionException::fromInstance($collection, get_class($this));
+        if (! $instance instanceof Traversable) {
+            throw InvalidCollectionException::fromInstance($instance, get_class($this));
         }
 
-        return $this->extractCollection($instance);
+        return $this->extractCollection($instance, $metadata, $resourceGenerator, $request);
     }
 
     /**
@@ -58,10 +59,10 @@ class RouteBasedCollectionStrategy implements Strategy
         $queryStringArgs = $metadata->getQueryStringArguments();
 
         $paramsWithPage = [$paginationParam => $page];
-        $routeParams = $paginationType === AbstractCollectionMetadata::TYPE_PLACEHOLDER
+        $routeParams = $paginationType === Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER
             ? $paramsWithPage
             : [];
-        $queryParams = $paginationType === AbstractCollectionMetadata::TYPE_QUERY
+        $queryParams = $paginationType === Metadata\AbstractCollectionMetadata::TYPE_QUERY
             ? array_merge($queryStringArgs, $paramsWithPage)
             : $queryStringArgs;
 

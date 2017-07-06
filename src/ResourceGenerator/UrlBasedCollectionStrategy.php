@@ -7,6 +7,7 @@ use Hal\Metadata;
 use Hal\Resource;
 use Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
+use Traversable;
 
 class UrlBasedCollectionStrategy implements Strategy
 {
@@ -26,11 +27,11 @@ class UrlBasedCollectionStrategy implements Strategy
             );
         }
 
-        if (! $collection instanceof Traversable) {
-            throw InvalidCollectionException::fromInstance($collection, get_class($this));
+        if (! $instance instanceof Traversable) {
+            throw InvalidCollectionException::fromInstance($instance, get_class($this));
         }
 
-        return $this->extractCollection($instance);
+        return $this->extractCollection($instance, $metadata, $resourceGenerator, $request);
     }
 
     /**

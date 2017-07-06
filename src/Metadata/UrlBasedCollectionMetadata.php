@@ -14,13 +14,13 @@ class UrlBasedCollectionMetadata extends AbstractCollectionMetadata
 
     public function __construct(
         string $class,
-        string $collectionElementName,
+        string $collectionRelation,
         string $url,
         string $paginationParam = 'page',
         string $paginationParamType = self::TYPE_QUERY
     ) {
-        if (empty($collectionElementName)) {
-            throw new InvalidArgumentException('$collectionElementName MUST NOT be empty');
+        if (empty($collectionRelation)) {
+            throw new InvalidArgumentException('$collectionRelation MUST NOT be empty');
         }
 
         if (empty($paginationParam)) {
@@ -36,11 +36,11 @@ class UrlBasedCollectionMetadata extends AbstractCollectionMetadata
             ));
         }
 
-        $this->class                 = $class;
-        $this->collectionElementName = $collectionElementName;
-        $this->url                   = $url;
-        $this->paginationParam       = $paginationParam;
-        $this->paginationParamType   = $paginationParamType;
+        $this->class               = $class;
+        $this->collectionRelation  = $collectionRelation;
+        $this->url                 = $url;
+        $this->paginationParam     = $paginationParam;
+        $this->paginationParamType = $paginationParamType;
     }
 
     public function getUrl() : string

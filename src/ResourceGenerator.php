@@ -38,12 +38,20 @@ class ResourceGenerator
         $this->linkGenerator = $linkGenerator;
 
         $this->addStrategy(
-            Metadata\UrlBasedResourceMetadata::class,
-            new ResourceGenerator\UrlBasedResourceStrategy()
+            Metadata\RouteBasedCollectionMetadata::class,
+            new ResourceGenerator\RouteBasedCollectionStrategy()
         );
         $this->addStrategy(
             Metadata\RouteBasedResourceMetadata::class,
             new ResourceGenerator\RouteBasedResourceStrategy()
+        );
+        $this->addStrategy(
+            Metadata\UrlBasedCollectionMetadata::class,
+            new ResourceGenerator\UrlBasedCollectionStrategy()
+        );
+        $this->addStrategy(
+            Metadata\UrlBasedResourceMetadata::class,
+            new ResourceGenerator\UrlBasedResourceStrategy()
         );
     }
 

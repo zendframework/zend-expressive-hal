@@ -71,6 +71,8 @@ trait ExtractCollection
                 ? ($request->getQueryParams()[$paginationParam] ?? 1)
                 : $request->getAttribute($paginationParam, 1);
 
+            $collection->setCurrentPageNumber($page);
+
             $links[] = $this->generateLinkForPage('self', $page, $metadata, $resourceGenerator, $request);
             if ($page > 1) {
                 $links[] = $this->generateLinkForPage('first', 1, $metadata, $resourceGenerator, $request);

@@ -75,7 +75,7 @@ class Resource implements EvolvableLinkProviderInterface, JsonSerializable
      */
     public function getElement(string $name)
     {
-        $this->validateElementName($name);
+        $this->validateElementName($name, __METHOD__);
 
         if (! isset($this->data[$name]) && ! isset($this->embedded[$name])) {
             return null;

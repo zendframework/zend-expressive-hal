@@ -12,14 +12,14 @@ class RouteBasedCollectionMetadata extends AbstractCollectionMetadata
 
     public function __construct(
         string $class,
-        string $collectionElementName,
+        string $collectionRelation,
         string $route,
-        string $paginationParam,
-        string $paginationParamType,
+        string $paginationParam = 'page',
+        string $paginationParamType = self::TYPE_QUERY,
         array $queryStringArguments = []
     ) {
         $this->class = $class;
-        $this->collectionElementName = $collectionElementName;
+        $this->collectionRelation = $collectionRelation;
         $this->route = $route;
         $this->paginationParam = $paginationParam;
         $this->paginationParamType = $paginationParamType;

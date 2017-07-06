@@ -2,6 +2,7 @@
 
 namespace HalTest;
 
+use ArrayIterator;
 use Hal\InvalidObjectException;
 use Hal\Link;
 use Hal\LinkGenerator;
@@ -12,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Paginator;
 
 /**
  * @todo Create tests for cases where resources embed other resources.
@@ -29,6 +32,38 @@ class ResourceGeneratorTest extends TestCase
             $this->hydrators->reveal(),
             $this->linkGenerator->reveal()
         );
+    }
+
+    public static function getLinkByRel(string $rel, Resource $resource) : Link
+    {
+        $links = $resource->getLinksByRel($rel);
+        self::assertInternalType('array', $links, sprintf("Did not receive list of links for rel %s", $rel));
+        self::assertCount(1, $links, sprintf(
+            'Received more links than expected (expected 1; received %d) for rel %s',
+            count($links),
+            $rel
+        ));
+        return array_shift($links);
+    }
+
+    public static function assertLink(string $expectedRel, string $expectedHref, $actual) : void
+    {
+        self::assertThat($actual instanceof Link, self::isTrue(), sprintf(
+            'Invalid link encountered of type %s',
+            is_object($actual) ? get_class($actual) : gettype($actual)
+        ));
+
+        self::assertThat(in_array($expectedRel, $actual->getRels(), true), self::isTrue(), sprintf(
+            'Failed asserting that link has relation %s; received %s',
+            $expectedRel,
+            var_export($actual->getRels(), true)
+        ));
+
+        self::assertThat($expectedHref === $actual->getHref(), self::isTrue(), sprintf(
+            'Failed asserting that link defines HREF %s; received %s',
+            $expectedHref,
+            $actual->getHref()
+        ));
     }
 
     public function testCanGenerateResourceWithSelfLinkFromArrayData()
@@ -140,20 +175,202 @@ class ResourceGeneratorTest extends TestCase
         ], $resource->getElements());
     }
 
-    /**
-     * @todo Need to determine what a use case looks like, exactly.
-     */
     public function testCanGenerateUrlBasedCollectionFromObjectDefinedInMetadataMap()
     {
-        $this->markTestIncomplete();
+        $first      = new TestAsset\FooBar;
+        $first->id  = 'XXXX-YYYY-ZZZZ';
+        $first->foo = 'BAR';
+        $first->bar = 'BAZ';
+
+        $second = clone $first;
+        $second->id = 'XXXX-YYYY-ZZZA';
+        $third = clone $first;
+        $third->id = 'XXXX-YYYY-ZZZB';
+
+        $resourceMetadata = new Metadata\UrlBasedResourceMetadata(
+            TestAsset\FooBar::class,
+            '/api/foo/XXXX-YYYY-ZZZZ',
+            ObjectPropertyHydrator::class
+        );
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
+
+        $collectionMetadata = new Metadata\UrlBasedCollectionMetadata(
+            ArrayIterator::class,
+            'foo-bar',
+            '/api/foo'
+        );
+
+        $this->metadataMap->has(ArrayIterator::class)->willReturn(true);
+        $this->metadataMap->get(ArrayIterator::class)->willReturn($collectionMetadata);
+
+        $collection = new ArrayIterator([$first, $second, $third]);
+
+        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $this->linkGenerator->fromRoute()->shouldNotBeCalled();
+
+        $resource = $this->generator->fromObject($collection, $this->request->reveal());
+
+        $this->assertInstanceOf(Resource::class, $resource);
+
+        $self = $resource->getLinksByRel('self');
+        $this->assertInternalType('array', $self);
+        $this->assertCount(1, $self);
+        $self = array_shift($self);
+        $this->assertInstanceOf(Link::class, $self);
+        $this->assertEquals('/api/foo', $self->getHref());
+
+        $this->assertEquals(3, $resource->getElement('_total_items'));
+
+        $embedded = $resource->getElement('foo-bar');
+        $this->assertInternalType('array', $embedded);
+        $this->assertCount(3, $embedded);
+
+        $ids = [];
+        foreach ($embedded as $instance) {
+            $this->assertInstanceOf(Resource::class, $instance);
+            $ids[] = $instance->getElement('id');
+
+            $self = $instance->getLinksByRel('self');
+            $this->assertInternalType('array', $self);
+            $this->assertCount(1, $self);
+            $self = array_shift($self);
+            $this->assertInstanceOf(Link::class, $self);
+            $this->assertEquals('/api/foo/XXXX-YYYY-ZZZZ', $self->getHref());
+        }
+
+        $this->assertContains('XXXX-YYYY-ZZZZ', $ids, var_export($ids, true));
+        $this->assertContains('XXXX-YYYY-ZZZA', $ids);
+        $this->assertContains('XXXX-YYYY-ZZZB', $ids);
     }
 
-    /**
-     * @todo Need to determine what a use case looks like, exactly.
-     */
     public function testCanGenerateRouteBasedCollectionFromObjectDefinedInMetadataMap()
     {
-        $this->markTestIncomplete();
+        $instance      = new TestAsset\FooBar;
+        $instance->foo = 'BAR';
+        $instance->bar = 'BAZ';
+
+        $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
+            TestAsset\FooBar::class,
+            'foo-bar',
+            ObjectPropertyHydrator::class,
+            'id',
+            'foo_bar_id',
+            ['test' => 'param']
+        );
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
+
+        $instances = [];
+        for ($i = 1; $i < 15; $i += 1) {
+            $next = clone $instance;
+            $next->id = $i;
+            $instances[] = $next;
+
+            $this->linkGenerator
+                ->fromRoute(
+                    'self',
+                    $this->request->reveal(),
+                    'foo-bar',
+                    [
+                        'foo_bar_id' => $i,
+                        'test' => 'param',
+                    ]
+                )
+                ->willReturn(new Link('self', '/api/foo-bar/' . $i));
+        }
+
+        $collectionMetadata = new Metadata\RouteBasedCollectionMetadata(
+            Paginator::class,
+            'foo-bar',
+            'foo-bar'
+        );
+
+        $this->metadataMap->has(Paginator::class)->willReturn(true);
+        $this->metadataMap->get(Paginator::class)->willReturn($collectionMetadata);
+
+        $this->linkGenerator
+            ->fromRoute(
+                'self',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 3]
+            )
+            ->willReturn(new Link('self', '/api/foo-bar?page=3'));
+        $this->linkGenerator
+            ->fromRoute(
+                'first',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 1]
+            )
+            ->willReturn(new Link('first', '/api/foo-bar?page=1'));
+        $this->linkGenerator
+            ->fromRoute(
+                'prev',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 2]
+            )
+            ->willReturn(new Link('prev', '/api/foo-bar?page=2'));
+        $this->linkGenerator
+            ->fromRoute(
+                'next',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 4]
+            )
+            ->willReturn(new Link('next', '/api/foo-bar?page=4'));
+        $this->linkGenerator
+            ->fromRoute(
+                'last',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 5]
+            )
+            ->willReturn(new Link('last', '/api/foo-bar?page=5'));
+
+        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+
+        $this->request->getQueryParams()->willReturn(['page' => 3]);
+
+        $collection = new Paginator(new ArrayAdapter($instances));
+        $collection->setItemCountPerPage(3);
+
+        $resource = $this->generator->fromObject($collection, $this->request->reveal());
+
+        $this->assertInstanceOf(Resource::class, $resource);
+
+        $self = $this->getLinkByRel('self', $resource);
+        $this->assertLink('self', '/api/foo-bar?page=3', $self);
+        $first = $this->getLinkByRel('first', $resource);
+        $this->assertLink('first', '/api/foo-bar?page=1', $first);
+        $prev = $this->getLinkByRel('prev', $resource);
+        $this->assertLink('prev', '/api/foo-bar?page=2', $prev);
+        $next = $this->getLinkByRel('next', $resource);
+        $this->assertLink('next', '/api/foo-bar?page=4', $next);
+        $last = $this->getLinkByRel('last', $resource);
+        $this->assertLink('last', '/api/foo-bar?page=5', $last);
+
+        $this->assertEquals(14, $resource->getElement('_total_items'));
+        $this->assertEquals(3, $resource->getElement('_page'));
+        $this->assertEquals(5, $resource->getElement('_page_count'));
+
+        $id = 7;
+        foreach ($resource->getElement('foo-bar') as $item) {
+            $self = $this->getLinkByRel('self', $item);
+            $this->assertLink('self', '/api/foo-bar/' . $id, $self);
+
+            $this->assertEquals($id, $item->getElement('id'));
+            $id += 1;
+        }
     }
 
     public function testGeneratorRaisesExceptionForNonObjectType()
