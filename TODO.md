@@ -38,10 +38,11 @@
       May be useful/required to allow creating sub-resources.
     - [x] Refactor ResourceGeneratorTest to use custom assertions (`getLinkByRel()`,
       `assertLink()`).
-  - [ ] Factories
+  - [x] Factories
     - [x] MetadataMap (from config)
     - [x] LinkGenerator
-    - [ ] ResourceGenerator
+    - [x] LinkGenerator\UrlGenerator
+    - [x] ResourceGenerator
   - [ ] Exception namespaces
     - [ ] Top-level
     - [ ] Metadata

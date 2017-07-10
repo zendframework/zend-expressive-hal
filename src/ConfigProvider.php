@@ -14,9 +14,14 @@ class ConfigProvider
     public function getDependencies() : array
     {
         return [
+            'aliases' => [
+                LinkGenerator\UrlGenerator::class => LinkGenerator\ExpressiveUrlGenerator::class,
+            ],
             'factories' => [
+                LinkGenerator::class => LinkGeneratorFactory::class,
                 LinkGenerator\ExpressiveUrlGenerator::class => LinkGenerator\ExpressiveUrlGeneratorFactory::class,
-                MetadataMap\MetadataMap::class => MetadataMap\MetadataMapFactory::class
+                MetadataMap\MetadataMap::class => MetadataMap\MetadataMapFactory::class,
+                ResourceGenerator::class => ResourceGeneratorFactory::class,
             ],
         ];
     }
