@@ -16,6 +16,7 @@ class ConfigProvider
         return [
             'factories' => [
                 LinkGenerator\ExpressiveUrlGenerator::class => LinkGenerator\ExpressiveUrlGeneratorFactory::class,
+                MetadataMap\MetadataMap::class => MetadataMap\MetadataMapFactory::class
             ],
         ];
     }
