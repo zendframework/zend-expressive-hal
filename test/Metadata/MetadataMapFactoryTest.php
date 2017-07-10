@@ -2,6 +2,7 @@
 
 namespace HalTest\Metadata;
 
+use Generator;
 use Hal\Metadata;
 use Hal\Metadata\Exception\InvalidConfigException;
 use Hal\Metadata\MetadataMap;
@@ -96,7 +97,7 @@ class MetadataMapFactoryTest extends TestCase
         ($this->factory)($this->container->reveal());
     }
 
-    public function invalidMetadata()
+    public function invalidMetadata() : Generator
     {
         $types = [
             Metadata\UrlBasedResourceMetadata::class,
@@ -113,8 +114,10 @@ class MetadataMapFactoryTest extends TestCase
     /**
      * @dataProvider invalidMetadata
      */
-    public function testFactoryRaisesExceptionIfMetadataIsMissingRequiredElements(array $metadata, $expectExceptionString)
-    {
+    public function testFactoryRaisesExceptionIfMetadataIsMissingRequiredElements(
+        array $metadata,
+        string $expectExceptionString
+    ) {
         $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([MetadataMap::class => [$metadata]]);
         $this->expectException(InvalidConfigException::class);

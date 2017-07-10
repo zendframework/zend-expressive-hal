@@ -101,7 +101,10 @@ class MetadataMapFactory
             'route',
         ];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw Exception\InvalidConfigException::dueToMissingMetadata(RouteBasedCollectionMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(
+                RouteBasedCollectionMetadata::class,
+                $requiredKeys
+            );
         }
 
         $paginationParam = $metadata['pagination_param'] ?? 'page';
@@ -132,7 +135,10 @@ class MetadataMapFactory
             'extractor'
         ];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw Exception\InvalidConfigException::dueToMissingMetadata(RouteBasedResourceMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(
+                RouteBasedResourceMetadata::class,
+                $requiredKeys
+            );
         }
 
         $resourceIdentifier = $metadata['resource_identifier'] ?? 'id';
@@ -161,7 +167,10 @@ class MetadataMapFactory
             'url',
         ];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw Exception\InvalidConfigException::dueToMissingMetadata(UrlBasedCollectionMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(
+                UrlBasedCollectionMetadata::class,
+                $requiredKeys
+            );
         }
 
         $paginationParam = $metadata['pagination_param'] ?? 'page';
@@ -184,7 +193,10 @@ class MetadataMapFactory
     {
         $requiredKeys = ['resource_class', 'url', 'extractor'];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw Exception\InvalidConfigException::dueToMissingMetadata(UrlBasedResourceMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(
+                UrlBasedResourceMetadata::class,
+                $requiredKeys
+            );
         }
 
         return new UrlBasedResourceMetadata(
@@ -235,7 +247,10 @@ class MetadataMapFactory
         $method          = sprintf('create%s', $normalizedClass);
 
         if (! method_exists($this, $method)) {
-            throw Exception\InvalidConfigException::dueToUnrecognizedMetadataClass($metadata['__class__'], $normalizedClass);
+            throw Exception\InvalidConfigException::dueToUnrecognizedMetadataClass(
+                $metadata['__class__'],
+                $normalizedClass
+            );
         }
 
         $metadataMap->add($this->$method($metadata));
