@@ -13,6 +13,7 @@
         "willdurand/negotiation": "^2.3.1"
     },
     "require-dev": {
+        "phpspec/prophecy": "^1.7.0",
         "phpunit/phpunit": "^6.0",
         "zendframework/zend-coding-standard": "^1.0",
         "zendframework/zend-diactoros": "^1.4",
