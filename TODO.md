@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Development
+- [x] Development
   - [x] Link class
     - [x] Link serialization to array
     - [x] Link serialization to JSON via `JsonSerializable`
@@ -38,7 +38,7 @@
       May be useful/required to allow creating sub-resources.
     - [x] Refactor ResourceGeneratorTest to use custom assertions (`getLinkByRel()`,
       `assertLink()`).
-  - [ ] Configuration-driven MetadataMap
+  - [x] Configuration-driven MetadataMap
 - [ ] Documentation
   - Resources
   - Links
