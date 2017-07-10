@@ -42,7 +42,7 @@ trait ExtractCollection
         ServerRequestInterface $request
     ) : HalResource {
         if (! $metadata instanceof AbstractCollectionMetadata) {
-            throw UnexpectedMetadataTypeException::forCollection($metadata, get_class($this));
+            throw Exception\UnexpectedMetadataTypeException::forCollection($metadata, get_class($this));
         }
 
         if ($collection instanceof Paginator) {

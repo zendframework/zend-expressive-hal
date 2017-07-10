@@ -20,7 +20,7 @@ class RouteBasedCollectionStrategy implements Strategy
         ServerRequestInterface $request
     ) : HalResource {
         if (! $metadata instanceof Metadata\RouteBasedCollectionMetadata) {
-            throw UnexpectedMetadataTypeException::forMetadata(
+            throw Exception\UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
                 self::class,
                 Metadata\RouteBasedCollectionMetadata
@@ -28,7 +28,7 @@ class RouteBasedCollectionStrategy implements Strategy
         }
 
         if (! $instance instanceof Traversable) {
-            throw InvalidCollectionException::fromInstance($instance, get_class($this));
+            throw Exception\InvalidCollectionException::fromInstance($instance, get_class($this));
         }
 
         return $this->extractCollection($instance, $metadata, $resourceGenerator, $request);

@@ -3,7 +3,7 @@
 namespace HalTest\Metadata;
 
 use Hal\Metadata;
-use Hal\Metadata\InvalidConfigException;
+use Hal\Metadata\Exception\InvalidConfigException;
 use Hal\Metadata\MetadataMap;
 use Hal\Metadata\MetadataMapFactory;
 use HalTest\TestAsset;

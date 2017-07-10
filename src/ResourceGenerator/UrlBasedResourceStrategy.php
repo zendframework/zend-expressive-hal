@@ -19,7 +19,7 @@ class UrlBasedResourceStrategy implements Strategy
         ServerRequestInterface $request
     ) : HalResource {
         if (! $metadata instanceof Metadata\UrlBasedResourceMetadata) {
-            throw UnexpectedMetadataTypeException::forMetadata(
+            throw Exception\UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
                 self::class,
                 Metadata\UrlBasedResourceMetadata

@@ -1,6 +1,6 @@
 <?php
 
-namespace Hal\ResourceGenerator;
+namespace Hal\ResourceGenerator\Exception;
 
 use Hal\Metadata\AbstractCollectionMetadata;
 use Hal\Metadata\AbstractMetadata;

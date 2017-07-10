@@ -1,6 +1,6 @@
 <?php
 
-namespace Hal;
+namespace Hal\Exception;
 
 /**
  * Marker interface for component exceptions.

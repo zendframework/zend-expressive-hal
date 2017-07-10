@@ -1,7 +1,8 @@
 <?php
 
-namespace Hal\Metadata;
+namespace Hal\Metadata\Exception;
 
+use Hal\Metadata\AbstractMetadata;
 use RuntimeException;
 
 class InvalidConfigException extends RuntimeException implements Exception

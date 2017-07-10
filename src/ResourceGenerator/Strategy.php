@@ -11,8 +11,8 @@ interface Strategy
 {
     /**
      * @param object $instance Instance from which to create Resource.
-     * @throws UnexpectedMetadataTypeException for metadata types the strategy
-     *     cannot handle.
+     * @throws Exception\UnexpectedMetadataTypeException for metadata types the
+     *     strategy cannot handle.
      */
     public function createResource(
         $instance,

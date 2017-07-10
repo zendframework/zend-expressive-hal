@@ -1,6 +1,6 @@
 <?php
 
-namespace Hal\Metadata;
+namespace Hal\Metadata\Exception;
 
 use RuntimeException;
 

@@ -47,7 +47,7 @@ class MetadataMapTest extends TestCase
         $metadata = $this->prophesize(Metadata\AbstractMetadata::class);
         $metadata->getClass()->willReturn('undefined-class');
 
-        $this->expectException(Metadata\UndefinedClassException::class);
+        $this->expectException(Metadata\Exception\UndefinedClassException::class);
         $this->expectExceptionMessage('undefined-class');
         $this->map->add($metadata->reveal());
     }
@@ -63,14 +63,14 @@ class MetadataMapTest extends TestCase
         $second = $this->prophesize(Metadata\AbstractMetadata::class);
         $second->getClass()->willReturn(__CLASS__);
 
-        $this->expectException(Metadata\DuplicateMetadataException::class);
+        $this->expectException(Metadata\Exception\DuplicateMetadataException::class);
         $this->expectExceptionMessage(__CLASS__);
         $this->map->add($second->reveal());
     }
 
     public function testGetWilRaiseUndefinedMetadataExceptionIfClassNotPresentInMap()
     {
-        $this->expectException(Metadata\UndefinedMetadataException::class);
+        $this->expectException(Metadata\Exception\UndefinedMetadataException::class);
         $this->expectExceptionMessage(__CLASS__);
         $this->map->get(__CLASS__);
     }

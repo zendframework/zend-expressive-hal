@@ -24,7 +24,7 @@ trait ExtractInstance
         $hydrators = $resourceGenerator->getHydrators();
         $extractor = $hydrators->get($metadata->getExtractor());
         if (! $extractor instanceof ExtractionInterface) {
-            throw InvalidExtractorException::fromInstance($extractor);
+            throw Exception\InvalidExtractorException::fromInstance($extractor);
         }
 
         $array = $extractor->extract($instance);

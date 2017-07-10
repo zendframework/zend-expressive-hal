@@ -82,7 +82,7 @@ class MetadataMapFactory
         $config = $config[MetadataMap::class] ?? [];
 
         if (! is_array($config)) {
-            throw InvalidConfigException::dueToNonArray($config);
+            throw Exception\InvalidConfigException::dueToNonArray($config);
         }
 
         $metadataMap = $this->populateMetadataMapFromConfig(new MetadataMap(), $config);
@@ -90,8 +90,8 @@ class MetadataMapFactory
     }
 
     /**
-     * @throws InvalidConfigException if any of the keys "collection_class",
-     *     "collection_relation", or "route" are missing.
+     * @throws Exception\InvalidConfigException if any of the keys
+     *     "collection_class", "collection_relation", or "route" are missing.
      */
     protected function createRouteBasedCollectionMetadata(array $metadata) : RouteBasedCollectionMetadata
     {
@@ -101,7 +101,7 @@ class MetadataMapFactory
             'route',
         ];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw InvalidConfigException::dueToMissingMetadata(RouteBasedCollectionMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(RouteBasedCollectionMetadata::class, $requiredKeys);
         }
 
         $paginationParam = $metadata['pagination_param'] ?? 'page';
@@ -121,8 +121,8 @@ class MetadataMapFactory
     }
 
     /**
-     * @throws InvalidConfigException if any of the keys "resource_class",
-     *     "route", or "extractor" are missing.
+     * @throws Exception\InvalidConfigException if any of the keys
+     *     "resource_class", "route", or "extractor" are missing.
      */
     protected function createRouteBasedResourceMetadata(array $metadata) : RouteBasedResourceMetadata
     {
@@ -132,7 +132,7 @@ class MetadataMapFactory
             'extractor'
         ];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw InvalidConfigException::dueToMissingMetadata(RouteBasedResourceMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(RouteBasedResourceMetadata::class, $requiredKeys);
         }
 
         $resourceIdentifier = $metadata['resource_identifier'] ?? 'id';
@@ -150,8 +150,8 @@ class MetadataMapFactory
     }
 
     /**
-     * @throws InvalidConfigException if any of the keys "collection_class",
-     *     "collection_relation", or "url" are missing.
+     * @throws Exception\InvalidConfigException if any of the keys
+     *     "collection_class", "collection_relation", or "url" are missing.
      */
     protected function createUrlBasedCollectionMetadata(array $metadata) : UrlBasedCollectionMetadata
     {
@@ -161,7 +161,7 @@ class MetadataMapFactory
             'url',
         ];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw InvalidConfigException::dueToMissingMetadata(UrlBasedCollectionMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(UrlBasedCollectionMetadata::class, $requiredKeys);
         }
 
         $paginationParam = $metadata['pagination_param'] ?? 'page';
@@ -177,14 +177,14 @@ class MetadataMapFactory
     }
 
     /**
-     * @throws InvalidConfigException if any of the keys "resource_class",
-     *     "url", or "extractor" are missing.
+     * @throws Exception\InvalidConfigException if any of the keys
+     *     "resource_class", "url", or "extractor" are missing.
      */
     protected function createUrlBasedResourceMetadata(array $metadata) : UrlBasedResourceMetadata
     {
         $requiredKeys = ['resource_class', 'url', 'extractor'];
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
-            throw InvalidConfigException::dueToMissingMetadata(UrlBasedResourceMetadata::class, $requiredKeys);
+            throw Exception\InvalidConfigException::dueToMissingMetadata(UrlBasedResourceMetadata::class, $requiredKeys);
         }
 
         return new UrlBasedResourceMetadata(
@@ -198,7 +198,7 @@ class MetadataMapFactory
     {
         foreach ($config as $metadata) {
             if (! is_array($metadata)) {
-                throw InvalidConfigException::dueToNonArrayMetadata($metadata);
+                throw Exception\InvalidConfigException::dueToNonArrayMetadata($metadata);
             }
 
             $this->injectMetadata($metadataMap, $metadata);
@@ -208,30 +208,34 @@ class MetadataMapFactory
     }
 
     /**
-     * @throws InvalidConfigException if the metadata is missing a "__class__" entry.
-     * @throws InvalidConfigException if the "__class__" entry is not a class.
-     * @throws InvalidConfigException if the "__class__" entry is not an AbstractMetadata class.
-     * @throws InvalidConfigException if no matching `create*()` method is found for the "__class__" entry.
+     * @throws Exception\InvalidConfigException if the metadata is missing a
+     *     "__class__" entry.
+     * @throws Exception\InvalidConfigException if the "__class__" entry is not
+     *     a class.
+     * @throws Exception\InvalidConfigException if the "__class__" entry is not
+     *     an AbstractMetadata class.
+     * @throws Exception\InvalidConfigException if no matching `create*()`
+     *     method is found for the "__class__" entry.
      */
     private function injectMetadata(MetadataMap $metadataMap, array $metadata)
     {
         if (! isset($metadata['__class__'])) {
-            throw InvalidConfigException::dueToMissingMetadataClass();
+            throw Exception\InvalidConfigException::dueToMissingMetadataClass();
         }
 
         if (! class_exists($metadata['__class__'])) {
-            throw InvalidConfigException::dueToInvalidMetadataClass($metadata['__class__']);
+            throw Exception\InvalidConfigException::dueToInvalidMetadataClass($metadata['__class__']);
         }
 
         if (! in_array(AbstractMetadata::class, class_parents($metadata['__class__']), true)) {
-            throw InvalidConfigException::dueToNonMetadataClass($metadata['__class__']);
+            throw Exception\InvalidConfigException::dueToNonMetadataClass($metadata['__class__']);
         }
 
         $normalizedClass = $this->stripNamespaceFromClass($metadata['__class__']);
         $method          = sprintf('create%s', $normalizedClass);
 
         if (! method_exists($this, $method)) {
-            throw InvalidConfigException::dueToUnrecognizedMetadataClass($metadata['__class__'], $normalizedClass);
+            throw Exception\InvalidConfigException::dueToUnrecognizedMetadataClass($metadata['__class__'], $normalizedClass);
         }
 
         $metadataMap->add($this->$method($metadata));

@@ -4,7 +4,7 @@ namespace HalTest;
 
 use ArrayIterator;
 use Hal\HalResource;
-use Hal\InvalidObjectException;
+use Hal\Exception\InvalidObjectException;
 use Hal\Link;
 use Hal\LinkGenerator;
 use Hal\Metadata;

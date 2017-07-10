@@ -1,6 +1,6 @@
 <?php
 
-namespace Hal;
+namespace Hal\Exception;
 
 use InvalidArgumentException;
 

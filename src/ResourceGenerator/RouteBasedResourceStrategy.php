@@ -19,7 +19,7 @@ class RouteBasedResourceStrategy implements Strategy
         ServerRequestInterface $request
     ) : HalResource {
         if (! $metadata instanceof Metadata\RouteBasedResourceMetadata) {
-            throw UnexpectedMetadataTypeException::forMetadata(
+            throw Exception\UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
                 self::class,
                 Metadata\RouteBasedResourceMetadata

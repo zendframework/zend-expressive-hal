@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Development
+- [x] Development
   - [x] Link class
     - [x] Link serialization to array
     - [x] Link serialization to JSON via `JsonSerializable`
@@ -43,10 +43,10 @@
     - [x] LinkGenerator
     - [x] LinkGenerator\UrlGenerator
     - [x] ResourceGenerator
-  - [ ] Exception namespaces
-    - [ ] Top-level
-    - [ ] Metadata
-    - [ ] ResourceGenerator
+  - [x] Exception namespaces
+    - [x] Top-level
+    - [x] Metadata
+    - [x] ResourceGenerator
 - [ ] Documentation
   - Resources
   - Links

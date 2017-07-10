@@ -1,8 +1,8 @@
 <?php
 
-namespace Hal\Metadata;
+namespace Hal\Metadata\Exception;
 
-use Hal\Exception as BaseException;
+use Hal\Exception\Exception as BaseException;
 
 /**
  * Marker interface for metadata exception types.

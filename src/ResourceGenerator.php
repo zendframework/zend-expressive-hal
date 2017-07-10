@@ -81,7 +81,7 @@ class ResourceGenerator
         if (! class_exists($metadataType)
             || ! in_array(Metadata\AbstractMetadata::class, class_parents($metadataType), true)
         ) {
-            throw UnknownMetadataTypeException::forInvalidMetadataClass($metadataType);
+            throw Exception\UnknownMetadataTypeException::forInvalidMetadataClass($metadataType);
         }
 
         if (is_string($strategy)
@@ -90,7 +90,7 @@ class ResourceGenerator
                 || ! in_array(ResourceGenerator\Strategy::class, class_implements($strategy), true)
             )
         ) {
-            throw InvalidStrategyException::forType($strategy);
+            throw Exception\InvalidStrategyException::forType($strategy);
         }
 
         if (is_string($strategy)) {
@@ -98,7 +98,7 @@ class ResourceGenerator
         }
 
         if (! $strategy instanceof ResourceGenerator\Strategy) {
-            throw InvalidStrategyException::forInstance($strategy);
+            throw Exception\InvalidStrategyException::forInstance($strategy);
         }
 
         $this->strategies[$metadataType] = $strategy;
@@ -123,19 +123,19 @@ class ResourceGenerator
     public function fromObject($instance, ServerRequestInterface $request) : HalResource
     {
         if (! is_object($instance)) {
-            throw InvalidObjectException::forNonObject($instance);
+            throw Exception\InvalidObjectException::forNonObject($instance);
         }
 
         $class = get_class($instance);
         if (! $this->metadataMap->has($class)) {
-            throw InvalidObjectException::forUnknownType($class);
+            throw Exception\InvalidObjectException::forUnknownType($class);
         }
 
         $metadata = $this->metadataMap->get($class);
         $metadataType = get_class($metadata);
 
         if (! isset($this->strategies[$metadataType])) {
-            throw UnknownMetadataTypeException::forMetadata($metadata);
+            throw Exception\UnknownMetadataTypeException::forMetadata($metadata);
         }
 
         $strategy = $this->strategies[$metadataType];
