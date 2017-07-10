@@ -334,6 +334,7 @@ class ResourceGeneratorTest extends TestCase
 
     public function testGeneratorRaisesExceptionForUnknownObjectType()
     {
+        $this->metadataMap->has(__CLASS__)->willReturn(false);
         $this->expectException(InvalidObjectException::class);
         $this->expectExceptionMessage('not in metadata map');
         $this->generator->fromObject($this, $this->request->reveal());

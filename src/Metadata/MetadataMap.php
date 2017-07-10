@@ -26,7 +26,7 @@ class MetadataMap
         $this->map[$class] = $metadata;
     }
 
-    public function has(string $class)
+    public function has(string $class) : bool
     {
         return isset($this->map[$class]);
     }
