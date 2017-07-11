@@ -21,7 +21,7 @@ class ConfigProvider
                 HalResponseFactory::class => HalResponseFactoryFactory::class,
                 LinkGenerator::class => LinkGeneratorFactory::class,
                 LinkGenerator\ExpressiveUrlGenerator::class => LinkGenerator\ExpressiveUrlGeneratorFactory::class,
-                MetadataMap\MetadataMap::class => MetadataMap\MetadataMapFactory::class,
+                Metadata\MetadataMap::class => Metadata\MetadataMapFactory::class,
                 ResourceGenerator::class => ResourceGeneratorFactory::class,
             ],
         ];
