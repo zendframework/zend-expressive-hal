@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.1.3 - 2017-07-11
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Fixes registration of the `MetadataMap` in the `ConfigProvider`; it was
+  previously using an incorrect namespace.
+
 ## 0.1.2 - 2017-07-11
 
 ### Added
