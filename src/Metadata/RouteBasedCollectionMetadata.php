@@ -45,4 +45,26 @@ class RouteBasedCollectionMetadata extends AbstractCollectionMetadata
     {
         return $this->queryStringArguments;
     }
+
+    /**
+     * Allow run-time overriding/injection of route parameters.
+     *
+     * In particular, this is useful for setting a parent identifier
+     * in the route when dealing with child resources.
+     */
+    public function setRouteParams(array $routeParams) : void
+    {
+        $this->routeParams = $routeParams;
+    }
+
+    /**
+     * Allow run-time overriding/injection of query string arguments.
+     *
+     * In particular, this is useful for setting query string arguments for
+     * searches, sorts, limits, etc.
+     */
+    public function setQueryStringArguments(array $query) : void
+    {
+        $this->queryStringArguments = $query;
+    }
 }

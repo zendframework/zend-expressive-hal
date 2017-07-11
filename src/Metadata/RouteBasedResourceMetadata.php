@@ -51,4 +51,9 @@ class RouteBasedResourceMetadata extends AbstractResourceMetadata
     {
         return $this->routeParams;
     }
+
+    public function setRouteParams(array $routeParams) : array
+    {
+        $this->routeParams = $routeParams;
+    }
 }
