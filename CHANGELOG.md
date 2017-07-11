@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.1.2 - 2017-07-11
+
+### Added
+
+- Adds `HalResponseFactoryFactory`, a factory for generating a
+  `HalResponseFactory` instance.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.1.1 - 2017-07-11
 
 ### Added
