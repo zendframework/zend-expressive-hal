@@ -3,7 +3,14 @@ site_dir: doc/html
 pages:
     - index.md
     - Introduction: intro.md
-    - "HAL": hal.md
+    - Reference:
+      - "HAL": hal.md
+      - "Links and Resources": links-and-resources.md
+      - "Generating Resources": resource-generator.md
+      - "Representations": representations.md
+      - "Factories": factories.md
+    - Cookbook:
+        - "Generating Custom Links In Middleware": cookbook/generating-custom-links-in-middleware.md
 site_name: Hypertext Application Language
 site_description: 'Hypertext Application Language for PSR-7 Applications'
 repo_url: 'https://github.com/weierophinney/hal'

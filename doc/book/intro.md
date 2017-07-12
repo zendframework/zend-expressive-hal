@@ -109,6 +109,11 @@ configuration, which you could put in one of the following places:
 - A `ConfigProvider` class: `Api\Books\ConfigProvider`. If you go this route,
   you will need to add an entry for this class to your `config/config.php` file.
 
+In the example below, we will assume that we have the following routes defined:
+
+- "book" will map to a single book by identifier: "/api/books/{id}"
+- "books" will map to a queryable collection endpoint: "/api/books"
+
 The configuration will look like this:
 
 ```php

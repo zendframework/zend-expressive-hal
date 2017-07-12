@@ -3,13 +3,6 @@
 [![Build Status](https://secure.travis-ci.org/weierophinney/hal.svg?branch=master)](https://secure.travis-ci.org/weierophinney/hal)
 [![Coverage Status](https://coveralls.io/repos/github/weierophinney/hal/badge.svg?branch=master)](https://coveralls.io/github/weierophinney/hal?branch=master)
 
-> ## NOT READY FOR CONSUMPTION
->
-> This component is not yet registered on Packagist, as work is not yet
-> complete. It is provided to show progress as it is made.
->
-> See the [TODO](TODO.md) file for progress.
-
 This library provides provides utilities for modeling HAL resources with links
 and generating [PSR-7](http://www.php-fig.org/psr/psr-7/) responses representing
 both JSON and XML serializations of them.
