@@ -31,4 +31,23 @@ class LinkGenerator
             $queryParams
         ), false, $attributes);
     }
+
+    /**
+     * Creates a templated link
+     */
+    public function templatedFromRoute(
+        string $relation,
+        ServerRequestInterface $request,
+        string $routeName,
+        array $routeParams = [],
+        array $queryParams = [],
+        array $attributes = []
+    ) : Link {
+        return new Link($relation, $this->urlGenerator->generate(
+            $request,
+            $routeName,
+            $routeParams,
+            $queryParams
+        ), true, $attributes);
+    }
 }
