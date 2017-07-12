@@ -3,12 +3,22 @@
     "description": "Hypertext Application Language implementation for PHP and PSR-7",
     "type": "library",
     "license": "BSD-3-Clause",
+    "keywords": [
+        "hal",
+        "http",
+        "psr",
+        "psr-7",
+        "psr-11",
+        "psr-13",
+        "rest"
+    ],
     "config": {
         "sort-packages": true
     },
     "require": {
         "php": "^7.1",
         "psr/http-message": "^1.0",
+        "psr/http-message-implementation": "^1.0",
         "psr/link": "^1.0",
         "willdurand/negotiation": "^2.3.1"
     },
@@ -21,9 +31,14 @@
         "zendframework/zend-hydrator": "^2.2",
         "zendframework/zend-paginator": "^2.7"
     },
+    "provide": {
+        "psr/link-implementation": "1.0"
+    },
     "suggest": {
+        "psr/container-implementation": "^1.0 in order to use the provided PSR-11 factories",
         "zendframework/zend-expressive-helpers": "^4.0 in order to use UrlHelper/ServerUrlHelper-based ExpressiveUrlGenerator with the LinkGenerator",
-        "zendframework/zend-hydrator": "^2.2.2 in order to use the ResourceGenerator to create Resource instances from objects"
+        "zendframework/zend-hydrator": "^2.2.2 in order to use the ResourceGenerator to create Resource instances from objects",
+        "zendframework/zend-paginator": "^2.7 in order to provide paginated collections"
     },
     "autoload": {
         "psr-4": {
