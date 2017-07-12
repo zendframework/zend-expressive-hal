@@ -1,0 +1,12 @@
+docs_dir: doc/book
+site_dir: doc/html
+pages:
+    - index.md
+    - Introduction: intro.md
+    - "HAL": hal.md
+site_name: Hypertext Application Language
+site_description: 'Hypertext Application Language for PSR-7 Applications'
+repo_url: 'https://github.com/weierophinney/hal'
+copyright: 'Copyright (c) 2017 <a href="https://mwop.net/">Matthew Weier O&#39;Phinney</a>'
+extra_css:
+    - css/zend-expressive.css
