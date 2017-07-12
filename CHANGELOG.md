@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.1.4 - 2017-07-12
+
+### Added
+
+- Adds the method `templatedFromRoute()` to the `LinkGenerator` class. Acts
+  exactly like `fromRoute()`, but the generated `Link` instance will have the
+  `isTemplated` property toggled `true`.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.1.3 - 2017-07-11
 
 ### Added
