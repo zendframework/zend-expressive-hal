@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.1.6 - 2017-07-12
+
+### Added
+
+- Adds keywords to the `composer.json`
+- Adds a "provides" section to the `composer.json` (provides PSR-13 implementation)
+- Adds `composer.json` suggestions for:
+  - PSR-11 implementation
+  - zend-paginator
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.1.5 - 2017-07-12
 
 ### Added
