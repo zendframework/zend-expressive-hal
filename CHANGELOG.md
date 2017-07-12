@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.1.5 - 2017-07-12
+
+### Added
+
+- Adds documentation; see the [doc/book/](doc/book/) tree, or browse at
+  https://weierophinney.github.io/hal/
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.1.4 - 2017-07-12
 
 ### Added
