@@ -58,12 +58,12 @@ class HalResponseFactoryTest extends TestCase
     public function createExampleJsonPayload(HalResponseFactory $factory = null)
     {
         $factory = $factory ?: $this->factory;
-        $r = new ReflectionProperty($factory, 'jsonFlags');
+        $r = new ReflectionProperty($factory, 'jsonRenderer');
         $r->setAccessible(true);
-        $flags = $r->getValue($factory);
+        $renderer = $r->getValue($factory);
 
         $resource = $this->createExampleResource();
-        return json_encode($resource, $flags);
+        return $renderer->render($resource);
     }
 
     public function createExampleXmlPayload()
