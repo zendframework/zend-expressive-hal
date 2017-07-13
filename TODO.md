@@ -54,9 +54,9 @@
 - [x] Resources
 - [x] Links
   - [x] UrlGenerator
-- [ ] Representations
+- [x] Representations
   - [x] HalResponseFactory
-  - [ ] Renderers
+  - [x] Renderers
 - [x] Automating resource and collection generation from typed objects
   - [x] Hydrators
   - [x] Metadata
