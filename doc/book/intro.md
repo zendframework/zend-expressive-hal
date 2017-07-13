@@ -212,7 +212,7 @@ the resource. The payload generated might look like the following:
 {
     "_links": {
         "self": { "href": "/api/books/1234" }
-    }
+    },
     "id": 1234,
     "title": "Hitchhiker's Guide to the Galaxy",
     "author": "Adams, Douglas"
@@ -294,7 +294,7 @@ The generated payload might look like the following:
 {
     "_links": {
         "self": { "href": "/api/books/1234" }
-    }
+    },
     "id": 1234,
     "title": "Hitchhiker's Guide to the Galaxy",
     "author": "Adams, Douglas"
