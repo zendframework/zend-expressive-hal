@@ -17,13 +17,6 @@ class HalResponseFactory
      */
     const DEFAULT_CONTENT_TYPE = 'application/hal';
 
-    // @codingStandardsIgnoreStart
-    /**
-     * @var int Default flags to use with json_encode()
-     */
-    const DEFAULT_JSON_FLAGS = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION;
-    // @codingStandardsIgnoreEnd
-
     const NEGOTIATION_PRIORITIES = [
         'application/json',
         'application/*+json',
@@ -49,12 +42,13 @@ class HalResponseFactory
     private $xmlRenderer;
 
     public function __construct(
-        int $jsonFlags = self::DEFAULT_JSON_FLAGS,
+        Renderer\JsonRenderer $jsonRenderer = null,
+        Renderer\XmlRenderer $xmlRenderer = null,
         ResponseInterface $responsePrototype = null,
         callable $streamFactory = null
     ) {
-        $this->jsonRenderer = new Renderer\JsonRenderer($jsonFlags);
-        $this->xmlRenderer = new Renderer\XmlRenderer();
+        $this->jsonRenderer = $jsonRenderer ?: new Renderer\JsonRenderer();
+        $this->xmlRenderer = $xmlRenderer ?: new Renderer\XmlRenderer();
         $this->responsePrototype = $responsePrototype ?: new Response();
         $this->streamFactory = $streamFactory ?: Closure::fromCallable([$this, 'generateStream']);
     }
