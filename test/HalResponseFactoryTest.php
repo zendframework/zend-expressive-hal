@@ -24,6 +24,8 @@ class HalResponseFactoryTest extends TestCase
         $this->jsonRenderer = $this->prophesize(Renderer\JsonRenderer::class);
         $this->xmlRenderer  = $this->prophesize(Renderer\XmlRenderer::class);
         $this->factory      = new HalResponseFactory(
+            null,
+            null,
             $this->jsonRenderer->reveal(),
             $this->xmlRenderer->reveal()
         );
@@ -159,9 +161,10 @@ class HalResponseFactoryTest extends TestCase
         $this->request->getHeaderLine('Accept')->willReturn('application/json');
 
         $factory = new HalResponseFactory(
+            $prototype->reveal(),
+            null,
             $this->jsonRenderer->reveal(),
-            $this->xmlRenderer->reveal(),
-            $prototype->reveal()
+            $this->xmlRenderer->reveal()
         );
         $response = $factory->createResponse(
             $this->request->reveal(),
@@ -187,10 +190,10 @@ class HalResponseFactoryTest extends TestCase
         };
 
         $factory = new HalResponseFactory(
-            $this->jsonRenderer->reveal(),
-            $this->xmlRenderer->reveal(),
             null,
-            $streamFactory
+            $streamFactory,
+            $this->jsonRenderer->reveal(),
+            $this->xmlRenderer->reveal()
         );
 
         $response = $factory->createResponse(

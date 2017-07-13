@@ -31,6 +31,9 @@ class HalResponseFactoryFactory
      */
     public function __invoke(ContainerInterface $container) : HalResponseFactory
     {
+        $response = $this->getResponseInstance($container);
+        $streamFactory = $this->getStreamFactory($container);
+
         $jsonRenderer = $container->has(Renderer\JsonRenderer::class)
             ? $container->get(Renderer\JsonRenderer::class)
             : new Renderer\JsonRenderer();
@@ -39,15 +42,11 @@ class HalResponseFactoryFactory
             ? $container->get(Renderer\XmlRenderer::class)
             : new Renderer\XmlRenderer();
 
-        $response = $this->getResponseInstance($container);
-
-        $streamFactory = $this->getStreamFactory($container);
-
         return new HalResponseFactory(
-            $jsonRenderer,
-            $xmlRenderer,
             $response,
-            $streamFactory
+            $streamFactory,
+            $jsonRenderer,
+            $xmlRenderer
         );
     }
 

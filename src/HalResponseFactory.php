@@ -42,15 +42,15 @@ class HalResponseFactory
     private $xmlRenderer;
 
     public function __construct(
-        Renderer\JsonRenderer $jsonRenderer = null,
-        Renderer\XmlRenderer $xmlRenderer = null,
         ResponseInterface $responsePrototype = null,
-        callable $streamFactory = null
+        callable $streamFactory = null,
+        Renderer\JsonRenderer $jsonRenderer = null,
+        Renderer\XmlRenderer $xmlRenderer = null
     ) {
-        $this->jsonRenderer = $jsonRenderer ?: new Renderer\JsonRenderer();
-        $this->xmlRenderer = $xmlRenderer ?: new Renderer\XmlRenderer();
         $this->responsePrototype = $responsePrototype ?: new Response();
         $this->streamFactory = $streamFactory ?: Closure::fromCallable([$this, 'generateStream']);
+        $this->jsonRenderer = $jsonRenderer ?: new Renderer\JsonRenderer();
+        $this->xmlRenderer = $xmlRenderer ?: new Renderer\XmlRenderer();
     }
 
     public function createResponse(
