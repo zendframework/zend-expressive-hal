@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.2.0 - 2017-07-13
+
+### Added
+
+- [#1](https://github.com/weierophinney/pull/1) adds a `Hal\Renderer`
+  subcomponent with the following:
+  - `Renderer` interface
+  - `JsonRenderer`, for creating JSON representations of `HalResource` instances.
+  - `XmlRenderer`, for creating XML representations of `HalResource` instances.
+
+### Changed
+
+- [#1](https://github.com/weierophinney/pull/1) changes `Hal\HalResponseFactory`
+  to compose a `JsonRenderer` and `XmlRenderer`, instead of composing
+  `$jsonFlags` and creating representations itself. 
+
+  It also makes the response prototype and the stream factory the first
+  arguments, as those will be the values most often injected.
+  
+  The constructor signature is
+  now:
+
+  ```php
+  public function __construct(
+      Psr\Http\Message\ResponseInterface $responsePrototype = null,
+      callable $streamFactory = null,
+      Hal\Renderer\JsonRenderer $jsonRenderer = null,
+      Hal\Renderer\XmlRenderer $xmlRenderer = null
+  ) {
+  ```
+
+- [#1](https://github.com/weierophinney/pull/1) changes `Hal\HalResponseFactoryFactory`
+  to comply with the new constructor signature of `Hal\HalResponseFactory`. It
+  also updates to check for `Psr\Http\Message\ResponseInterface` and
+  `Psr\Http\Message\StreamInterface` services before attempting to use
+  zend-diactoros classes.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.1.6 - 2017-07-12
 
 ### Added
