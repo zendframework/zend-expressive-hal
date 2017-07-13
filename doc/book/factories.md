@@ -9,11 +9,23 @@ configured instances for your use.
 - Registered as service: `Hal\HalResponseFactory`
 - Generates instance of: `Hal\HalResponseFactory`
 - Depends on:
-    - [zend-diactoros](https://docs.zendframework.com/zend-diactoros/), as it uses
-      that library for the response prototype and stream generator.
+    - `Psr\Http\Message\ResponseInterface` service. If not present, it will
+      check if zend-diactoros is installed, and use a new `Response` instance
+      from that library; if not, it raises an exception.
+    - `Psr\Http\Message\StreamInterface` service. This service must return a
+      a callable capable of returning a `StreamInterface` instance (in other
+      words, the service returns a _factory_, and not the stream itself). If th
+      service is not present, the factory will check if zend-diactoros is
+      installed, and return a callable that returns a new `Stream` instance from
+      that library; if not, it raises an exception.
+    - `Hal\Renderer\JsonRenderer` service. If the service is not present, it
+      instantiates an instance itself.
+    - `Hal\Renderer\XmlRenderer` service. If the service is not present, it
+      instantiates an instance itself.
 
 If you want to use a different PSR-7 implementation for the response and stream,
-create an alternate factory, and map it to the `Hal\HalResponseFactory` service.
+provide services for `Psr\Http\Message\ResponseInterface` and
+`Psr\Http\Message\StreamInterface`, as described above.
 
 ## Hal\LinkGeneratorFactory
 
