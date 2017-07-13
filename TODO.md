@@ -51,13 +51,15 @@
 
 ## Documentation
 
-- [ ] Resources
-- [ ] Links
-  - [ ] UrlGenerator
+- [x] Resources
+- [x] Links
+  - [x] UrlGenerator
 - [ ] Representations
-- [ ] Automating resource and collection generation from typed objects
-  - [ ] Hydrators
-  - [ ] Metadata
-  - [ ] ResourceGenerator
-  - [ ] Creating your own metadata classes
-  - [ ] Creating your own resource generator strategies
+  - [x] HalResponseFactory
+  - [ ] Renderers
+- [x] Automating resource and collection generation from typed objects
+  - [x] Hydrators
+  - [x] Metadata
+  - [x] ResourceGenerator
+  - [x] Creating your own metadata classes
+  - [x] Creating your own resource generator strategies

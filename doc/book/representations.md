@@ -1,18 +1,61 @@
 # Generating Representations
 
-As noted in the [introduction](intro.md) examples, this component provides
-`Hal\HalResponseFactory` for generating a PSR-7 response containing the HAL
-representation. This chapter dives into that with more detail.
+This component provides two renderers, one each for creating JSON and XML
+payloads.
 
-## Creating the factory
+Additionally, as noted in the [introduction](intro.md) examples, this component
+provides `Hal\HalResponseFactory` for generating a PSR-7 response containing the
+HAL representation. This chapter dives into that with more detail.
+
+## Renderers
+
+All renderers implement `Hal\Renderer\Renderer`:
+
+```php
+namespace Hal\Renderer;
+
+use Hal\HalResource;
+
+interface Renderer
+{
+    public function render(HalResource $resource) : string;
+}
+```
+
+Two implementations are provided, `Hal\Renderer\JsonRenderer` and
+`Hal\Renderer\XmlRenderer`
+
+### JsonRenderer
+
+The `JsonRenderer` constructor allows you to specify a bitmask of flags for use
+with `json_encode()`. By default, if none are provided, it uses the value of
+`JsonRenderer::DEFAULT_JSON_FLAGS`, which evaluates to:
+
+```php
+JSON_PRETTY_PRINT
+| JSON_UNESCAPED_SLASHES
+| JSON_UNESCAPED_UNICODE
+| JSON_PRESERVE_ZERO_FRACTION
+```
+
+This provides human-readable JSON output.
+
+### XmlRenderer
+
+The `XmlRenderer` produces XML representations of HAL resources. It has no
+constructor arguments at this time.
+
+## HalResponseFactory
 
 `HalResponseFactory` generates a PSR-7 response containing a representation of
 the provided `HalResource` instance. In order to keep the component agnostic of
-PSR-7 implement, the factory composes:
+PSR-7 implementation, the factory composes:
 
-- JSON flags to use when generating a JSON representation.
-- A PSR-7 response prototype.
+- A PSR-7 response prototype. A zend-diactoros `Response` is used if none is
+  provided.
 - A callable capable of generating an empty, writable, PSR-7 stream instance.
+  If none is provided, a callable returning a zend-diactoros `Stream` is
+  provided.
 
 As an example:
 
@@ -22,7 +65,6 @@ use Slim\Http\Response;
 use Slim\Http\Stream;
 
 $factory = new HalResponseFactory(
-    HalResponseFactory::DEFAULT_JSON_FLAGS,
     new Response(),
     function () {
         return new Stream(fopen('php://temp', 'wb+'));
@@ -39,11 +81,11 @@ $factory = new HalResponseFactory(
 By default, if you pass no arguments to the `HalResponseFactory` constructor, it
 assumes the following:
 
-- Usage of the JSON flags `JSON_PRETTY_PRINT`, `JSON_UNESCAPED_SLASHES`,
-  `JSON_UNESCAPED_UNICODE`, and `JSON_PRESERVE_ZERO_FRACTION`.
 - Usage of `Zend\Diactoros\Response`.
 - A callable that returns a new `Zend\Diactoros\Stream` using `php://temp` as
   its backing resource.
+- A `JsonRenderer` instance is created if none is provided.
+- An `XmlRenderer` instance is created if none is provided.
 
 We provide a PSR-11 compatible factory for generating the `HalResponseFactory`
 which uses zend-diactoros by default.

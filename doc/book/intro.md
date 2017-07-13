@@ -99,6 +99,14 @@ class BookCollection extends Paginator
 }
 ```
 
+### Routes
+
+The examples below assume that we have the following routes defined in our
+application somehow:
+
+- "book" will map to a single book by identifier: "/api/books/{id}"
+- "books" will map to a queryable collection endpoint: "/api/books"
+
 ### Create metadata
 
 In order to allow creating representations of these classes, we need to provide
@@ -108,11 +116,6 @@ configuration, which you could put in one of the following places:
 - A new configuration file: `config/autoload/hal.global.php`.
 - A `ConfigProvider` class: `Api\Books\ConfigProvider`. If you go this route,
   you will need to add an entry for this class to your `config/config.php` file.
-
-In the example below, we will assume that we have the following routes defined:
-
-- "book" will map to a single book by identifier: "/api/books/{id}"
-- "books" will map to a queryable collection endpoint: "/api/books"
 
 The configuration will look like this:
 
@@ -142,11 +145,90 @@ MetadataMap::class => [
 ],
 ```
 
-### Middleware returning a resource
+### Manually creating and rendering a resource
 
-Our middleware will compose a `Hal\ResourceGenerator` instance for generating a
-`Hal\HalResource` from our objects, and a `Hal\HalResponseFactory` for creating
-a response based on the returned resource.
+The following middleware creates a `HalResource` with its associated links, and
+then manually renders it using `Hal\Renderer\JsonRenderer`. (An `XmlRenderer` is
+also provided, but not demonstrated here.)
+
+We'll assume that `Api\Books\Repository` handles retrieving data from persistent
+storage.
+
+```php
+namespace Api\Books\Action;
+
+use Api\Books\Repository;
+use Hal\HalResource;
+use Hal\Link;
+use Hal\Renderer\JsonRenderer;
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Psr\Http\ServerRequestInterface;
+use RuntimeException;
+use Zend\Diactoros\Response\TextResponse;
+
+class BookAction
+{
+    /** @var JsonRenderer */
+    private $renderer;
+
+    /** @var Repository */
+    private $repository;
+
+    public function __construct(
+        Repository $repository,
+        JsonRenderer $renderer
+    ) {
+        $this->repository = $repository;
+        $this->renderer = $renderer;
+    }
+
+    public function __invoke(ServerRequestInterface $request, DelegateInterface $delegate)
+    {
+        $id = $request->getAttribute('id', false);
+        if (! $id) {
+            throw new RuntimeException('No book identifier provided', 400);
+        }
+
+        /** @var \Api\Books\Book $book */
+        $book = $this->repository->get($id);
+
+        $resource = new HalResource((array) $book);
+        $resource = $resource->addLink(new Link('self', (string) $request));
+
+        return new TextResponse(
+            $this->renderer->render($resource),
+            200,
+            ['Content-Type', 'application/hal+json']
+        );
+    }
+}
+```
+
+The `JsonRenderer` returns the JSON string representing the data and links in
+the resource. The payload generated might look like the following:
+
+```json
+{
+    "_links": {
+        "self": { "href": "/api/books/1234" }
+    }
+    "id": 1234,
+    "title": "Hitchhiker's Guide to the Galaxy",
+    "author": "Adams, Douglas"
+}
+```
+
+The above example uses no metadata, and manually creates the `HalResource`
+instance. As the complexity of your objects increase, and the number of objects
+you want to represent via HAL increases, you may not want to manually generate
+them.
+
+### Middleware using the ResourceGenerator and ResponseFactory
+
+In this next example, our middleware will compose a `Hal\ResourceGenerator`
+instance for generating a `Hal\HalResource` from our objects, and a
+`Hal\HalResponseFactory` for creating a response based on the returned resource.
 
 First, we'll look at middleware that displays a single book. We'll assume that
 `Api\Books\Repository` handles retrieving data from persistent storage.
