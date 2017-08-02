@@ -136,3 +136,82 @@ $response = $factory->createResponse(
 
 _Do not_ pass the format (e.g., `+json`, `+xml`) when doing so; the factory will
 append the appropriate one based on content negotiation.
+
+## Forcing collections for relations
+
+HAL allows links and embedded resources to be represented as:
+
+- a single object
+- an array of objects of the same type
+
+Internally, this package checks to see if only one of the item exists, and, if
+so, it will render it by itself. However, there are times you may want to force
+an array representation. As an example, if your resource models a car, and you
+have a `wheels` relation, it would not make sense to return a single wheel, even
+if that's all the car currently has associated with it.
+
+To accommodate this, we provide two features.
+
+For links, you may pass a special attribute, `Hal\Link::AS_COLLECTION`, with a
+boolean value of `true`; when encountered, this will then be rendered as an
+array of links, even if only one link for that relation is present.
+
+```php
+$link = new Link(
+    'wheels',
+    '/api/car/XXXX-YYYY-ZZZZ/wheels/111',
+    false,
+    [Link::AS_COLLECTION => true]
+);
+
+$resource = $resource->withLink($link);
+```
+
+In the above, you will then get the following within your representation:
+
+```json
+"_links": {
+  "wheels": [
+    {"href": "/api/car/XXXX-YYYY-ZZZZ/wheels/111"}
+  ]
+}
+```
+
+To force an embedded resource to be rendered within an array, you have two
+options.
+
+First, and simplest, pass the resource within an array when calling
+`withElement()`, `embed()`, or passing data to the constructor:
+
+```php
+// Constructor:
+$resource = new HalResource(['wheels' => [$wheel]]);
+
+// withElement():
+$resource = $resource->withElement('wheels', [$wheel]);
+
+// embed():
+$resource = $resource->embed('wheels', [$wheel]);
+```
+
+Alternately, you can call the `HalResource::embed` method with only the
+resource, passing the method a third argument, a flag indicating whether or not
+to force an array:
+
+```php
+$resource = $resource->embed('wheels', $wheel, true);
+```
+
+In each of these cases, assuming no other wheels were provided to the final
+resource, you might get a representation such as the following:
+
+```json
+"_embedded": {
+  "wheels": [
+    {
+      "_links" => {"self": {"href": "..."}}
+      "id": "..."
+    },
+  ]
+}
+```
