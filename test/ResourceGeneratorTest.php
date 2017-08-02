@@ -1,17 +1,22 @@
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
+ */
 
-namespace HalTest;
+namespace ZendTest\Expressive\Hal;
 
 use ArrayIterator;
-use Hal\HalResource;
-use Hal\Exception\InvalidObjectException;
-use Hal\Link;
-use Hal\LinkGenerator;
-use Hal\Metadata;
-use Hal\ResourceGenerator;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\HalResource;
+use Zend\Expressive\Hal\Exception\InvalidObjectException;
+use Zend\Expressive\Hal\Link;
+use Zend\Expressive\Hal\LinkGenerator;
+use Zend\Expressive\Hal\Metadata;
+use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;

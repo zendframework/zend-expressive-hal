@@ -1,16 +1,21 @@
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
+ */
 
-namespace HalTest\Metadata;
+namespace ZendTest\Expressive\Hal\Metadata;
 
 use Generator;
-use Hal\Metadata;
-use Hal\Metadata\Exception\InvalidConfigException;
-use Hal\Metadata\MetadataMap;
-use Hal\Metadata\MetadataMapFactory;
-use HalTest\TestAsset;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
+use Zend\Expressive\Hal\Metadata;
+use Zend\Expressive\Hal\Metadata\Exception\InvalidConfigException;
+use Zend\Expressive\Hal\Metadata\MetadataMap;
+use Zend\Expressive\Hal\Metadata\MetadataMapFactory;
+use ZendTest\Expressive\Hal\TestAsset;
 
 class MetadataMapFactoryTest extends TestCase
 {

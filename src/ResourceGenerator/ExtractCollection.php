@@ -1,17 +1,22 @@
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
+ */
 
-namespace Hal\ResourceGenerator;
+namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Countable;
-use Hal\HalResource;
-use Hal\Link;
-use Hal\LinkGenerator;
-use Hal\Metadata\AbstractCollectionMetadata;
-use Hal\Metadata\RouteBasedCollectionMetadata;
-use Hal\ResourceGenerator;
 use Traversable;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\HalResource;
+use Zend\Expressive\Hal\Link;
+use Zend\Expressive\Hal\LinkGenerator;
+use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
+use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
+use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Paginator\Paginator;
 
 trait ExtractCollection

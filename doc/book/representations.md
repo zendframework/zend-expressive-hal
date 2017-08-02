@@ -4,17 +4,18 @@ This component provides two renderers, one each for creating JSON and XML
 payloads.
 
 Additionally, as noted in the [introduction](intro.md) examples, this component
-provides `Hal\HalResponseFactory` for generating a PSR-7 response containing the
-HAL representation. This chapter dives into that with more detail.
+provides `Zend\Expressive\Hal\HalResponseFactory` for generating a PSR-7
+response containing the HAL representation. This chapter dives into that with
+more detail.
 
 ## Renderers
 
-All renderers implement `Hal\Renderer\Renderer`:
+All renderers implement `Zend\Expressive\Hal\Renderer\Renderer`:
 
 ```php
-namespace Hal\Renderer;
+namespace Zend\Expressive\Hal\Renderer;
 
-use Hal\HalResource;
+use Zend\Expressive\Hal\HalResource;
 
 interface Renderer
 {
@@ -22,8 +23,8 @@ interface Renderer
 }
 ```
 
-Two implementations are provided, `Hal\Renderer\JsonRenderer` and
-`Hal\Renderer\XmlRenderer`
+Two implementations are provided, `Zend\Expressive\Hal\Renderer\JsonRenderer` and
+`Zend\Expressive\Hal\Renderer\XmlRenderer`
 
 ### JsonRenderer
 
@@ -60,9 +61,9 @@ PSR-7 implementation, the factory composes:
 As an example:
 
 ```php
-use Hal\HalResponseFactory;
 use Slim\Http\Response;
 use Slim\Http\Stream;
+use Zend\Expressive\Hal\HalResponseFactory;
 
 $factory = new HalResponseFactory(
     new Response(),
@@ -95,9 +96,9 @@ which uses zend-diactoros by default.
 The factory exposes one method:
 
 ```php
-use Hal\HalResource;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\HalResource;
 
 public function createResponse(
     ServerRequestInterface $request,

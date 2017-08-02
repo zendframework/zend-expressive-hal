@@ -1,12 +1,17 @@
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
+ */
 
-namespace HalTest\LinkGenerator;
+namespace ZendTest\Expressive\Hal\LinkGenerator;
 
-use Hal\LinkGenerator\ExpressiveUrlGenerator;
-use Hal\LinkGenerator\ExpressiveUrlGeneratorFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator;
+use Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGeneratorFactory;
 use Zend\Expressive\Helper\ServerUrlHelper;
 use Zend\Expressive\Helper\UrlHelper;
 

@@ -1,22 +1,27 @@
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
+ */
 
-namespace HalTest\ResourceGenerator;
+namespace ZendTest\Expressive\Hal\ResourceGenerator;
 
-use Hal\HalResource;
-use Hal\Link;
-use Hal\LinkGenerator;
-use Hal\Metadata\MetadataMap;
-use Hal\Metadata\RouteBasedCollectionMetadata;
-use Hal\Metadata\RouteBasedResourceMetadata;
-use Hal\ResourceGenerator;
-use HalTest\Assertions;
-use HalTest\TestAsset;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\HalResource;
+use Zend\Expressive\Hal\Link;
+use Zend\Expressive\Hal\LinkGenerator;
+use Zend\Expressive\Hal\Metadata\MetadataMap;
+use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
+use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
+use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
+use ZendTest\Expressive\Hal\Assertions;
+use ZendTest\Expressive\Hal\TestAsset;
 
 class RouteBasedCollectionWithRouteParamsTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 The basic building blocks of this component are links and resources:
 
-- `Hal\Link`
-- `Hal\HalResource`
+- `Zend\Expressive\Hal\Link`
+- `Zend\Expressive\Hal\HalResource`
 
 > ### Note on naming
 >
@@ -15,8 +15,8 @@ The basic building blocks of this component are links and resources:
 > 
 > weierophinney/hal implements [PSR-13](http://www.php-fig.org/psr/psr-13/),
 > which provides interfaces for relational links and collections of relational
-> links. `Hal\Link` implements `Psr\Link\EvolvableLinkInterface`, and
-> `Hal\HalResource` implements `Psr\Link\EvolvableLinkProviderInterface`.
+> links. `Zend\Expressive\Hal\Link` implements `Psr\Link\EvolvableLinkInterface`, and
+> `Zend\Expressive\Hal\HalResource` implements `Psr\Link\EvolvableLinkProviderInterface`.
 
 Resources compose links, so we'll cover links first.
 
@@ -32,8 +32,8 @@ Additionally, links:
   URI.
 - can contain a number of other attributes: type, title, name, etc.
 
-To model these, we provide the `Hal\Link` class. It has the following
-constructor:
+To model these, we provide the `Zend\Expressive\Hal\Link` class. It has the
+following constructor:
 
 ```php
 public function __construct(
@@ -77,12 +77,12 @@ their routers to ensure that generated links conform to known routing
 specifications. `Link` expects only a string URI, however; how can you prevent
 hard-coding that URI?
 
-This component provides a tool for that: `Hal\LinkGenerator`. This class
-composes a `Hal\LinkGenerator\UrlGenerator` instance, which defines the
-following:
+This component provides a tool for that: `Zend\Expressive\Hal\LinkGenerator`.
+This class composes a `Zend\Expressive\Hal\LinkGenerator\UrlGenerator` instance,
+which defines the following:
 
 ```php
-namespace Hal\LinkGenerator;
+namespace Zend\Expressive\Hal\LinkGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -110,8 +110,9 @@ interface UrlGenerator
 ```
 
 We provide a default implementation for Expressive users,
-`Hal\LinkGenerator\ExpressiveUrlGenerator`,  that uses the `UrlHelper` and
-`ServerUrlHelper` from zend-expressive-helpers in order to generate URIs.
+`Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator`,  that uses the
+`UrlHelper` and `ServerUrlHelper` from zend-expressive-helpers in order to
+generate URIs.
 
 The `LinkGenerator` itself defines two methods:
 
@@ -144,8 +145,8 @@ the `LinkGenerator` in your own classes to do so.
 ## Resources
 
 A HAL resource is simply the representation you want to return for your API.
-`Hal\HalResource` allows you to model these representations, along with any
-relational links and child resources.
+`Zend\Expressive\Hal\HalResource` allows you to model these representations,
+along with any relational links and child resources.
 
 It defines the following constructor:
 
@@ -161,11 +162,11 @@ public function __construct(
 representation; the only limitation is you may not use the keys `_links` or
 `_embedded`, as these are reserved keywords.
 
-`$links` should be an array of `Hal\Link` instances.
+`$links` should be an array of `Zend\Expressive\Hal\Link` instances.
 
-`$embedded` should be an array of `Hal\HalResource` instances. Most often,
-however, you will include these with `$data`, as the class contains logic for
-identifying them.
+`$embedded` should be an array of `Zend\Expressive\Hal\HalResource` instances.
+Most often, however, you will include these with `$data`, as the class contains
+logic for identifying them.
 
 Once you have created an instance, you can access its properties:
 
