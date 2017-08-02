@@ -184,9 +184,12 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
     /**
      * @param string $name
      * @param Resource|Resource[] $resource
+     * @param bool $forceCollection Whether or not a single resource or an
+     *     array containing a single resource should be represented as an array of
+     *     resources during representation.
      * @return Resource
      */
-    public function embed(string $name, $resource) : HalResource
+    public function embed(string $name, $resource, bool $forceCollection = false) : HalResource
     {
         $this->validateElementName($name, __METHOD__);
         $this->detectCollisionWithData($name, __METHOD__);
@@ -200,7 +203,7 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
             ));
         }
         $new = clone $this;
-        $new->embedded[$name] = $this->aggregateEmbeddedResource($name, $resource, __METHOD__);
+        $new->embedded[$name] = $this->aggregateEmbeddedResource($name, $resource, __METHOD__, $forceCollection);
         return $new;
     }
 
@@ -284,10 +287,10 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
      *
      * @return Resource|Resource[]
      */
-    private function aggregateEmbeddedResource(string $name, $resource, string $context)
+    private function aggregateEmbeddedResource(string $name, $resource, string $context, bool $forceCollection)
     {
         if (! isset($this->embedded[$name])) {
-            return $resource;
+            return $forceCollection ? [$resource] : $resource;
         }
 
         // $resource is an collection; existing individual or collection resource exists
@@ -373,17 +376,44 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
 
             $linkRels = $link->getRels();
             array_walk($linkRels, function ($rel) use (&$byRelation, $representation) {
+                $forceCollection = array_key_exists(Link::AS_COLLECTION, $representation)
+                    ? (bool) $representation[Link::AS_COLLECTION]
+                    : false;
+                unset($representation[Link::AS_COLLECTION]);
+
                 if (isset($byRelation[$rel])) {
                     $byRelation[$rel][] = $representation;
-                    return;
+                } else {
+                    $byRelation[$rel] = [$representation];
                 }
-                $byRelation[$rel] = [$representation];
+
+                // If we're forcing a collection, and the current relation only
+                // has one item, mark the relation to force a collection
+                if (1 === count($byRelation[$rel]) && $forceCollection) {
+                    $byRelation[$rel][Link::AS_COLLECTION] = true;
+                }
+
+                // If we have more than one link for the relation, and the
+                // marker for forcing a collection is present, remove the
+                // marker; it's redundant. Check for a count greater than 2,
+                // as the marker itself will affect the count!
+                if (2 < count($byRelation[$rel]) && isset($byRelation[$rel][Link::AS_COLLECTION])) {
+                    unset($byRelation[$rel][Link::AS_COLLECTION]);
+                }
             });
 
             return $byRelation;
         }, []);
 
         array_walk($relations, function ($links, $key) use (&$relations) {
+            if (isset($relations[$key][Link::AS_COLLECTION])) {
+                // If forcing a collection, do nothing to the links, but DO
+                // remove the marker indicating a collection should be
+                // returned.
+                unset($relations[$key][Link::AS_COLLECTION]);
+                return;
+            }
+
             $relations[$key] = 1 === count($links) ? array_shift($links) : $links;
         });
 

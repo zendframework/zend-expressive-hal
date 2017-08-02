@@ -498,4 +498,54 @@ class HalResourceTest extends TestCase
     {
         $this->assertEquals($expected, $resource->jsonSerialize());
     }
+
+    public function testAllowsForcingResourceToAggregateAsACollection()
+    {
+        $resource = (new HalResource())
+            ->withLink(new Link('self', '/api/foo'))
+            ->embed(
+                'bar',
+                new HalResource(['bar' => 'baz'], [new Link('self', '/api/bar')]),
+                true
+            );
+
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => '/api/foo',
+                ],
+            ],
+            '_embedded' => [
+                'bar' => [
+                    [
+                        'bar' => 'baz',
+                        '_links' => [
+                            'self' => ['href' => '/api/bar'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expected, $resource->toArray());
+    }
+
+    public function testAllowsForcingLinkToAggregateAsACollection()
+    {
+        $link = new Link('foo', '/api/foo', false, [Link::AS_COLLECTION => true]);
+        $resource = new HalResource(['id' => 'foo'], [$link]);
+
+        $expected = [
+            '_links' => [
+                'foo' => [
+                    [
+                        'href' => '/api/foo',
+                    ],
+                ],
+            ],
+            'id' => 'foo',
+        ];
+
+        $this->assertEquals($expected, $resource->toArray());
+    }
 }

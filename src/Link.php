@@ -7,6 +7,8 @@ use Psr\Link\EvolvableLinkInterface;
 
 class Link implements EvolvableLinkInterface
 {
+    const AS_COLLECTION = '__FORCE_COLLECTION__';
+
     /**
      * @var array
      */
