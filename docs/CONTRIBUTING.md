@@ -5,12 +5,13 @@
 If you wish to contribute to this project, please be sure to
 read/subscribe to the following resources:
 
- -  [Coding Standards](https://github.com/zendframework/zend-coding-standard)
- -  [Forums](https://discourse.zendframework.com/c/contributors)
- -  [Slack](https://zendframework-slack.herokuapp.com)
+ - [Coding Standards](https://github.com/zendframework/zend-coding-standard)
+ - [Forums](https://discourse.zendframework.com/c/contributors)
+ - [Slack](https://zendframework-slack.herokuapp.com)
+ - [Code of Conduct](CODE_OF_CONDUCT.md)
 
-If you are working on new features or refactoring [create a
-proposal](https://github.com/zendframework/zend-expressive-hal/issues/new).
+If you are working on new features or refactoring
+[create a proposal](https://github.com/zendframework/zend-expressive-hal/issues/new).
 
 ## RUNNING TESTS
 
@@ -155,7 +156,7 @@ To send a pull request, you have two options.
 If using GitHub, you can do the pull request from there. Navigate to
 your repository, select the branch you just created, and then select the
 "Pull Request" button in the upper right. Select the user/organization
-"zendframework" as the recipient.
+"zendframework" (or whatever the upstream organization is) as the recipient.
 
 #### What branch to issue the pull request against?
 
@@ -186,7 +187,3 @@ repository, we suggest doing some cleanup of these branches.
    ```console
    $ git push {username} :<branchname>
    ```
-
-## Conduct
-
-Please see our [CONDUCT.md](CONDUCT.md) to understand expected behavior when interacting with others in the project.

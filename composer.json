@@ -4,14 +4,24 @@
     "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
+        "expressive",
         "hal",
         "http",
         "psr",
         "psr-7",
         "psr-11",
         "psr-13",
-        "rest"
+        "rest",
+        "zf",
+        "zendframework"
     ],
+    "support": {
+        "docs": "https://docs.zendframework.com/zend-expressive-hal/",
+        "issues": "https://github.com/zendframework/zend-expressive-hal/issues",
+        "source": "https://github.com/zendframework/zend-expressive-hal",
+        "slack": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/expressive"
+    },
     "config": {
         "sort-packages": true
     },
