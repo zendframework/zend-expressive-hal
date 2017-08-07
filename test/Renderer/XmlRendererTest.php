@@ -40,6 +40,9 @@ class XmlRendererTest extends TestCase
   <id>XXXX-YYYY-ZZZZ-ABAB</id>
   <example>true</example>
   <foo>bar</foo>
+  <list>1</list>
+  <list>2</list>
+  <list>3</list>
 </resource>
 EOX;
         return $xml;

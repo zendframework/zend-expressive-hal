@@ -13,6 +13,7 @@ trait TestAsset
             'id'      => 'XXXX-YYYY-ZZZZ-ABAB',
             'example' => true,
             'foo'     => 'bar',
+            'list'     => [1, 2, 3]
         ]);
         $resource = $resource->withLink(new Link('self', '/example/XXXX-YYYY-ZZZZ-ABAB'));
         $resource = $resource->withLink(new Link('shift', '/example/XXXX-YYYY-ZZZZ-ABAB/shift'));
