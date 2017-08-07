@@ -116,7 +116,7 @@ class XmlRenderer implements Renderer
         }
 
         $elements = [];
-        foreach ($value as $child) {
+        foreach ($data as $child) {
             $elements[] = $this->createResourceElement($doc, $name, $child);
         }
         return $elements;
