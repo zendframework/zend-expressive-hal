@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.3.0 - TBD
+
+### Added
+
+- [#4](https://github.com/weierophinney/hal/pull/4) adds the ability to force
+  both links and embedded resources to be rendered as collections, even if the
+  given relation only contains one item.
+
+  To force a link to be rendered as a collection, pass the attribute
+  `__FORCE__COLLECTION__` with a boolean value of `true` (or use the constant
+  `Link::AS_COLLECTION` to refer to the attribute name).
+
+  To force an embedded resource to be rendered as a collection, pass a boolean
+  `true` as the third argument to `embed()`. Alternately, pass an array
+  containing the single resource to any of the constructor, `withElement()`, or
+  `embed()`.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.2.0 - 2017-07-13
 
 ### Added
