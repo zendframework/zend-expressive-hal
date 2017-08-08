@@ -205,7 +205,6 @@ interface Renderer
     public function render(HalResource $resource) : string;
 }</code></pre>
 
-
 <p>Two implementations are provided, <code>Zend\Expressive\Hal\Renderer\JsonRenderer</code> and
 <code>Zend\Expressive\Hal\Renderer\XmlRenderer</code></p>
 <h3 id="jsonrenderer">JsonRenderer</h3>
@@ -216,7 +215,6 @@ with <code>json_encode()</code>. By default, if none are provided, it uses the v
 | JSON_UNESCAPED_SLASHES
 | JSON_UNESCAPED_UNICODE
 | JSON_PRESERVE_ZERO_FRACTION</code></pre>
-
 
 <p>This provides human-readable JSON output.</p>
 <h3 id="xmlrenderer">XmlRenderer</h3>
@@ -244,7 +242,6 @@ $factory = new HalResponseFactory(
         return new Stream(fopen('php://temp', 'wb+'));
     }
 );</code></pre>
-
 
 <blockquote>
 <h3 id="streams">Streams</h3>
@@ -275,7 +272,6 @@ public function createResponse(
     string $mediaType = self::DEFAULT_CONTENT_TYPE
 ) : ResponseInterface {</code></pre>
 
-
 <p>Generally speaking, you'll pass the current request instance, and the resource
 for which you want to generate a response, and the factory will return a
 response based on its response prototype, with the following:</p>
@@ -298,7 +294,6 @@ JSON schema.</p>
     $resource,
     'application/vnd.book'
 );</code></pre>
-
 
 <p><em>Do not</em> pass the format (e.g., <code>+json</code>, <code>+xml</code>) when doing so; the factory will
 append the appropriate one based on content negotiation.</p>
@@ -326,14 +321,12 @@ array of links, even if only one link for that relation is present.</p>
 
 $resource = $resource-&gt;withLink($link);</code></pre>
 
-
 <p>In the above, you will then get the following within your representation:</p>
 <pre class="codehilite"><code class="language-json">&quot;_links&quot;: {
   &quot;wheels&quot;: [
     {&quot;href&quot;: &quot;/api/car/XXXX-YYYY-ZZZZ/wheels/111&quot;}
   ]
 }</code></pre>
-
 
 <p>To force an embedded resource to be rendered within an array, you have two
 options.</p>
@@ -348,12 +341,10 @@ $resource = $resource-&gt;withElement('wheels', [$wheel]);
 // embed():
 $resource = $resource-&gt;embed('wheels', [$wheel]);</code></pre>
 
-
 <p>Alternately, you can call the <code>HalResource::embed</code> method with only the
 resource, passing the method a third argument, a flag indicating whether or not
 to force an array:</p>
 <pre class="codehilite"><code class="language-php">$resource = $resource-&gt;embed('wheels', $wheel, true);</code></pre>
-
 
 <p>In each of these cases, assuming no other wheels were provided to the final
 resource, you might get a representation such as the following:</p>

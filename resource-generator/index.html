@@ -260,7 +260,6 @@ $metadataMap = new MetadataMap();
 $metadataMap-&gt;add($bookMetadata);
 $metadataMap-&gt;add($booksMetadata);</code></pre>
 
-
 <h3 id="configuration-based-metadata">Configuration-based metadata</h3>
 <p>To automate generation of the <code>MetadataMap</code>, we provide
 <code>Zend\Expressive\Hal\Metadata\MetadataMapFactory</code>. This factory may be used with any
@@ -295,7 +294,6 @@ return [
     ],
 ];</code></pre>
 
-
 <h2 id="resourcegenerator">ResourceGenerator</h2>
 <p>Once you have defined the metadata for the various objects you will represent in
 your API, you can start generating resources.</p>
@@ -306,7 +304,6 @@ your API, you can start generating resources.</p>
     Zend\Expressive\Hal\LinkGenerator $linkGenerator
 ) {</code></pre>
 
-
 <p>We described the <code>MetadataMap</code> in the previous section, and the <code>LinkGenerator</code>
 in the <a href="../links-and-resources/#route-based-link-uris">previous chapter</a>.</p>
 <p>Hydrators are defind in the <a href="https://docs.zendframework.com/zend-hydrator/">zend-hydrator component</a>,
@@ -316,7 +313,6 @@ and are objects which can <em>hdyrate</em> associative arrays to object instance
 to use the <code>Zend\Hydrator\HydratorPluginManager</code>.</p>
 <p>Once you have your instance created, you can start generating resources:</p>
 <pre class="codehilite"><code class="language-php">$resource = $resourceGenerator-&gt;fromObject($book, $request);</code></pre>
-
 
 <p>(Where <code>$request</code> is a <code>Psr\Http\Message\ServerRequestInterface</code> instance; the
 instance is passed along to the <code>LinkGenerator</code> in order to generate route-based
@@ -346,7 +342,6 @@ interface Strategy
     ) : HalResource;
 }</code></pre>
 
-
 <p>When you register a strategy, you will map a metadata type to the strategy; the
 <code>ResourceGenerator</code> will then call your strategy whenever it encounteres
 metadata of that type.</p>
@@ -354,7 +349,6 @@ metadata of that type.</p>
 
 // or:
 $resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</code></pre>
-
 
 <p>If a strategy already is mapped for the given metadata type, this method will
 override it.</p>

@@ -202,10 +202,8 @@ middleware, and assigned it to the <code>$resourceGenerator</code> property.</p>
         ['query' =&gt; '{searchTerms}']
     );</code></pre>
 
-
 <p>You could then compose it in your resource:</p>
 <pre class="codehilite"><code class="language-php">$resource = $resource-&gt;withLink($searchLink);</code></pre>
-
 
 <h2 id="adding-metadata-for-generated-links">Adding metadata for generated links</h2>
 <p>In our second scenario, we'll consider a collection endpoint. It might include a
@@ -244,7 +242,6 @@ $resource = $this-&gt;resourceGenerator-&gt;fromObject($books, $request);
 
 // Reset query string arguments
 $metadata-&gt;setQueryStringArguments($origMetadataQuery);</code></pre>
-
 
 <p>This will lead to links with URIs such as
 <code>/api/books?query=Adams&amp;per_page=5&amp;sort=DESC&amp;page=4</code>.</p>

@@ -224,7 +224,6 @@ following constructor:</p>
     array $attributes = []
 )</code></pre>
 
-
 <p><code>$relation</code> can be a string value, or an array of string values, representing
 the relation.</p>
 <p>To access these various properties, you can use the following methods:</p>
@@ -232,7 +231,6 @@ the relation.</p>
 $link-&gt;getHref()       // retrieve the URI
 $link-&gt;isTemplated()   // is the link templated?
 $link-&gt;getAttributes() // get any additional link attributes</code></pre>
-
 
 <p>A <code>Link</code> is <em>immutable</em>; you cannot change it after the fact. If you need a
 modified version of the link, we provide several methods that will return <em>new
@@ -242,7 +240,6 @@ $link = $link-&gt;withoutRel($rel); // or provide an array of relations
 $link = $link-&gt;withHref($href);
 $link = $link-&gt;withAttribute($attribute, $value);
 $link = $link-&gt;withoutAttribute($attribute);</code></pre>
-
 
 <p>With these tools, you can describe any relational link.</p>
 <h3 id="route-based-link-uris">Route-based link URIs</h3>
@@ -279,7 +276,6 @@ interface UrlGenerator
     ) : string;
 }</code></pre>
 
-
 <p>We provide a default implementation for Expressive users,
 <code>Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator</code>,  that uses the
 <code>UrlHelper</code> and <code>ServerUrlHelper</code> from zend-expressive-helpers in order to
@@ -303,7 +299,6 @@ $link = $linkGenerator-&gt;templatedFromRoute(
     $attributes   // Array of Link attributes to use
 );</code></pre>
 
-
 <p><code>fromRoute()</code> will generate a non-templated <code>Link</code> instance, while
 <code>templatedFromRoute()</code> generates a templated instance.</p>
 <p>If you need to generate custom links based on routing, we recommend composing
@@ -319,7 +314,6 @@ along with any relational links and child resources.</p>
     array $embedded = []
 )</code></pre>
 
-
 <p><code>$data</code> should be an associative array of data you wish to include in your
 representation; the only limitation is you may not use the keys <code>_links</code> or
 <code>_embedded</code>, as these are reserved keywords.</p>
@@ -334,7 +328,6 @@ $resource-&gt;getLinks()        // retrieve all relational links
 $resource-&gt;getLinksByRel()   // retrieve links for a specific relation
 $resource-&gt;toArray()         // retrieve associative array representation</code></pre>
 
-
 <p><code>HalResource</code> instances are <em>immutable</em>. We provide a number of methods that
 allow you to create <em>new instances</em> with changes:</p>
 <pre class="codehilite"><code class="language-php">$resource = $resource-&gt;withElement($name, $value);
@@ -343,7 +336,6 @@ $resource = $resource-&gt;withElements($elements);
 $resource = $resource-&gt;embed($name, $resource);
 $resource = $resource-&gt;withLink($link);
 $resource = $resource-&gt;withoutLink($link);</code></pre>
-
 
 <p>With these tools, you can describe any resource you want to represent.</p>
 

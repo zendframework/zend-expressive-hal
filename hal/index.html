@@ -210,7 +210,6 @@ specifies resources as the primary payload.</p>
   &quot;author&quot;: &quot;Adams, Douglas&quot;
 }</code></pre>
 
-
 <p>For XML documents, the element <code>&lt;resource&gt;</code> is reserved to detail the resource;
 every other element represents the document:</p>
 <pre class="codehilite"><code class="language-xml">&lt;resource&gt;
@@ -218,7 +217,6 @@ every other element represents the document:</p>
   &lt;title&gt;Life, the Universe, and Everything&lt;/title&gt;
   &lt;author&gt;Adams, Douglas&lt;/author&gt;
 &lt;/resource&gt;</code></pre>
-
 
 <p>This decision makes both consuming and generating HAL payloads trivial.</p>
 <h2 id="links">Links</h2>
@@ -249,7 +247,6 @@ properties allowed. As an example:</p>
   }
 }</code></pre>
 
-
 <p>At this point, the consumer knows they can access the current resource via the
 "self" relation, and a collection of "books" via the URI "/api/books".</p>
 <p>HAL addresses links in XML with two semantics. First, the <code>&lt;resource&gt;</code> element
@@ -262,7 +259,6 @@ of that XML element.</p>
 <pre class="codehilite"><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot;&gt;
   &lt;link rel=&quot;books&quot; href=&quot;/api/books&quot;/&gt;
 &lt;/resource&gt;</code></pre>
-
 
 <h2 id="child-resources">Child Resources</h2>
 <p>An API payload may have <em>child resources</em> for several reasons:</p>
@@ -316,7 +312,6 @@ and optionally an <code>_embedded</code> member.</p>
     &quot;_total&quot;: 33
 }</code></pre>
 
-
 <p>The above represents a <em>collection</em> of <em>book</em> resources.</p>
 <p>To address XML, the specification uses the <code>&lt;resource&gt;</code> element to embed
 additional resources. Resources of the same type use the same <code>rel</code> attribute.
@@ -340,7 +335,6 @@ The XML equivalent of the above JSON documentation thus becomes:</p>
     &lt;_per_page&gt;2&lt;/_per_page&gt;
     &lt;_total&gt;33&lt;/_total&gt;
 &lt;/resource&gt;</code></pre>
-
 
 <h2 id="summary">Summary</h2>
 <p>With these three semantics &mdash; resources, links, and child resources &mdash;

@@ -222,7 +222,6 @@ relational links, from PHP objects.</strong></p>
 <p>Use Composer:</p>
 <pre class="codehilite"><code class="language-bash">$ composer require weierophinney/hal</code></pre>
 
-
 <p>If you are adding this to an Expressive application, and have the
 <a href="https://docs.zendframework.com/zend-component-installer/">zend-component-installer</a>
 package installed, this will prompt you to ask if you wish to add it to your
@@ -233,11 +232,9 @@ which provides facilities for extracting associative array representations of
 PHP objects:</p>
 <pre class="codehilite"><code class="language-bash">$ composer require zendframework/zend-hydrator</code></pre>
 
-
 <p>Finally, if you want to provide paginated collections, we recommend installing
 <a href="https://docs.zendframework.com/zend-paginator/">zend-paginator</a>:</p>
 <pre class="codehilite"><code class="language-bash">$ composer require zendframework/zend-paginator</code></pre>
-
 
 <h2 id="quick-start">Quick Start</h2>
 <p>The following examples assume that you have added this package to an Expressive
@@ -253,7 +250,6 @@ class Book
     public $author;
 }</code></pre>
 
-
 <p>Additionally, we'll have a class representing a paginated group of books:</p>
 <pre class="codehilite"><code class="language-php">namespace Api\Books;
 
@@ -262,7 +258,6 @@ use Zend\Paginator\Paginator;
 class BookCollection extends Paginator
 {
 }</code></pre>
-
 
 <h3 id="routes">Routes</h3>
 <p>The examples below assume that we have the following routes defined in our
@@ -304,7 +299,6 @@ MetadataMap::class =&gt; [
         'route' =&gt; 'books',
     ],
 ],</code></pre>
-
 
 <h3 id="manually-creating-and-rendering-a-resource">Manually creating and rendering a resource</h3>
 <p>The following middleware creates a <code>HalResource</code> with its associated links, and
@@ -354,7 +348,6 @@ class BookAction implements MiddlewareInterface
     }
 }</code></pre>
 
-
 <p>The <code>JsonRenderer</code> returns the JSON string representing the data and links in
 the resource. The payload generated might look like the following:</p>
 <pre class="codehilite"><code class="language-json">{
@@ -365,7 +358,6 @@ the resource. The payload generated might look like the following:</p>
     &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
     &quot;author&quot;: &quot;Adams, Douglas&quot;
 }</code></pre>
-
 
 <p>The above example uses no metadata, and manually creates the <code>HalResource</code>
 instance. As the complexity of your objects increase, and the number of objects
@@ -424,7 +416,6 @@ class BookAction
     }
 }</code></pre>
 
-
 <p>Note that the <code>$request</code> instance is passed to both the resource generator and
 response factory:</p>
 <ul>
@@ -441,7 +432,6 @@ response factory:</p>
     &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
     &quot;author&quot;: &quot;Adams, Douglas&quot;
 }</code></pre>
-
 
 <h3 id="middleware-returning-a-collection">Middleware returning a collection</h3>
 <p>Next, we'll create middleware that returns a <em>collection</em> of books. The
@@ -494,7 +484,6 @@ class BooksAction
     }
 }</code></pre>
 
-
 <p>Note that resource and response generation <em>is exactly the same</em> as our previous
 example! This is because the metadata map takes care of the details of
 extracting the data from our value objects and generating links for us.</p>
@@ -537,7 +526,6 @@ class, we might get back something like the following:</p>
     &quot;_per_page&quot;: 25,
     &quot;_total&quot;: 407
 }</code></pre>
-
 
 <h2 id="next-steps">Next steps</h2>
 <p>The above examples demonstrate setting up your application to generate and
