@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Generating Resources - Hypertext Application Language</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css" integrity="sha256-AIodEDkC8V/bHBkfyxzolUMw57jeQ9CauwhVW6YJ9CA=" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/styles-482aa2add1.css">
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a class="logo-link" href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Zend Framework"><img src="../img/zf-logo-mark.svg" height="28" alt="Zend Framework" /></a>
+              <a href="..">Hypertext Application Language</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../intro/">Introduction</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../hal/">HAL</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../links-and-resources/">Links and Resources</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Generating Resources</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../representations/">Representations</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../factories/">Factories</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cookbook <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="component-toggle" data-toggle="tooltip" data-placement="bottom" title="Show component list">
+                        <i class="fa fa-book"></i> Components
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-expressive-hal">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div id="page-top" class="container docs">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#generating-resources-from-php-objects">Generating Resources from PHP Objects</a></li>
+        
+            <li><a href="#metadata">Metadata</a></li>
+        
+            <li><a href="#resourcegenerator">ResourceGenerator</a></li>
+        
+    
+    </ul>
+
+    
+    <ul class="pager hidden-print">
+      <li class="previous">
+        <a rel="prev" href="../links-and-resources/"><i class="fa fa-arrow-left"></i> Previous</a>
+      </li>
+      <li class="next">
+        <a rel="next" href="../representations/">Next <i class="fa fa-arrow-right"></i></a>
+      </li>
+    </ul>
+    
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Hypertext Application Language</a></li>
+  
+    
+      
+        <li>Reference</li>
+      
+    
+  
+  <li class="active">Generating Resources</li>
+</ol>
+
+<h1 id="generating-resources-from-php-objects">Generating Resources from PHP Objects</h1>
+<p>In the previous chapter, <a href="../links-and-resources/">we discussed links and resources</a>.
+The primitive objects allow us to create representations easily, but do not
+answer one critical question: how can we create resources based on existing PHP
+object types?</p>
+<p>To answer that question, we provide two related features: metadata, and a
+resource generator.</p>
+<h2 id="metadata">Metadata</h2>
+<p>Metadata allows you to detail the requirements for generating a HAL
+representation of a PHP object. Metadata might include:</p>
+<ul>
+<li>The PHP class name to represent.</li>
+<li>A URI to use for the generated resource's self relational link.</li>
+<li>Alternately, routing information to use with the <code>LinkGenerator</code>.</li>
+<li>A zend-hydrator extractor to use to serialize the object to a representation.</li>
+<li>Whether or not the resource is a collection, and, if so, whether pagination is
+  handled as a path parameter or a query string argument, the name of the
+  parameter, etc.</li>
+</ul>
+<p>All metadata types inherit from <code>Zend\Expressive\Hal\Metadata\AbstractMetadata</code>,
+which defines a single method, <code>getClass()</code>, for retrieving the name of the PHP
+class to represent; all metadata are expected to inherit from this class.</p>
+<p>The component also provides four concrete metadata types, requiring the
+following information:</p>
+<ul>
+<li><code>Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata</code>:<ul>
+<li>string <code>$class</code></li>
+<li>string <code>$collectionRelation</code></li>
+<li>string <code>$route</code></li>
+<li>string <code>$paginationParam = 'page'</code> (name of the parameter indicating the
+  current page of results)</li>
+<li>string <code>$paginationParamType = self::TYPE_QUERY</code> (one of "query" or "placeholder")</li>
+<li>array <code>$routeParams = []</code> (associative array of substitutions to use with
+  the designated route)</li>
+<li>array <code>$queryStringArguments = []</code> (associative array of query string
+  arguments to include in the generated URI)</li>
+</ul>
+</li>
+<li><code>Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata</code>:<ul>
+<li>string <code>$class</code></li>
+<li>string <code>$route</code></li>
+<li>string <code>$extractor</code> (string service name of the zend-hydrator hydrator to
+  use for extracting data from the instance)</li>
+<li>string <code>$resourceIdentifier = 'id'</code> (name of the property uniquely
+  identifying the resource)</li>
+<li>string <code>$routeIdentifierPlaceholder = 'id'</code> (name of the routing parameter
+  that maps to the resource identifier)</li>
+<li>array <code>$routeParams = []</code> (associative array of additional routing
+  parameters to substitute when generating the URI)</li>
+</ul>
+</li>
+<li><code>Zend\Expressive\Hal\Metadata\UrlBasedCollectionMetadata</code>:<ul>
+<li>string <code>$class</code></li>
+<li>string <code>$collectionRelation</code></li>
+<li>string <code>$url</code></li>
+<li>string <code>$paginationParam = 'page'</code> (name of the parameter indicating the
+  current page of results)</li>
+<li>string <code>$paginationParamType = self::TYPE_QUERY</code> (one of "query" or "placeholder")</li>
+</ul>
+</li>
+</ul>
+<p>We aggregate metadata in a <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> instance:</p>
+<pre class="codehilite"><code class="language-php">$bookMetadata = new RouteBasedResourceMetadata(
+    Book::class,
+    'book',
+    ObjectPropertyHydrator::class
+);
+$booksMetadata = new RouteBasedCollectionMetadata(
+    BookCollection::class,
+    'book',
+    'books',
+);
+
+$metadataMap = new MetadataMap();
+$metadataMap-&gt;add($bookMetadata);
+$metadataMap-&gt;add($booksMetadata);</code></pre>
+
+
+<h3 id="configuration-based-metadata">Configuration-based metadata</h3>
+<p>To automate generation of the <code>MetadataMap</code>, we provide
+<code>Zend\Expressive\Hal\Metadata\MetadataMapFactory</code>. This factory may be used with any
+<a href="http://www.php-fig.org/psr/psr-11/">PSR-11</a> container. It utilizes the <code>config</code>
+service, and pulls its configuration from a key named after the
+<code>Zend\Expressive\Hal\Metadata\MetadataMap</code> class.</p>
+<p>Each item in the map will be an associative array. The member <code>__class__</code> will
+describe which metadata class to create, and the remaining properties will then
+be used to generate an instance. As an example, the above could be configured as
+follows:</p>
+<pre class="codehilite"><code class="language-php">use Api\Books\Book;
+use Api\Books\BookCollection;
+use Zend\Expressive\Hal\Metadata\MetadataMap;
+use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
+use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
+use Zend\Hydrator\ObjectProperty;
+
+return [
+    'Zend\Expressive\Hal\Metadata\MetadataMap' =&gt; [
+        [
+            '__class__' =&gt; RouteBasedResourceMetadata::class,
+            'resource_class' =&gt; Book::class,
+            'route' =&gt; 'book',
+            'extractor' =&gt; ObjectProperty::class,
+        ],
+        [
+            '__class__' =&gt; RouteBasedCollectionMetadata::class,
+            'collection_class' =&gt; BookCollection::class,
+            'collection_relation' =&gt; 'book',
+            'route' =&gt; 'books',
+        ],
+    ],
+];</code></pre>
+
+
+<h2 id="resourcegenerator">ResourceGenerator</h2>
+<p>Once you have defined the metadata for the various objects you will represent in
+your API, you can start generating resources.</p>
+<p><code>Zend\Expressive\Hal\ResourceGenerator</code> has the following constructor:</p>
+<pre class="codehilite"><code class="language-php">public function __construct(
+    Zend\Expressive\Hal\Metadata\MetadataMap $metadataMap,
+    Psr\Container\ContainerInterface $hydrators,
+    Zend\Expressive\Hal\LinkGenerator $linkGenerator
+) {</code></pre>
+
+
+<p>We described the <code>MetadataMap</code> in the previous section, and the <code>LinkGenerator</code>
+in the <a href="../links-and-resources/#route-based-link-uris">previous chapter</a>.</p>
+<p>Hydrators are defind in the <a href="https://docs.zendframework.com/zend-hydrator/">zend-hydrator component</a>,
+and are objects which can <em>hdyrate</em> associative arrays to object instances and
+<em>extract</em> associative arrays from object instances. Generally speaking, the
+<code>$hydrators</code> instance may be any PSR-11 container, but you will generally want
+to use the <code>Zend\Hydrator\HydratorPluginManager</code>.</p>
+<p>Once you have your instance created, you can start generating resources:</p>
+<pre class="codehilite"><code class="language-php">$resource = $resourceGenerator-&gt;fromObject($book, $request);</code></pre>
+
+
+<p>(Where <code>$request</code> is a <code>Psr\Http\Message\ServerRequestInterface</code> instance; the
+instance is passed along to the <code>LinkGenerator</code> in order to generate route-based
+URIs for <code>Link</code> instances.)</p>
+<h3 id="customizing-resource-generation">Customizing resource generation</h3>
+<p>The <code>ResourceGenerator</code> allows composing <code>Zend\Expressive\Hal\ResourceGenerator\Strategy</code>
+instances. The <code>Strategy</code> interface defines the following:</p>
+<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\ResourceGenerator;
+
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\HalResource;
+use Zend\Expressive\Hal\Metadata;
+use Zend\Expressive\Hal\ResourceGenerator;
+
+interface Strategy
+{
+    /**
+     * @param object $instance Instance from which to create Resource.
+     * @throws Exception\UnexpectedMetadataTypeException for metadata types the
+     *     strategy cannot handle.
+     */
+    public function createResource(
+        $instance,
+        Metadata\AbstractMetadata $metadata,
+        ResourceGenerator $resourceGenerator,
+        ServerRequestInterface $request
+    ) : HalResource;
+}</code></pre>
+
+
+<p>When you register a strategy, you will map a metadata type to the strategy; the
+<code>ResourceGenerator</code> will then call your strategy whenever it encounteres
+metadata of that type.</p>
+<pre class="codehilite"><code class="language-php">$resourceGenerator-&gt;addStrategy(CustomMetadata::class, CustomStrategy::class);
+
+// or:
+$resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</code></pre>
+
+
+<p>If a strategy already is mapped for the given metadata type, this method will
+override it.</p>
+<p>To facilitate common operations, this library provides two traits,
+<code>Zend\Expressive\Hal\ResourceGenerator\ExtractCollection</code> and
+<code>Zend\Expressive\Hal\ResourceGenerator\ExtractInstance</code>; inspect these if you
+decide to write your own strategies.</p>
+
+<hr />
+
+
+<nav>
+  <ul class="pager hidden-print">
+    <li class="previous">
+      <a rel="prev" href="../links-and-resources/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../representations/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+</div>
+        
+    </div>
+    <!-- content:end -->
+
+    <div id="footerwrap">
+    <div class="container">
+        <div class="row site-map">
+            <div class="col-lg-3">
+              <p>
+                <strong>Zend Framework</strong><br />
+                <a href="http://framework.zend.com/">framework.zend.com</a><br />
+                <a href="https://docs.zendframework.com">docs.zendframework.com</a><br />
+                <a href="https://packages.zendframework.com">packages.zendframework.com</a><br />
+                <a href="https://apigility.org">apigility.org</a><br />
+              </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 centered">
+                <a class="back-to-top" href="#page-top"><i class="fa fa-chevron-circle-up fa-4" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h4>Copyright</h4>
+                <div class="hline-w"></div>
+
+                <p>&copy; 2006-2016 by <a href="http://www.zend.com">Zend</a>, a <a href="http://www.roguewave.com/">Rogue Wave Company</a>.</p>
+            </div>
+
+            <div class="col-lg-4">
+                <h4>Contacts</h4>
+                <div class="hline-w"></div>
+                <p>
+                    <a href="irc://irc.freenode.net/zftalk" class="btn-social btn-outline" alt="IRC" title="IRC"><i class="fa fa-comment"></i></a>
+                    <a href="https://github.com/zendframework" class="btn-social btn-outline" alt="Github" title="Github"><i class="fa fa-github"></i></a>
+                    <a href="https://twitter.com/zfdevteam" class="btn-social btn-outline" alt="Twitter" title="Twitter"><i class="fa fa-twitter"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo=" crossorigin="anonymous"></script>
+    <script>var base_url = '..';</script>
+    <script src="../js/scripts-8b95ab2fc3.js"></script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zf-components">
+  <div class="zf-components-grid">
+    <div class="zf-logo">
+      <a href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../img/zf-logo-mark.svg" alt="Zend Framework" width="250" /></a>
+    </div>
+
+    <div class="component-list"></div>
+
+    <p class="zf-components-rollup"><a href="#">Hide list</a></p>
+  </div>
+</div>
+
+</body>
+
+</html>

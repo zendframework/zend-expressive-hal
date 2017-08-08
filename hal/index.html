@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>HAL - Hypertext Application Language</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css" integrity="sha256-AIodEDkC8V/bHBkfyxzolUMw57jeQ9CauwhVW6YJ9CA=" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/styles-482aa2add1.css">
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a class="logo-link" href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Zend Framework"><img src="../img/zf-logo-mark.svg" height="28" alt="Zend Framework" /></a>
+              <a href="..">Hypertext Application Language</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../intro/">Introduction</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">HAL</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../links-and-resources/">Links and Resources</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../resource-generator/">Generating Resources</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../representations/">Representations</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../factories/">Factories</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cookbook <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="component-toggle" data-toggle="tooltip" data-placement="bottom" title="Show component list">
+                        <i class="fa fa-book"></i> Components
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-expressive-hal">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div id="page-top" class="container docs">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#hypertext-application-language">Hypertext Application Language</a></li>
+        
+            <li><a href="#resources">Resources</a></li>
+        
+            <li><a href="#links">Links</a></li>
+        
+            <li><a href="#child-resources">Child Resources</a></li>
+        
+            <li><a href="#summary">Summary</a></li>
+        
+    
+    </ul>
+
+    
+    <ul class="pager hidden-print">
+      <li class="previous">
+        <a rel="prev" href="../intro/"><i class="fa fa-arrow-left"></i> Previous</a>
+      </li>
+      <li class="next">
+        <a rel="next" href="../links-and-resources/">Next <i class="fa fa-arrow-right"></i></a>
+      </li>
+    </ul>
+    
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Hypertext Application Language</a></li>
+  
+    
+      
+        <li>Reference</li>
+      
+    
+  
+  <li class="active">HAL</li>
+</ol>
+
+<h1 id="hypertext-application-language">Hypertext Application Language</h1>
+<p><a href="http://stateless.co/hal_specification.html">Hypertext Application Language</a>, or
+HAL) is a <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">proposed IETF specification</a>
+for representing API resources and their relations with hyperlinks. While the
+original specification targets JSON, an additional IETF proposal
+<a href="https://tools.ietf.org/html/draft-michaud-xml-hal-01">targets XML</a>.</p>
+<p>HAL is a minimal specification, and addresses three specific things:</p>
+<ul>
+<li>How to represent the elements of an API resource.</li>
+<li>How to represent hypertext links of an API resource.</li>
+<li>How to represent child resources.</li>
+</ul>
+<h2 id="resources">Resources</h2>
+<p>HAL opts to keep out of the way. Where other specifications may push the data
+for a resource into a subkey (e.g., "data", "collection.items", etc.), HAL
+specifies resources as the primary payload.</p>
+<p>As such, a resource is simply a <em>document</em>:</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;id&quot;: &quot;XXXX-YYYY-ZZZZ-AAAA&quot;,
+  &quot;title&quot;: &quot;Life, the Universe, and Everything&quot;,
+  &quot;author&quot;: &quot;Adams, Douglas&quot;
+}</code></pre>
+
+
+<p>For XML documents, the element <code>&lt;resource&gt;</code> is reserved to detail the resource;
+every other element represents the document:</p>
+<pre class="codehilite"><code class="language-xml">&lt;resource&gt;
+  &lt;id&gt;XXXX-YYYY-ZZZZ-AAAA&lt;/id&gt;
+  &lt;title&gt;Life, the Universe, and Everything&lt;/title&gt;
+  &lt;author&gt;Adams, Douglas&lt;/author&gt;
+&lt;/resource&gt;</code></pre>
+
+
+<p>This decision makes both consuming and generating HAL payloads trivial.</p>
+<h2 id="links">Links</h2>
+<p>One goal of REST is to allow any given resource to provide <em>hypertext controls</em>,
+or <em>links</em>, allowing the consumer to know what they can do next. Most resources
+will provide a <em>self relational link</em>, so that the consumer knows how to request
+the resource again. However, a consumer might want to know what other actions
+are possible. For example, they may want to know:</p>
+<ul>
+<li>how to get a list of related resources</li>
+<li>how to access the first, previous, next, or last pages of a collection of
+  resources</li>
+<li>what resources are related: e.g., transactions, products, invoices, users,
+  etc.</li>
+</ul>
+<p>HAL addresses <em>how</em> to provide such links. This is necessary because JSON has no
+specific semantics around linking, and XML, while it has <em>some</em> semantics, does
+not cover how to provide <em>multiple</em> links for a given element.</p>
+<p>HAL addresses JSON by reserving a special <code>_links</code> property, and specifying a
+structure for how links are represented. Each element of the <code>_links</code> property
+is named for the link relation, and the value is either an array, or a link
+object. A link object contains minimally an <code>href</code> property, with several other
+properties allowed. As an example:</p>
+<pre class="codehilite"><code class="language-json">{
+  &quot;_links&quot;: {
+    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot; },
+    &quot;books&quot;: { &quot;href&quot;: &quot;/api/books&quot; }
+  }
+}</code></pre>
+
+
+<p>At this point, the consumer knows they can access the current resource via the
+"self" relation, and a collection of "books" via the URI "/api/books".</p>
+<p>HAL addresses links in XML with two semantics. First, the <code>&lt;resource&gt;</code> element
+can contain linking information, using the "rel" and "href" attributes (and any
+others necessary to describe the link).  Typically, the "self" relational link
+is defined in the <code>&lt;resource&gt;</code> element. Second, the specification also reserves
+the <code>&lt;link&gt;</code> element; the relation, URI, and other attributes become attributes
+of that XML element.</p>
+<p>An equivalent XML document to the JSON document above looks like the following:</p>
+<pre class="codehilite"><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot;&gt;
+  &lt;link rel=&quot;books&quot; href=&quot;/api/books&quot;/&gt;
+&lt;/resource&gt;</code></pre>
+
+
+<h2 id="child-resources">Child Resources</h2>
+<p>An API payload may have <em>child resources</em> for several reasons:</p>
+<ul>
+<li>The resource may be related to the current payload, and providing it directly
+  would prevent another request to the API.</li>
+<li>The payload may represent a <em>collection</em> of resources (or even <em>multiple</em>
+  collections of resources).</li>
+</ul>
+<p>Generally, a child resource represents a <em>relation</em>. As such, HAL has very
+specific semantics for providing them.</p>
+<p>In JSON documents, the specification reserves the property <code>_embedded</code>. This is
+an object, with the keys being the <em>relations</em>, and the values either resources,
+or arrays of resources. Each resource follows the same structure as a basic
+HAL resource, with a <code>_links</code> member, other members representing the resource,
+and optionally an <code>_embedded</code> member.</p>
+<pre class="codehilite"><code class="language-json">{
+    &quot;_links&quot;: {
+        &quot;self&quot;: { &quot;href&quot;: &quot;/api/books?page=7&quot; },
+        &quot;first&quot;: { &quot;href&quot;: &quot;/api/books?page=1&quot; },
+        &quot;prev&quot;: { &quot;href&quot;: &quot;/api/books?page=6&quot; },
+        &quot;next&quot;: { &quot;href&quot;: &quot;/api/books?page=8&quot; },
+        &quot;last&quot;: { &quot;href&quot;: &quot;/api/books?page=17&quot; }
+        &quot;search&quot;: {
+            &quot;href&quot;: &quot;/api/books?query={searchTerms}&quot;,
+            &quot;templated&quot;: true
+        }
+    },
+    &quot;_embedded&quot;: {
+        &quot;book&quot;: [
+            {
+                &quot;_links&quot;: {
+                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
+                }
+                &quot;id&quot;: 1234,
+                &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
+                &quot;author&quot;: &quot;Adams, Douglas&quot;
+            },
+            {
+                &quot;_links&quot;: {
+                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/6789&quot; }
+                }
+                &quot;id&quot;: 6789,
+                &quot;title&quot;: &quot;Ancillary Justice&quot;,
+                &quot;author&quot;: &quot;Leckie, Ann&quot;
+            }
+        ]
+    },
+    &quot;_page&quot;: 7,
+    &quot;_per_page&quot;: 2,
+    &quot;_total&quot;: 33
+}</code></pre>
+
+
+<p>The above represents a <em>collection</em> of <em>book</em> resources.</p>
+<p>To address XML, the specification uses the <code>&lt;resource&gt;</code> element to embed
+additional resources. Resources of the same type use the same <code>rel</code> attribute.
+The XML equivalent of the above JSON documentation thus becomes:</p>
+<pre class="codehilite"><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books?page=7&quot;&gt;
+    &lt;link rel=&quot;first&quot; href=&quot;/api/books?page=1&quot;/&gt;
+    &lt;link rel=&quot;prev&quot; href=&quot;/api/books?page=6&quot;/&gt;
+    &lt;link rel=&quot;next&quot; href=&quot;/api/books?page=8&quot;/&gt;
+    &lt;link rel=&quot;last&quot; href=&quot;/api/books?page=17&quot; templated=&quot;true&quot;/&gt;
+    &lt;resource rel=&quot;book&quot; href=&quot;/api/books/1234&quot;&gt;
+        &lt;id&gt;1234&lt;/id&gt;
+        &lt;title&gt;Hitchhiker's Guide to the Galaxy&lt;/title&gt;
+        &lt;author&gt;Adams, Douglas&lt;/author&gt;
+    &lt;/resource&gt;
+    &lt;resource rel=&quot;book&quot; href=&quot;/api/books/6789&quot;&gt;
+        &lt;id&gt;6789&lt;/id&gt;
+        &lt;title&gt;Ancillary Justice&lt;/title&gt;
+        &lt;author&gt;Leckie, Ann&lt;/author&gt;
+    &lt;/resource&gt;
+    &lt;_page&gt;7&lt;/_page&gt;
+    &lt;_per_page&gt;2&lt;/_per_page&gt;
+    &lt;_total&gt;33&lt;/_total&gt;
+&lt;/resource&gt;</code></pre>
+
+
+<h2 id="summary">Summary</h2>
+<p>With these three semantics &mdash; resources, links, and child resources &mdash;
+HAL allows you to describe any payload, and provide the hypertext controls
+necessary to allow API consumers to know what resources they can access next.</p>
+<p>The next step, then, is learning how to create HAL payloads for your API!</p>
+
+<hr />
+
+
+<nav>
+  <ul class="pager hidden-print">
+    <li class="previous">
+      <a rel="prev" href="../intro/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../links-and-resources/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+</div>
+        
+    </div>
+    <!-- content:end -->
+
+    <div id="footerwrap">
+    <div class="container">
+        <div class="row site-map">
+            <div class="col-lg-3">
+              <p>
+                <strong>Zend Framework</strong><br />
+                <a href="http://framework.zend.com/">framework.zend.com</a><br />
+                <a href="https://docs.zendframework.com">docs.zendframework.com</a><br />
+                <a href="https://packages.zendframework.com">packages.zendframework.com</a><br />
+                <a href="https://apigility.org">apigility.org</a><br />
+              </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 centered">
+                <a class="back-to-top" href="#page-top"><i class="fa fa-chevron-circle-up fa-4" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h4>Copyright</h4>
+                <div class="hline-w"></div>
+
+                <p>&copy; 2006-2016 by <a href="http://www.zend.com">Zend</a>, a <a href="http://www.roguewave.com/">Rogue Wave Company</a>.</p>
+            </div>
+
+            <div class="col-lg-4">
+                <h4>Contacts</h4>
+                <div class="hline-w"></div>
+                <p>
+                    <a href="irc://irc.freenode.net/zftalk" class="btn-social btn-outline" alt="IRC" title="IRC"><i class="fa fa-comment"></i></a>
+                    <a href="https://github.com/zendframework" class="btn-social btn-outline" alt="Github" title="Github"><i class="fa fa-github"></i></a>
+                    <a href="https://twitter.com/zfdevteam" class="btn-social btn-outline" alt="Twitter" title="Twitter"><i class="fa fa-twitter"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo=" crossorigin="anonymous"></script>
+    <script>var base_url = '..';</script>
+    <script src="../js/scripts-8b95ab2fc3.js"></script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zf-components">
+  <div class="zf-components-grid">
+    <div class="zf-logo">
+      <a href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../img/zf-logo-mark.svg" alt="Zend Framework" width="250" /></a>
+    </div>
+
+    <div class="component-list"></div>
+
+    <p class="zf-components-rollup"><a href="#">Hide list</a></p>
+  </div>
+</div>
+
+</body>
+
+</html>

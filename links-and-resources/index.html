@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Links and Resources - Hypertext Application Language</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css" integrity="sha256-AIodEDkC8V/bHBkfyxzolUMw57jeQ9CauwhVW6YJ9CA=" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/styles-482aa2add1.css">
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a class="logo-link" href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Zend Framework"><img src="../img/zf-logo-mark.svg" height="28" alt="Zend Framework" /></a>
+              <a href="..">Hypertext Application Language</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../intro/">Introduction</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../hal/">HAL</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Links and Resources</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../resource-generator/">Generating Resources</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../representations/">Representations</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../factories/">Factories</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cookbook <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="component-toggle" data-toggle="tooltip" data-placement="bottom" title="Show component list">
+                        <i class="fa fa-book"></i> Components
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-expressive-hal">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div id="page-top" class="container docs">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#links-and-resources">Links and Resources</a></li>
+        
+            <li><a href="#note-on-naming">Note on naming</a></li>
+        
+            <li><a href="#psr-13">PSR-13</a></li>
+        
+            <li><a href="#links">Links</a></li>
+        
+            <li><a href="#resources">Resources</a></li>
+        
+    
+    </ul>
+
+    
+    <ul class="pager hidden-print">
+      <li class="previous">
+        <a rel="prev" href="../hal/"><i class="fa fa-arrow-left"></i> Previous</a>
+      </li>
+      <li class="next">
+        <a rel="next" href="../resource-generator/">Next <i class="fa fa-arrow-right"></i></a>
+      </li>
+    </ul>
+    
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Hypertext Application Language</a></li>
+  
+    
+      
+        <li>Reference</li>
+      
+    
+  
+  <li class="active">Links and Resources</li>
+</ol>
+
+<h1 id="links-and-resources">Links and Resources</h1>
+<p>The basic building blocks of this component are links and resources:</p>
+<ul>
+<li><code>Zend\Expressive\Hal\Link</code></li>
+<li><code>Zend\Expressive\Hal\HalResource</code></li>
+</ul>
+<blockquote>
+<h3 id="note-on-naming">Note on naming</h3>
+<p>Why <code>HalResource</code> and not the simpler <code>Resource</code>? The answer: PHP. As of PHP
+7, <code>resource</code> has been designated a potential future language keyword. In
+order to be forwards compatible, we opted to name our class <code>HalResource</code>.</p>
+<h3 id="psr-13">PSR-13</h3>
+<p>weierophinney/hal implements <a href="http://www.php-fig.org/psr/psr-13/">PSR-13</a>,
+which provides interfaces for relational links and collections of relational
+links. <code>Zend\Expressive\Hal\Link</code> implements <code>Psr\Link\EvolvableLinkInterface</code>, and
+<code>Zend\Expressive\Hal\HalResource</code> implements <code>Psr\Link\EvolvableLinkProviderInterface</code>.</p>
+</blockquote>
+<p>Resources compose links, so we'll cover links first.</p>
+<h2 id="links">Links</h2>
+<p>Links provide URIs to related resources.</p>
+<p>Any given link, therefore, needs to compose the <em>relation</em> and a <em>URI</em>.
+Additionally, links:</p>
+<ul>
+<li>can be <em>templated</em>. Templated links have one or more <code>{variable}</code> placeholders
+  in them that clients can then fill in in order to generate a fully qualified
+  URI.</li>
+<li>can contain a number of other attributes: type, title, name, etc.</li>
+</ul>
+<p>To model these, we provide the <code>Zend\Expressive\Hal\Link</code> class. It has the
+following constructor:</p>
+<pre class="codehilite"><code class="language-php">public function __construct(
+    $relation,
+    string $uri = '',
+    bool $isTemplated = false,
+    array $attributes = []
+)</code></pre>
+
+
+<p><code>$relation</code> can be a string value, or an array of string values, representing
+the relation.</p>
+<p>To access these various properties, you can use the following methods:</p>
+<pre class="codehilite"><code class="language-php">$link-&gt;getRels()       // get the list of relations for the link
+$link-&gt;getHref()       // retrieve the URI
+$link-&gt;isTemplated()   // is the link templated?
+$link-&gt;getAttributes() // get any additional link attributes</code></pre>
+
+
+<p>A <code>Link</code> is <em>immutable</em>; you cannot change it after the fact. If you need a
+modified version of the link, we provide several methods that will return <em>new
+instances</em> containing the changes:</p>
+<pre class="codehilite"><code class="language-php">$link = $link-&gt;withRel($rel);    // or provide an array of relations
+$link = $link-&gt;withoutRel($rel); // or provide an array of relations
+$link = $link-&gt;withHref($href);
+$link = $link-&gt;withAttribute($attribute, $value);
+$link = $link-&gt;withoutAttribute($attribute);</code></pre>
+
+
+<p>With these tools, you can describe any relational link.</p>
+<h3 id="route-based-link-uris">Route-based link URIs</h3>
+<p>Most frameworks provide routing capabilities, and delegate URI generation to
+their routers to ensure that generated links conform to known routing
+specifications. <code>Link</code> expects only a string URI, however; how can you prevent
+hard-coding that URI?</p>
+<p>This component provides a tool for that: <code>Zend\Expressive\Hal\LinkGenerator</code>.
+This class composes a <code>Zend\Expressive\Hal\LinkGenerator\UrlGenerator</code> instance,
+which defines the following:</p>
+<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\LinkGenerator;
+
+use Psr\Http\Message\ServerRequestInterface;
+
+interface UrlGenerator
+{
+    /**
+     * Generate a URL for use as the HREF of a link.
+     *
+     * - The request is provided, to allow the implementation to pull any
+     *   request-specific items it may need (e.g., results of routing, original
+     *   URI for purposes of generating a fully-qualified URI, etc.).
+     *
+     * - `$routeParams` are any replacements to make in the route string.
+     *
+     * - `$queryParams` are any query string parameters to include in the
+     *   generated URL.
+     */
+    public function generate(
+        ServerRequestInterface $request,
+        string $routeName,
+        array $routeParams = [],
+        array $queryParams = []
+    ) : string;
+}</code></pre>
+
+
+<p>We provide a default implementation for Expressive users,
+<code>Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator</code>,  that uses the
+<code>UrlHelper</code> and <code>ServerUrlHelper</code> from zend-expressive-helpers in order to
+generate URIs.</p>
+<p>The <code>LinkGenerator</code> itself defines two methods:</p>
+<pre class="codehilite"><code class="language-php">$link = $linkGenerator-&gt;fromRoute(
+    $relation,
+    $request,
+    $routeName,
+    $routeParams, // Array of additional route parameters to inject
+    $queryParams, // Array of query string arguments to inject
+    $attributes   // Array of Link attributes to use
+);
+
+$link = $linkGenerator-&gt;templatedFromRoute(
+    $relation,
+    $request,
+    $routeName,
+    $routeParams, // Array of additional route parameters to inject
+    $queryParams, // Array of query string arguments to inject
+    $attributes   // Array of Link attributes to use
+);</code></pre>
+
+
+<p><code>fromRoute()</code> will generate a non-templated <code>Link</code> instance, while
+<code>templatedFromRoute()</code> generates a templated instance.</p>
+<p>If you need to generate custom links based on routing, we recommend composing
+the <code>LinkGenerator</code> in your own classes to do so.</p>
+<h2 id="resources">Resources</h2>
+<p>A HAL resource is simply the representation you want to return for your API.
+<code>Zend\Expressive\Hal\HalResource</code> allows you to model these representations,
+along with any relational links and child resources.</p>
+<p>It defines the following constructor:</p>
+<pre class="codehilite"><code class="language-php">public function __construct(
+    array $data = [],
+    array $links = [],
+    array $embedded = []
+)</code></pre>
+
+
+<p><code>$data</code> should be an associative array of data you wish to include in your
+representation; the only limitation is you may not use the keys <code>_links</code> or
+<code>_embedded</code>, as these are reserved keywords.</p>
+<p><code>$links</code> should be an array of <code>Zend\Expressive\Hal\Link</code> instances.</p>
+<p><code>$embedded</code> should be an array of <code>Zend\Expressive\Hal\HalResource</code> instances.
+Most often, however, you will include these with <code>$data</code>, as the class contains
+logic for identifying them.</p>
+<p>Once you have created an instance, you can access its properties:</p>
+<pre class="codehilite"><code class="language-php">$resource-&gt;getElement($name) // retrieve an element or embedded resource by name
+$resource-&gt;getElements()     // retrieve all elements and embedded resources
+$resource-&gt;getLinks()        // retrieve all relational links
+$resource-&gt;getLinksByRel()   // retrieve links for a specific relation
+$resource-&gt;toArray()         // retrieve associative array representation</code></pre>
+
+
+<p><code>HalResource</code> instances are <em>immutable</em>. We provide a number of methods that
+allow you to create <em>new instances</em> with changes:</p>
+<pre class="codehilite"><code class="language-php">$resource = $resource-&gt;withElement($name, $value);
+$resource = $resource-&gt;withoutElement($name);
+$resource = $resource-&gt;withElements($elements);
+$resource = $resource-&gt;embed($name, $resource);
+$resource = $resource-&gt;withLink($link);
+$resource = $resource-&gt;withoutLink($link);</code></pre>
+
+
+<p>With these tools, you can describe any resource you want to represent.</p>
+
+<hr />
+
+
+<nav>
+  <ul class="pager hidden-print">
+    <li class="previous">
+      <a rel="prev" href="../hal/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../resource-generator/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+</div>
+        
+    </div>
+    <!-- content:end -->
+
+    <div id="footerwrap">
+    <div class="container">
+        <div class="row site-map">
+            <div class="col-lg-3">
+              <p>
+                <strong>Zend Framework</strong><br />
+                <a href="http://framework.zend.com/">framework.zend.com</a><br />
+                <a href="https://docs.zendframework.com">docs.zendframework.com</a><br />
+                <a href="https://packages.zendframework.com">packages.zendframework.com</a><br />
+                <a href="https://apigility.org">apigility.org</a><br />
+              </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 centered">
+                <a class="back-to-top" href="#page-top"><i class="fa fa-chevron-circle-up fa-4" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="spacing"></div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h4>Copyright</h4>
+                <div class="hline-w"></div>
+
+                <p>&copy; 2006-2016 by <a href="http://www.zend.com">Zend</a>, a <a href="http://www.roguewave.com/">Rogue Wave Company</a>.</p>
+            </div>
+
+            <div class="col-lg-4">
+                <h4>Contacts</h4>
+                <div class="hline-w"></div>
+                <p>
+                    <a href="irc://irc.freenode.net/zftalk" class="btn-social btn-outline" alt="IRC" title="IRC"><i class="fa fa-comment"></i></a>
+                    <a href="https://github.com/zendframework" class="btn-social btn-outline" alt="Github" title="Github"><i class="fa fa-github"></i></a>
+                    <a href="https://twitter.com/zfdevteam" class="btn-social btn-outline" alt="Twitter" title="Twitter"><i class="fa fa-twitter"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo=" crossorigin="anonymous"></script>
+    <script>var base_url = '..';</script>
+    <script src="../js/scripts-8b95ab2fc3.js"></script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zf-components">
+  <div class="zf-components-grid">
+    <div class="zf-logo">
+      <a href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../img/zf-logo-mark.svg" alt="Zend Framework" width="250" /></a>
+    </div>
+
+    <div class="component-list"></div>
+
+    <p class="zf-components-rollup"><a href="#">Hide list</a></p>
+  </div>
+</div>
+
+</body>
+
+</html>
