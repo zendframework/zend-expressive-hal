@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-Versions prior to 0.3.0 were released as the package "weierophinney/hal".
+Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 0.4.0 - TBD
+## 0.4.0 - 2017-08-08
 
 ### Added
 
