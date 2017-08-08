@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 0.4.1 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#6](https://github.com/weierophinney/hal/pull/6) fixes an issue with the XML
+  renderer when creating resource elements that represent an array.
+
 ## 0.4.0 - 2017-08-08
 
 ### Added
