@@ -1,8 +1,13 @@
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
+ */
 
-namespace Hal\Metadata\Exception;
+namespace Zend\Expressive\Hal\Metadata\Exception;
 
-use Hal\Metadata\AbstractMetadata;
+use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 use RuntimeException;
 
 class InvalidConfigException extends RuntimeException implements Exception

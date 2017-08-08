@@ -4,10 +4,10 @@ This component provides a number of factories for use with
 [PSR-11](http://www.php-fig.org/psr/psr-11/), in order to generate fully
 configured instances for your use.
 
-## Hal\HalResponseFactoryFactory
+## Zend\Expressive\Hal\HalResponseFactoryFactory
 
-- Registered as service: `Hal\HalResponseFactory`
-- Generates instance of: `Hal\HalResponseFactory`
+- Registered as service: `Zend\Expressive\Hal\HalResponseFactory`
+- Generates instance of: `Zend\Expressive\Hal\HalResponseFactory`
 - Depends on:
     - `Psr\Http\Message\ResponseInterface` service. If not present, it will
       check if zend-diactoros is installed, and use a new `Response` instance
@@ -18,49 +18,49 @@ configured instances for your use.
       service is not present, the factory will check if zend-diactoros is
       installed, and return a callable that returns a new `Stream` instance from
       that library; if not, it raises an exception.
-    - `Hal\Renderer\JsonRenderer` service. If the service is not present, it
-      instantiates an instance itself.
-    - `Hal\Renderer\XmlRenderer` service. If the service is not present, it
-      instantiates an instance itself.
+    - `Zend\Expressive\Hal\Renderer\JsonRenderer` service. If the service is not
+      present, it instantiates an instance itself.
+    - `Zend\Expressive\Hal\Renderer\XmlRenderer` service. If the service is not
+      present, it instantiates an instance itself.
 
 If you want to use a different PSR-7 implementation for the response and stream,
 provide services for `Psr\Http\Message\ResponseInterface` and
 `Psr\Http\Message\StreamInterface`, as described above.
 
-## Hal\LinkGeneratorFactory
+## Zend\Expressive\Hal\LinkGeneratorFactory
 
-- Registered as service: `Hal\LinkGenerator`
-- Generates instance of: `Hal\LinkGenerator`
+- Registered as service: `Zend\Expressive\Hal\LinkGenerator`
+- Generates instance of: `Zend\Expressive\Hal\LinkGenerator`
 - Depends on:
-    - `Hal\LinkGenerator\UrlGenerator` service
+    - `Zend\Expressive\Hal\LinkGenerator\UrlGenerator` service
 
-## Hal\LinkGenerator\ExpressiveUrlGeneratorFactory
+## Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGeneratorFactory
 
-- Registered as service: `Hal\LinkGenerator\ExpressiveUrlGenerator`
-- Generates instance of: `Hal\LinkGenerator\ExpressiveUrlGenerator`
+- Registered as service: `Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator`
+- Generates instance of: `Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator`
 - Depends on:
     - [zendframework/zend-expressive-helpers](https://github.com/zendframework/zend-expressive-helpers) package
     - `Zend\Expressive\Helper\UrlHelper` service
     - `Zend\Expressive\Helper\ServerUrlHelper` service (optional; if not provided,
       URIs will be generated without authority information)
 
-## Hal\LinkGenerator\UrlGenerator
+## Zend\Expressive\Hal\LinkGenerator\UrlGenerator
 
-- Registered as service: `Hal\LinkGenerator\UrlGenerator`
-- Aliased to service: `Hal\LinkGenerator\ExpressiveUrlGenerator`
+- Registered as service: `Zend\Expressive\Hal\LinkGenerator\UrlGenerator`
+- Aliased to service: `Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator`
 
 You can either define an alternate alias, or map the `UrlGenerator` service
 directly to a factory that will return a valid instance.
 
-## Hal\Metadata\MetadataMapFactory
+## Zend\Expressive\Hal\Metadata\MetadataMapFactory
 
-- Registered as service: `Hal\Metadata\MetadataMap`
-- Generates instance of: `Hal\Metadata\MetadataMap`
+- Registered as service: `Zend\Expressive\Hal\Metadata\MetadataMap`
+- Generates instance of: `Zend\Expressive\Hal\Metadata\MetadataMap`
 - Depends on:
     - `config` service; if not present, will use an empty array
 
-This service uses the `Hal\Metadata\MetadataMap` key of the `config` service in
-order to configure and return a `Hal\Metadata\MetadataMap` instance. It expects
+This service uses the `Zend\Expressive\Hal\Metadata\MetadataMap` key of the `config` service in
+order to configure and return a `Zend\Expressive\Hal\Metadata\MetadataMap` instance. It expects
 that value to be an array of elements, each with the following structure:
 
 ```php
@@ -126,14 +126,14 @@ support them. Create `create<type>(array $metadata)` methods for each
 type you wish to support, where `<type>` is your custom class name, minus
 the namespace.
 
-## Hal\ResourceGeneratorFactory
+## Zend\Expressive\Hal\ResourceGeneratorFactory
 
-- Registered as service: `Hal\ResourceGenerator`
-- Generates instance of: `Hal\ResourceGenerator`
+- Registered as service: `Zend\Expressive\Hal\ResourceGenerator`
+- Generates instance of: `Zend\Expressive\Hal\ResourceGenerator`
 - Depends on:
-    - `Hal\Metadata\MetadataMap` service
+    - `Zend\Expressive\Hal\Metadata\MetadataMap` service
     - `Zend\Hydrator\HydratorPluginManager` service
-    - `Hal\LinkGenerator` service
+    - `Zend\Expressive\Hal\LinkGenerator` service
 
 If you wish to use a container implementation other than the
 `Zend\Hydrator\HydratorPluginManager`, either register it under that service

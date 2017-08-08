@@ -21,12 +21,25 @@ matrix:
       env:
         - DEPS=locked
         - TEST_COVERAGE=true
+        - CS_CHECK=true
     - php: 7.1
       env:
         - DEPS=latest
+    - php: 7.2
+      env:
+        - DEPS=lowest
+    - php: 7.2
+      env:
+        - DEPS=locked
+        - TEST_COVERAGE=true
+    - php: 7.2
+      env:
+        - DEPS=latest
+  allow_failures:
+    - php: 7.2
 
 before_install:
-  - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
+  - if [[ $TEST_COVERAGE != 'true' && $TRAVIS_PHP_VERSION =~ ^7.1 ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
   - travis_retry composer self-update
 
 install:
@@ -34,12 +47,11 @@ install:
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
-  - composer show
+  - stty cols 120 && composer show
 
 script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; else composer test ; fi
   - if [[ $CS_CHECK == 'true' ]]; then composer cs-check ; fi
-  - if [[ $CS_CHECK == 'true' ]]; then composer license-check ; fi
 
 after_script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer upload-coverage ; fi

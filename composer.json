@@ -1,17 +1,27 @@
 {
-    "name": "weierophinney/hal",
+    "name": "zendframework/zend-expressive-hal",
     "description": "Hypertext Application Language implementation for PHP and PSR-7",
     "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
+        "expressive",
         "hal",
         "http",
         "psr",
         "psr-7",
         "psr-11",
         "psr-13",
-        "rest"
+        "rest",
+        "zf",
+        "zendframework"
     ],
+    "support": {
+        "docs": "https://docs.zendframework.com/zend-expressive-hal/",
+        "issues": "https://github.com/zendframework/zend-expressive-hal/issues",
+        "source": "https://github.com/zendframework/zend-expressive-hal",
+        "slack": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/expressive"
+    },
     "config": {
         "sort-packages": true
     },
@@ -42,17 +52,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Hal\\": "src/"
+            "Zend\\Expressive\\Hal\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "HalTest\\": "test/"
+            "ZendTest\\Expressive\\Hal\\": "test/"
         }
     },
     "extra": {
         "zf": {
-            "config-provider": "Hal\\ConfigProvider"
+            "config-provider": "Zend\\Expressive\\Hal\\ConfigProvider"
         }
     },
     "scripts": {

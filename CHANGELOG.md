@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+Versions prior to 0.4.0 were released as the package "weierophinney/hal".
+
+## 0.4.0 - 2017-08-08
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- The package name was changed to "zendframework/zend-expressive-hal".
+- The namespace was changed from `Hal` to `Zend\Expressive\Hal`.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.3.0 - 2017-08-07
 
 ### Added

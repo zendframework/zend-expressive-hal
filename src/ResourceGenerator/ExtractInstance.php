@@ -1,11 +1,16 @@
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
+ */
 
-namespace Hal\ResourceGenerator;
+namespace Zend\Expressive\Hal\ResourceGenerator;
 
-use Hal\Metadata\AbstractMetadata;
-use Hal\ResourceGenerator;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\Metadata\AbstractMetadata;
+use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ExtractionInterface;
 
 trait ExtractInstance

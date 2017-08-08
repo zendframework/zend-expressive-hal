@@ -1,5 +1,5 @@
-docs_dir: doc/book
-site_dir: doc/html
+docs_dir: docs/book
+site_dir: docs/html
 pages:
     - index.md
     - Introduction: intro.md
@@ -13,7 +13,5 @@ pages:
         - "Generating Custom Links In Middleware": cookbook/generating-custom-links-in-middleware.md
 site_name: Hypertext Application Language
 site_description: 'Hypertext Application Language for PSR-7 Applications'
-repo_url: 'https://github.com/weierophinney/hal'
-copyright: 'Copyright (c) 2017 <a href="https://mwop.net/">Matthew Weier O&#39;Phinney</a>'
-extra_css:
-    - css/zend-expressive.css
+repo_url: 'https://github.com/zendframework/zend-expressive-hal'
+copyright: 'Copyright (c) 2017 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'

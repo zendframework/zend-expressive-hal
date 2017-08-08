@@ -4,7 +4,7 @@
          bootstrap="vendor/autoload.php"
          colors="true">
     <testsuites>
-        <testsuite name="Hal">
+        <testsuite name="zend-expressive-hal">
             <directory>./test</directory>
         </testsuite>
     </testsuites>

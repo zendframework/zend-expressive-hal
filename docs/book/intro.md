@@ -1,39 +1,42 @@
-# weierophinney/hal
+# zend-expressive-hal
 
 This component provides tools for generating Hypertext Application Language
 (HAL) payloads for your APIs, in both JSON and XML formats.
 
 At its core, it features:
 
-- `Hal\Link`, a value object for describing _relational links_.
-- `Hal\HalResource`, a value object for describing your API resource, its
-  relational links, and any embedded/child resources related to it.
+- `Zend\Expressive\Hal\Link`, a value object for describing _relational links_.
+- `Zend\Expressive\Hal\HalResource`, a value object for describing your API
+  resource, its relational links, and any embedded/child resources related to
+  it.
 
 These two tools allow you to model payloads of varying complexity.
 
 To allow providing _representations_ of these, we provide
-`Hal\HalResponseFactory`. This factory generates a [PSR-7](http://www.php-fig.org/psr/psr-7/)
-response for the provided resource, including its links and any embedded/child
-resources it composes.
+`Zend\Expressive\Hal\HalResponseFactory`. This factory generates a
+[PSR-7](http://www.php-fig.org/psr/psr-7/) response for the provided resource,
+including its links and any embedded/child resources it composes.
 
 Creating link URIs by hand is error-prone, as URI schemas may change; most
-frameworks provide route-based URI generation for this reason. To address
-this, we provide `Hal\LinkGenerator`, and an accompanying interface,
-`Hal\LinkGenerator\UrlGenerator`. You may use these to generate `Link` instances
-that use URIs based on routes you have defined in your application. We also ship
-`Hal\LinkGenerator\ExpressiveUrlGenerator`, which provides a `UrlGenerator`
-implementation backed by the zend-expressive-helpers package.
+frameworks provide route-based URI generation for this reason. To address this,
+we provide `Zend\Expressive\Hal\LinkGenerator`, and an accompanying interface,
+`Zend\Expressive\Hal\LinkGenerator\UrlGenerator`. You may use these to generate
+`Link` instances that use URIs based on routes you have defined in your
+application. We also ship `Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator`,
+which provides a `UrlGenerator` implementation backed by the
+zend-expressive-helpers package.
 
 Finally, we recognize that most modern PHP applications use strong data
 modeling, and thus API payloads need to represent PHP _objects_. To facilitate
 this, we provide two components:
 
-- `Hal\Metadata` is a subcomponent that allows mapping PHP objects to how they
-  should be represented: Should a route be used to generate its self relational
-  link? What zend-hydrator extractor should be used to create a representation
-  of the object? Does the object represent a collection? etc.
-- `Hal\ResourceGenerator` consumes metadata in order to generate `HalResource`
-  instances, mapping metadata to specific representation strategies.
+- `Zend\Expressive\Hal\Metadata` is a subcomponent that allows mapping PHP
+  objects to how they should be represented: Should a route be used to generate
+  its self relational link? What zend-hydrator extractor should be used to
+  create a representation of the object? Does the object represent a collection?
+  etc.
+- `Zend\Expressive\Hal\ResourceGenerator` consumes metadata in order to generate
+  `HalResource` instances, mapping metadata to specific representation strategies.
 
 **The purpose of the package is to automate creation of HAL payloads, including
 relational links, from PHP objects.**
@@ -123,9 +126,9 @@ The configuration will look like this:
 // Provide the following imports:
 use Api\Books\Book;
 use Api\Books\BookCollection;
-use Hal\Metadata\MetadataMap;
-use Hal\Metadata\RouteBasedCollectionMetadata;
-use Hal\Metadata\RouteBasedResourceMetadata;
+use Zend\Expressive\Hal\Metadata\MetadataMap;
+use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
+use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 
 // And include the following in your configuration:
@@ -148,8 +151,8 @@ MetadataMap::class => [
 ### Manually creating and rendering a resource
 
 The following middleware creates a `HalResource` with its associated links, and
-then manually renders it using `Hal\Renderer\JsonRenderer`. (An `XmlRenderer` is
-also provided, but not demonstrated here.)
+then manually renders it using `Zend\Expressive\Hal\Renderer\JsonRenderer`. (An
+`XmlRenderer` is also provided, but not demonstrated here.)
 
 We'll assume that `Api\Books\Repository` handles retrieving data from persistent
 storage.
@@ -158,14 +161,15 @@ storage.
 namespace Api\Books\Action;
 
 use Api\Books\Repository;
-use Hal\HalResource;
-use Hal\Link;
-use Hal\Renderer\JsonRenderer;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 use Zend\Diactoros\Response\TextResponse;
+use Zend\Expressive\Hal\HalResource;
+use Zend\Expressive\Hal\Link;
+use Zend\Expressive\Hal\Renderer\JsonRenderer;
+
 class BookAction implements MiddlewareInterface
 {
     /** @var JsonRenderer */
@@ -218,9 +222,10 @@ them.
 
 ### Middleware using the ResourceGenerator and ResponseFactory
 
-In this next example, our middleware will compose a `Hal\ResourceGenerator`
-instance for generating a `Hal\HalResource` from our objects, and a
-`Hal\HalResponseFactory` for creating a response based on the returned resource.
+In this next example, our middleware will compose a `Zend\Expressive\Hal\ResourceGenerator`
+instance for generating a `Zend\Expressive\Hal\HalResource` from our objects,
+and a `Zend\Expressive\Hal\HalResponseFactory` for creating a response based on
+the returned resource.
 
 First, we'll look at middleware that displays a single book. We'll assume that
 `Api\Books\Repository` handles retrieving data from persistent storage.
@@ -229,12 +234,12 @@ First, we'll look at middleware that displays a single book. We'll assume that
 namespace Api\Books\Action;
 
 use Api\Books\Repository;
-use Hal\HalResponseFactory;
-use Hal\ResourceGenerator;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Http\ServerRequestInterface;
 use RuntimeException;
+use Zend\Expressive\Hal\HalResponseFactory;
+use Zend\Expressive\Hal\ResourceGenerator;
 
 class BookAction
 {
@@ -304,12 +309,12 @@ parameter to determine which page of results to return.
 namespace Api\Books\Action;
 
 use Api\Books\Repository;
-use Hal\HalResponseFactory;
-use Hal\ResourceGenerator;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Http\ServerRequestInterface;
 use RuntimeException;
+use Zend\Expressive\Hal\HalResponseFactory;
+use Zend\Expressive\Hal\ResourceGenerator;
 
 class BooksAction
 {
