@@ -15,7 +15,7 @@ use Zend\Expressive\Hal\ResourceGenerator;
 interface Strategy
 {
     /**
-     * @param object $instance Instance from which to create Resource.
+     * @param object $instance Instance from which to create HalResource.
      * @throws Exception\UnexpectedMetadataTypeException for metadata types the
      *     strategy cannot handle.
      */
