@@ -392,4 +392,25 @@ class ResourceGeneratorTest extends TestCase
         $this->expectExceptionMessage('Unexpected metadata of type');
         $this->generator->fromObject($instance, $this->request->reveal());
     }
+
+    /**
+     * @dataProvider strategyCollection
+     */
+    public function testNotTraversableInstanceForCollectionStrategy(ResourceGenerator\Strategy $strategy, string $metadata)
+    {
+        $collectionMetadata = new $metadata(
+            TestAsset\FooBar::class,
+            'foo-bar',
+            '/api/foo'
+        );
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($collectionMetadata);
+
+        $instance = new TestAsset\FooBar();
+
+        $this->expectException(ResourceGenerator\Exception\InvalidCollectionException::class);
+        $this->expectExceptionMessage('not a Traversable');
+        $this->generator->fromObject($instance, $this->request->reveal());
+    }
 }
