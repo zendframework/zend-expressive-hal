@@ -396,8 +396,10 @@ class ResourceGeneratorTest extends TestCase
     /**
      * @dataProvider strategyCollection
      */
-    public function testNotTraversableInstanceForCollectionStrategy(ResourceGenerator\Strategy $strategy, string $metadata)
-    {
+    public function testNotTraversableInstanceForCollectionStrategy(
+        ResourceGenerator\Strategy $strategy,
+        string $metadata
+    ) {
         $collectionMetadata = new $metadata(
             TestAsset\FooBar::class,
             'foo-bar',
