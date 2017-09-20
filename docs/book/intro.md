@@ -46,7 +46,7 @@ relational links, from PHP objects.**
 Use Composer:
 
 ```bash
-$ composer require weierophinney/hal
+$ composer require zendframework/zend-expressive-hal
 ```
 
 If you are adding this to an Expressive application, and have the
