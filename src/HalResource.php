@@ -30,14 +30,14 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
     private $data = [];
 
     /**
-     * @var Resource[]
+     * @var HalResource[]
      */
     private $embedded = [];
 
     /**
      * @param array $data
      * @param LinkInterface[] $links
-     * @param Resource[] $embedded
+     * @param HalResource[] $embedded
      */
     public function __construct(array $data = [], array $links = [], array $embedded = [])
     {
@@ -104,7 +104,7 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
      * Retrieve all elements of the resource.
      *
      * Returned as a set of key/value pairs. Embedded resources are mixed
-     * in as `Resource` instances under the associated key.
+     * in as `HalResource` instances under the associated key.
      */
     public function getElements() : array
     {
@@ -121,7 +121,7 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
      *
      * @param string $name
      * @param mixed $value
-     * @return Resource
+     * @return HalResource
      * @throws InvalidArgumentException if $name is empty
      * @throws InvalidArgumentException if $name is a reserved keyword
      * @throws RuntimeException if $name is already in use for an embedded
@@ -146,7 +146,7 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
      * Return an instance removing the named element or embedded resource.
      *
      * @param string $name
-     * @return Resource
+     * @return HalResource
      * @throws InvalidArgumentException if $name is empty
      * @throws InvalidArgumentException if $name is a reserved keyword
      */
@@ -188,11 +188,11 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
 
     /**
      * @param string $name
-     * @param Resource|Resource[] $resource
+     * @param HalResource|HalResource[] $resource
      * @param bool $forceCollection Whether or not a single resource or an
      *     array containing a single resource should be represented as an array of
      *     resources during representation.
-     * @return Resource
+     * @return HalResource
      */
     public function embed(string $name, $resource, bool $forceCollection = false) : HalResource
     {
@@ -290,7 +290,7 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
      * structure of the first element; if they are comparable, then it appends
      * the new one to the list.
      *
-     * @return Resource|Resource[]
+     * @return HalResource|HalResource[]
      */
     private function aggregateEmbeddedResource(string $name, $resource, string $context, bool $forceCollection)
     {
@@ -303,7 +303,7 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
             return $this->aggregateEmbeddedCollection($name, $resource, $context);
         }
 
-        // $resource is a Resource; existing resource is also a Resource
+        // $resource is a HalResource; existing resource is also a HalResource
         if ($this->embedded[$name] instanceof self) {
             $this->compareResources(
                 $this->embedded[$name],
@@ -314,7 +314,7 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
             return [$this->embedded[$name], $resource];
         }
 
-        // $resource is a Resource; existing collection present
+        // $resource is a HalResource; existing collection present
         $this->compareResources(
             $this->firstResource($this->embedded[$name]),
             $resource,
