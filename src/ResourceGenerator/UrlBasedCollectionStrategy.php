@@ -45,7 +45,7 @@ class UrlBasedCollectionStrategy implements Strategy
      * @param Metadata\AbstractCollectionMetadata $metadata Used to provide the
      *     base URL, pagination parameter, and type of pagination used (query
      *     string, path parameter)
-     * @param HalResourceGenerator $resourceGenerator Ignored; required to fulfill
+     * @param ResourceGenerator $resourceGenerator Ignored; required to fulfill
      *     abstract.
      * @param ServerRequestInterface $request Ignored; required to fulfill
      *     abstract.
