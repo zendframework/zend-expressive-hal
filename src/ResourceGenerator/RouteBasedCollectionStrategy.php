@@ -28,7 +28,7 @@ class RouteBasedCollectionStrategy implements Strategy
             throw Exception\UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
                 self::class,
-                Metadata\RouteBasedCollectionMetadata
+                Metadata\RouteBasedCollectionMetadata::class
             );
         }
 

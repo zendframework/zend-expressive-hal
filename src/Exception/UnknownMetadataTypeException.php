@@ -8,10 +8,11 @@
 namespace Zend\Expressive\Hal\Exception;
 
 use RuntimeException;
+use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 
 class UnknownMetadataTypeException extends RuntimeException implements Exception
 {
-    public static function forMetadata(Metadata\AbstractMetadata $metadata) : self
+    public static function forMetadata(AbstractMetadata $metadata) : self
     {
         return new self(sprintf(
             'Encountered unknown metadata type %s; no strategy available for creating resource from this metadata',
@@ -24,7 +25,7 @@ class UnknownMetadataTypeException extends RuntimeException implements Exception
         return new self(sprintf(
             'Invalid metadata type "%s"; does not exist, or does not extend %s',
             $metadata,
-            Metadata\AbstractMetadata::class
+            AbstractMetadata::class
         ));
     }
 }
