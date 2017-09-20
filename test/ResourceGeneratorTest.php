@@ -8,11 +8,12 @@
 namespace ZendTest\Expressive\Hal;
 
 use ArrayIterator;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Exception\InvalidObjectException;
+use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\LinkGenerator;
 use Zend\Expressive\Hal\Metadata;
@@ -343,5 +344,52 @@ class ResourceGeneratorTest extends TestCase
         $this->expectException(InvalidObjectException::class);
         $this->expectExceptionMessage('not in metadata map');
         $this->generator->fromObject($this, $this->request->reveal());
+    }
+
+    public function strategyCollection() : Generator
+    {
+        yield 'route-based-collection' => [
+            new ResourceGenerator\RouteBasedCollectionStrategy(),
+            Metadata\RouteBasedCollectionMetadata::class,
+        ];
+
+        yield 'url-based-collection' => [
+            new ResourceGenerator\UrlBasedCollectionStrategy(),
+            Metadata\UrlBasedCollectionMetadata::class,
+        ];
+    }
+
+    public function strategyResource() : Generator
+    {
+        yield 'route-based-resource' => [
+            new ResourceGenerator\RouteBasedResourceStrategy(),
+        ];
+
+        yield 'url-based-resource' => [
+            new ResourceGenerator\UrlBasedResourceStrategy(),
+        ];
+    }
+
+    /**
+     * @dataProvider strategyCollection
+     * @dataProvider strategyResource
+     */
+    public function testUnexpectedMetadataForStrategy(ResourceGenerator\Strategy $strategy)
+    {
+        $this->generator->addStrategy(
+            TestAsset\TestMetadata::class,
+            $strategy
+        );
+
+        $collectionMetadata = new TestAsset\TestMetadata();
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($collectionMetadata);
+
+        $instance = new TestAsset\FooBar();
+
+        $this->expectException(ResourceGenerator\Exception\UnexpectedMetadataTypeException::class);
+        $this->expectExceptionMessage('Unexpected metadata of type');
+        $this->generator->fromObject($instance, $this->request->reveal());
     }
 }

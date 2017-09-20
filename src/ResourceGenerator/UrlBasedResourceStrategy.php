@@ -27,7 +27,7 @@ class UrlBasedResourceStrategy implements Strategy
             throw Exception\UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
                 self::class,
-                Metadata\UrlBasedResourceMetadata
+                Metadata\UrlBasedResourceMetadata::class
             );
         }
 

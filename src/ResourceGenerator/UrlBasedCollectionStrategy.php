@@ -28,7 +28,7 @@ class UrlBasedCollectionStrategy implements Strategy
             throw Exception\UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
                 self::class,
-                Metadata\UrlBasedCollectionMetadata
+                Metadata\UrlBasedCollectionMetadata::class
             );
         }
 

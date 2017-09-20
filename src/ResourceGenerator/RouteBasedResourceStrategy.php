@@ -27,7 +27,7 @@ class RouteBasedResourceStrategy implements Strategy
             throw Exception\UnexpectedMetadataTypeException::forMetadata(
                 $metadata,
                 self::class,
-                Metadata\RouteBasedResourceMetadata
+                Metadata\RouteBasedResourceMetadata::class
             );
         }
 
