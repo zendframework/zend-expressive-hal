@@ -8,6 +8,7 @@
 namespace Zend\Expressive\Hal\Exception;
 
 use InvalidArgumentException;
+use Zend\Expressive\Hal\HalResource;
 
 class InvalidObjectException extends InvalidArgumentException implements Exception
 {

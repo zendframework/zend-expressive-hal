@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 0.4.2 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#7](https://github.com/weierophinney/hal/pull/7) fixes a number of issues in
+  the various exception implementations due to failure to import classes
+  referenced in typehints.
+
 ## 0.4.1 - 2017-08-08
 
 ### Added
