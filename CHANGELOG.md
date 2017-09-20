@@ -28,6 +28,10 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
   the various exception implementations due to failure to import classes
   referenced in typehints.
 
+- [#6](https://github.com/weierophinney/hal/pull/6) fixes a number of docblock
+  annotations to reference `HalResource` vs `Resource` (which is a reserved
+  word).
+
 ## 0.4.1 - 2017-08-08
 
 ### Added
