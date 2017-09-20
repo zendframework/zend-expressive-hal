@@ -7,8 +7,10 @@
 
 namespace Zend\Expressive\Hal\Metadata\Exception;
 
-use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 use RuntimeException;
+use Zend\Expressive\Hal\Metadata\AbstractMetadata;
+use Zend\Expressive\Hal\Metadata\MetadataMap;
+use Zend\Expressive\Hal\Metadata\MetadataMapFactory;
 
 class InvalidConfigException extends RuntimeException implements Exception
 {
