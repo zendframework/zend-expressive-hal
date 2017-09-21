@@ -9,6 +9,7 @@ namespace ZendTest\Expressive\Hal;
 
 use ArrayIterator;
 use Generator;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -329,6 +330,118 @@ class ResourceGeneratorTest extends TestCase
             $this->assertEquals($id, $item->getElement('id'));
             $id += 1;
         }
+    }
+
+    public function testGeneratorDoesNotAcceptPageQueryOutOfBounds()
+    {
+        $instance      = new TestAsset\FooBar;
+        $instance->foo = 'BAR';
+        $instance->bar = 'BAZ';
+
+        $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
+            TestAsset\FooBar::class,
+            'foo-bar',
+            ObjectPropertyHydrator::class,
+            'id',
+            'foo_bar_id',
+            ['test' => 'param']
+        );
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
+
+        $instances = [];
+        for ($i = 1; $i < 15; $i += 1) {
+            $next = clone $instance;
+            $next->id = $i;
+            $instances[] = $next;
+
+            $this->linkGenerator
+                ->fromRoute(
+                    'self',
+                    $this->request->reveal(),
+                    'foo-bar',
+                    [
+                        'foo_bar_id' => $i,
+                        'test' => 'param',
+                    ]
+                )
+                ->willReturn(new Link('self', '/api/foo-bar/' . $i));
+        }
+
+        $collectionMetadata = new Metadata\RouteBasedCollectionMetadata(
+            Paginator::class,
+            'foo-bar',
+            'foo-bar'
+        );
+
+        $this->metadataMap->has(Paginator::class)->willReturn(true);
+        $this->metadataMap->get(Paginator::class)->willReturn($collectionMetadata);
+
+        $this->request->getQueryParams()->willReturn(['page' => 10]);
+
+        $collection = new Paginator(new ArrayAdapter($instances));
+        $collection->setItemCountPerPage(3);
+
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Page 10 is out of bounds. Collection has 5 pages.');
+        $this->generator->fromObject($collection, $this->request->reveal());
+    }
+
+    public function testGeneratorDoesNotAcceptNegativePageQuery()
+    {
+        $instance      = new TestAsset\FooBar;
+        $instance->foo = 'BAR';
+        $instance->bar = 'BAZ';
+
+        $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
+            TestAsset\FooBar::class,
+            'foo-bar',
+            ObjectPropertyHydrator::class,
+            'id',
+            'foo_bar_id',
+            ['test' => 'param']
+        );
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
+
+        $instances = [];
+        for ($i = 1; $i < 2; $i += 1) {
+            $next = clone $instance;
+            $next->id = $i;
+            $instances[] = $next;
+
+            $this->linkGenerator
+                ->fromRoute(
+                    'self',
+                    $this->request->reveal(),
+                    'foo-bar',
+                    [
+                        'foo_bar_id' => $i,
+                        'test' => 'param',
+                    ]
+                )
+                ->willReturn(new Link('self', '/api/foo-bar/' . $i));
+        }
+
+        $collectionMetadata = new Metadata\RouteBasedCollectionMetadata(
+            Paginator::class,
+            'foo-bar',
+            'foo-bar'
+        );
+
+        $this->metadataMap->has(Paginator::class)->willReturn(true);
+        $this->metadataMap->get(Paginator::class)->willReturn($collectionMetadata);
+
+        $this->request->getQueryParams()->willReturn(['page' => -10]);
+
+        $collection = new Paginator(new ArrayAdapter($instances));
+        $collection->setItemCountPerPage(3);
+
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Page -10 is out of bounds. Collection has 1 page.');
+        $this->generator->fromObject($collection, $this->request->reveal());
     }
 
     public function testGeneratorRaisesExceptionForNonObjectType()

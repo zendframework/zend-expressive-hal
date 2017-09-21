@@ -8,14 +8,12 @@
 namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Countable;
-use Traversable;
-use Psr\Container\ContainerInterface;
+use OutOfBoundsException;
 use Psr\Http\Message\ServerRequestInterface;
+use Traversable;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
-use Zend\Expressive\Hal\LinkGenerator;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
-use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Paginator\Paginator;
 
@@ -75,6 +73,15 @@ trait ExtractCollection
             $page = $paginationParamType === AbstractCollectionMetadata::TYPE_QUERY
                 ? ($request->getQueryParams()[$paginationParam] ?? 1)
                 : $request->getAttribute($paginationParam, 1);
+
+            if ($page > $pageCount || $page < 1) {
+                throw new OutOfBoundsException(sprintf(
+                    'Page %d is out of bounds. Collection has %d page%s.',
+                    $page,
+                    $pageCount,
+                    $pageCount > 1 ? 's' : ''
+                ));
+            }
 
             $collection->setCurrentPageNumber($page);
 
