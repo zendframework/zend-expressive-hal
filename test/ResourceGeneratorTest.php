@@ -444,6 +444,55 @@ class ResourceGeneratorTest extends TestCase
         $this->generator->fromObject($collection, $this->request->reveal());
     }
 
+    public function testGeneratorAcceptsOnePageWhenCollectionHasNoEmbedded()
+    {
+        $instance      = new TestAsset\FooBar;
+        $instance->foo = 'BAR';
+        $instance->bar = 'BAZ';
+
+        $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
+            TestAsset\FooBar::class,
+            'foo-bar',
+            ObjectPropertyHydrator::class,
+            'id',
+            'foo_bar_id',
+            ['test' => 'param']
+        );
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
+
+        $this->linkGenerator
+            ->fromRoute(
+                'self',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 1]
+            )
+            ->willReturn(new Link('self', '/api/foo-bar?page=3'));
+
+        $instances = [];
+
+        $collectionMetadata = new Metadata\RouteBasedCollectionMetadata(
+            Paginator::class,
+            'foo-bar',
+            'foo-bar'
+        );
+
+        $this->metadataMap->has(Paginator::class)->willReturn(true);
+        $this->metadataMap->get(Paginator::class)->willReturn($collectionMetadata);
+
+        $collection = new Paginator(new ArrayAdapter($instances));
+        $collection->setItemCountPerPage(3);
+
+        $resource = $this->generator->fromObject($collection, $this->request->reveal());
+
+        $this->assertEquals(0, $resource->getElement('_total_items'));
+        $this->assertEquals(1, $resource->getElement('_page'));
+        $this->assertEquals(0, $resource->getElement('_page_count'));
+    }
+
     public function testGeneratorRaisesExceptionForNonObjectType()
     {
         $this->expectException(InvalidObjectException::class);

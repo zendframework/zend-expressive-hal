@@ -74,7 +74,7 @@ trait ExtractCollection
                 ? ($request->getQueryParams()[$paginationParam] ?? 1)
                 : $request->getAttribute($paginationParam, 1);
 
-            if ($page > $pageCount || $page < 1) {
+            if ($page < 1 || ($page > $pageCount && $pageCount > 0)) {
                 throw new OutOfBoundsException(sprintf(
                     'Page %d is out of bounds. Collection has %d page%s.',
                     $page,
