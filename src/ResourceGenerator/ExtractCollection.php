@@ -8,14 +8,11 @@
 namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Countable;
-use Traversable;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Traversable;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
-use Zend\Expressive\Hal\LinkGenerator;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
-use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Paginator\Paginator;
 
