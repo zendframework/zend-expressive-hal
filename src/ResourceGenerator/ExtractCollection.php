@@ -73,8 +73,8 @@ trait ExtractCollection
 
             $paginationParam = $metadata->getPaginationParam();
             $page = $paginationParamType === AbstractCollectionMetadata::TYPE_QUERY
-                ? ($request->getQueryParams()[$paginationParam] ?? 1)
-                : $request->getAttribute($paginationParam, 1);
+                ? (int) ($request->getQueryParams()[$paginationParam] ?? 1)
+                : (int) $request->getAttribute($paginationParam, 1);
 
             $collection->setCurrentPageNumber($page);
 
