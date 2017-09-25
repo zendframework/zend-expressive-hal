@@ -7,8 +7,8 @@
 
 namespace Zend\Expressive\Hal\ResourceGenerator\Exception;
 
-use RuntimeException;
+use OutOfBoundsException as BaseOutOfBoundsException;
 
-class OutOfBoundsException extends RuntimeException implements Exception
+class OutOfBoundsException extends BaseOutOfBoundsException implements Exception
 {
 }
