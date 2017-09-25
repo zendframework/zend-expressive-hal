@@ -9,7 +9,6 @@ namespace ZendTest\Expressive\Hal;
 
 use ArrayIterator;
 use Generator;
-use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,6 +18,7 @@ use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\LinkGenerator;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
+use Zend\Expressive\Hal\ResourceGenerator\Exception\OutOfBoundsException;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
