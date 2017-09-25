@@ -8,13 +8,13 @@
 namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Countable;
-use OutOfBoundsException;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
+use Zend\Expressive\Hal\ResourceGenerator\Exception;
 use Zend\Paginator\Paginator;
 
 trait ExtractCollection
@@ -55,6 +55,16 @@ trait ExtractCollection
         return $this->extractIterator($collection, $metadata, $resourceGenerator, $request);
     }
 
+    /**
+     * Generates a paginated hal resource from a collection
+     *
+     * @param Paginator $collection
+     * @param AbstractCollectionMetadata $metadata
+     * @param ResourceGenerator $resourceGenerator
+     * @param ServerRequestInterface $request
+     * @return HalResource
+     * @throws Exception\OutOfBoundsException if requested page if outside the available pages
+     */
     private function extractPaginator(
         Paginator $collection,
         AbstractCollectionMetadata $metadata,
@@ -75,7 +85,7 @@ trait ExtractCollection
                 : $request->getAttribute($paginationParam, 1);
 
             if ($page < 1 || ($page > $pageCount && $pageCount > 0)) {
-                throw new OutOfBoundsException(sprintf(
+                throw new Exception\OutOfBoundsException(sprintf(
                     'Page %d is out of bounds. Collection has %d page%s.',
                     $page,
                     $pageCount,
