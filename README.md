@@ -3,8 +3,8 @@
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-expressive-hal.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-expressive-hal)
 [![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-expressive-hal/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-expressive-hal?branch=master)
 
-This library provides provides utilities for modeling HAL resources with links
-and generating [PSR-7](http://www.php-fig.org/psr/psr-7/) responses representing
+This library provides utilities for modeling HAL resources with links and
+generating [PSR-7](http://www.php-fig.org/psr/psr-7/) responses representing
 both JSON and XML serializations of them.
 
 ## Installation
