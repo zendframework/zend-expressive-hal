@@ -10,7 +10,7 @@ namespace Zend\Expressive\Hal\ResourceGenerator\Exception;
 use RuntimeException;
 use Zend\Hydrator\ExtractionInterface;
 
-class InvalidExtractorException extends RuntimeException implements Exception
+class InvalidExtractorException extends RuntimeException implements ExceptionInterface
 {
     /**
      * @param mixed $extractor

@@ -10,7 +10,7 @@ namespace Zend\Expressive\Hal\Exception;
 use InvalidArgumentException;
 use Zend\Expressive\Hal\HalResource;
 
-class InvalidObjectException extends InvalidArgumentException implements Exception
+class InvalidObjectException extends InvalidArgumentException implements ExceptionInterface
 {
     /**
      * @param mixed $value Non-object value.
