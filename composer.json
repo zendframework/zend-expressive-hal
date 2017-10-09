@@ -27,18 +27,17 @@
     },
     "require": {
         "php": "^7.1",
-        "psr/http-message": "^1.0",
+        "psr/http-message": "^1.0.1",
         "psr/http-message-implementation": "^1.0",
         "psr/link": "^1.0",
         "willdurand/negotiation": "^2.3.1"
     },
     "require-dev": {
-        "phpspec/prophecy": "^1.7.0",
-        "phpunit/phpunit": "^6.0",
-        "zendframework/zend-coding-standard": "^1.0",
-        "zendframework/zend-diactoros": "^1.4",
-        "zendframework/zend-expressive-helpers": "^4.0",
-        "zendframework/zend-hydrator": "^2.2",
+        "phpunit/phpunit": "^6.4.1",
+        "zendframework/zend-coding-standard": "~1.0.0",
+        "zendframework/zend-diactoros": "^1.6",
+        "zendframework/zend-expressive-helpers": "^4.2",
+        "zendframework/zend-hydrator": "^2.3.1",
         "zendframework/zend-paginator": "^2.7"
     },
     "provide": {
@@ -46,8 +45,8 @@
     },
     "suggest": {
         "psr/container-implementation": "^1.0 in order to use the provided PSR-11 factories",
-        "zendframework/zend-expressive-helpers": "^4.0 in order to use UrlHelper/ServerUrlHelper-based ExpressiveUrlGenerator with the LinkGenerator",
-        "zendframework/zend-hydrator": "^2.2.2 in order to use the ResourceGenerator to create Resource instances from objects",
+        "zendframework/zend-expressive-helpers": "^4.2 in order to use UrlHelper/ServerUrlHelper-based ExpressiveUrlGenerator with the LinkGenerator",
+        "zendframework/zend-hydrator": "^2.3.1 in order to use the ResourceGenerator to create Resource instances from objects",
         "zendframework/zend-paginator": "^2.7 in order to provide paginated collections"
     },
     "autoload": {
