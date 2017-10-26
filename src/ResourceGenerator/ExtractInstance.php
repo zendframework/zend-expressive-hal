@@ -9,6 +9,7 @@ namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ExtractionInterface;
@@ -41,11 +42,20 @@ trait ExtractInstance
                 continue;
             }
 
-            if (! $metadataMap->has(get_class($value))) {
+            $childClass = get_class($value);
+            if (! $metadataMap->has($childClass)) {
                 continue;
             }
 
-            $array[$key] = $resourceGenerator->fromObject($value, $request);
+            $childData = $resourceGenerator->fromObject($value, $request);
+
+            // Nested collections need to be merged.
+            $childMetadata = $metadataMap->get($childClass);
+            if ($childMetadata instanceof AbstractCollectionMetadata) {
+                $childData = $childData->getElement($childMetadata->getCollectionRelation());
+            }
+
+            $array[$key] = $childData;
         }
 
         return $array;
