@@ -145,7 +145,7 @@ class NestedCollectionResourceGenerationTest extends TestCase
                 $request->reveal(),
                 'collection'
             )
-            ->shouldNotBeCalled();
+            ->willReturn(new Link('self', '/api/collection'));
 
         return $linkGenerator;
     }
