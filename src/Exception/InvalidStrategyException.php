@@ -10,7 +10,7 @@ namespace Zend\Expressive\Hal\Exception;
 use InvalidArgumentException;
 use Zend\Expressive\Hal\ResourceGenerator\Strategy;
 
-class InvalidStrategyException extends InvalidArgumentException implements Exception
+class InvalidStrategyException extends InvalidArgumentException implements ExceptionInterface
 {
     public static function forType(string $strategy) : self
     {

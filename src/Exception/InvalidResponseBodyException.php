@@ -10,7 +10,7 @@ namespace Zend\Expressive\Hal\Exception;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
-class InvalidResponseBodyException extends RuntimeException implements Exception
+class InvalidResponseBodyException extends RuntimeException implements ExceptionInterface
 {
     public static function forIncorrectStreamType() : self
     {

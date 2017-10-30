@@ -11,7 +11,7 @@ use RuntimeException;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 
-class UnexpectedMetadataTypeException extends RuntimeException implements Exception
+class UnexpectedMetadataTypeException extends RuntimeException implements ExceptionInterface
 {
     public static function forMetadata(AbstractMetadata $metadata, string $strategy, string $expected) : self
     {
