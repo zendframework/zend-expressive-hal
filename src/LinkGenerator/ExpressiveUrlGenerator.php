@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Helper\ServerUrlHelper;
 use Zend\Expressive\Helper\UrlHelper;
 
-class ExpressiveUrlGenerator implements UrlGenerator
+class ExpressiveUrlGenerator implements UrlGeneratorInterface
 {
     /**
      * @var null|ServerUrlHelper
