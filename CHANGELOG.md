@@ -4,13 +4,24 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 0.5.0 - TBD
+## 0.5.0 - 2017-10-30
 
 ### Added
 
 - Nothing.
 
 ### Changed
+
+- [#20](https://github.com/zendframework/zend-expressive-hal/pull/20) renames
+  the following interfaces and traits to have `Interface` and `Trait` suffixes,
+  respectively; this was done for consistency with existing ZF packages. (Values
+  after the `:` retain the namespace, which is omitted for brevity.)
+
+  - `Zend\Expressive\Hal\LinkGenerator\UrlGenerator`: `UrlGeneratorInterface`
+  - `Zend\Expressive\Hal\Renderer\Renderer`: `RendererInterface`
+  - `Zend\Expressive\Hal\ResourceGenerator\Strategy`: `StrategyInterface`
+  - `Zend\Expressive\Hal\ResourceGenerator\ExtractCollection`: `ExtractCollectionTrait`
+  - `Zend\Expressive\Hal\ResourceGenerator\ExtractInstance`: `ExtractInstanceTrait`
 
 - [#16](https://github.com/zendframework/zend-expressive-hal/pull/16) renames
   the various `Exception` interfaces to `ExceptionInterface`, in order to be
