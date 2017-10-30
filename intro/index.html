@@ -322,8 +322,10 @@ class BookAction implements MiddlewareInterface
 {
     /** @var JsonRenderer */
     private $renderer;
+
     /** @var Repository */
     private $repository;
+
     public function __construct(
         Repository $repository,
         JsonRenderer $renderer
@@ -331,6 +333,7 @@ class BookAction implements MiddlewareInterface
         $this-&gt;repository = $repository;
         $this-&gt;renderer = $renderer;
     }
+
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
         $id = $request-&gt;getAttribute('id', false);

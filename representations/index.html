@@ -195,12 +195,12 @@ provides <code>Zend\Expressive\Hal\HalResponseFactory</code> for generating a PS
 response containing the HAL representation. This chapter dives into that with
 more detail.</p>
 <h2 id="renderers">Renderers</h2>
-<p>All renderers implement <code>Zend\Expressive\Hal\Renderer\Renderer</code>:</p>
+<p>All renderers implement <code>Zend\Expressive\Hal\Renderer\RendererInterface</code>:</p>
 <pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\Renderer;
 
 use Zend\Expressive\Hal\HalResource;
 
-interface Renderer
+interface RendererInterface
 {
     public function render(HalResource $resource) : string;
 }</code></pre>

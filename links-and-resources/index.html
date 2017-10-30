@@ -248,13 +248,13 @@ their routers to ensure that generated links conform to known routing
 specifications. <code>Link</code> expects only a string URI, however; how can you prevent
 hard-coding that URI?</p>
 <p>This component provides a tool for that: <code>Zend\Expressive\Hal\LinkGenerator</code>.
-This class composes a <code>Zend\Expressive\Hal\LinkGenerator\UrlGenerator</code> instance,
-which defines the following:</p>
+This class composes a <code>Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface</code>
+instance, which defines the following:</p>
 <pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\LinkGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-interface UrlGenerator
+interface UrlGeneratorInterface
 {
     /**
      * Generate a URL for use as the HREF of a link.

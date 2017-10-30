@@ -318,8 +318,8 @@ to use the <code>Zend\Hydrator\HydratorPluginManager</code>.</p>
 instance is passed along to the <code>LinkGenerator</code> in order to generate route-based
 URIs for <code>Link</code> instances.)</p>
 <h3 id="customizing-resource-generation">Customizing resource generation</h3>
-<p>The <code>ResourceGenerator</code> allows composing <code>Zend\Expressive\Hal\ResourceGenerator\Strategy</code>
-instances. The <code>Strategy</code> interface defines the following:</p>
+<p>The <code>ResourceGenerator</code> allows composing <code>Zend\Expressive\Hal\ResourceGenerator\StrategyInterface</code>
+instances. The <code>StrategyInterface</code> defines the following:</p>
 <pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -327,7 +327,7 @@ use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-interface Strategy
+interface StrategyInterface
 {
     /**
      * @param object $instance Instance from which to create Resource.
@@ -353,8 +353,8 @@ $resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</c
 <p>If a strategy already is mapped for the given metadata type, this method will
 override it.</p>
 <p>To facilitate common operations, this library provides two traits,
-<code>Zend\Expressive\Hal\ResourceGenerator\ExtractCollection</code> and
-<code>Zend\Expressive\Hal\ResourceGenerator\ExtractInstance</code>; inspect these if you
+<code>Zend\Expressive\Hal\ResourceGenerator\ExtractCollectionTrait</code> and
+<code>Zend\Expressive\Hal\ResourceGenerator\ExtractInstanceTrait</code>; inspect these if you
 decide to write your own strategies.</p>
 
 <hr />
