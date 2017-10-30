@@ -331,6 +331,112 @@ class ResourceGeneratorTest extends TestCase
         }
     }
 
+    public function testGeneratedRouteBasedCollectionCastsPaginationMetadataToIntegers()
+    {
+        $instance      = new TestAsset\FooBar;
+        $instance->foo = 'BAR';
+        $instance->bar = 'BAZ';
+
+        $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
+            TestAsset\FooBar::class,
+            'foo-bar',
+            ObjectPropertyHydrator::class,
+            'id',
+            'foo_bar_id',
+            ['test' => 'param']
+        );
+
+        $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
+        $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
+
+        $instances = [];
+        for ($i = 1; $i < 5; $i += 1) {
+            $next = clone $instance;
+            $next->id = $i;
+            $instances[] = $next;
+
+            $this->linkGenerator
+                ->fromRoute(
+                    'self',
+                    $this->request->reveal(),
+                    'foo-bar',
+                    [
+                        'foo_bar_id' => $i,
+                        'test' => 'param',
+                    ]
+                )
+                ->willReturn(new Link('self', '/api/foo-bar/' . $i));
+        }
+
+        $collectionMetadata = new Metadata\RouteBasedCollectionMetadata(
+            Paginator::class,
+            'foo-bar',
+            'foo-bar'
+        );
+
+        $this->metadataMap->has(Paginator::class)->willReturn(true);
+        $this->metadataMap->get(Paginator::class)->willReturn($collectionMetadata);
+
+        $this->linkGenerator
+            ->fromRoute(
+                'self',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 3]
+            )
+            ->willReturn(new Link('self', '/api/foo-bar?page=3'));
+        $this->linkGenerator
+            ->fromRoute(
+                'first',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 1]
+            )
+            ->willReturn(new Link('first', '/api/foo-bar?page=1'));
+        $this->linkGenerator
+            ->fromRoute(
+                'prev',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 2]
+            )
+            ->willReturn(new Link('prev', '/api/foo-bar?page=2'));
+        $this->linkGenerator
+            ->fromRoute(
+                'next',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 4]
+            )
+            ->willReturn(new Link('next', '/api/foo-bar?page=4'));
+        $this->linkGenerator
+            ->fromRoute(
+                'last',
+                $this->request->reveal(),
+                'foo-bar',
+                [],
+                ['page' => 5]
+            )
+            ->willReturn(new Link('last', '/api/foo-bar?page=5'));
+
+        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+
+        $this->request->getQueryParams()->willReturn(['page' => '3']);
+
+        $collection = new Paginator(new ArrayAdapter($instances));
+        $collection->setItemCountPerPage(3);
+
+        $resource = $this->generator->fromObject($collection, $this->request->reveal());
+
+        $this->assertSame(4, $resource->getElement('_total_items'));
+        $this->assertSame(3, $resource->getElement('_page'));
+        $this->assertSame(2, $resource->getElement('_page_count'));
+    }
+
     public function testGeneratorRaisesExceptionForNonObjectType()
     {
         $this->expectException(InvalidObjectException::class);
