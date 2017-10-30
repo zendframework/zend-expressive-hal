@@ -331,7 +331,7 @@ class ResourceGeneratorTest extends TestCase
         }
     }
 
-    public function testGeneratedRouteBasedCollectionHasProperPaginationCasts()
+    public function testGeneratedRouteBasedCollectionCastsPaginationMetadataToIntegers()
     {
         $instance      = new TestAsset\FooBar;
         $instance->foo = 'BAR';
