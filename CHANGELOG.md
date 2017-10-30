@@ -24,11 +24,15 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
-- [#7](https://github.com/weierophinney/hal/pull/7) fixes a number of issues in
+- [#12](https://github.com/zendframework/zend-expressive-hal/pull/12) fixes how pagination
+  metadata (`_page`, `_page_count`, `_total_items`) is represented in generated
+  resources, ensuring values are cast to integers.
+
+- [#7](https://github.com/zendframework/zend-expressive-hal/pull/7) fixes a number of issues in
   the various exception implementations due to failure to import classes
   referenced in typehints.
 
-- [#6](https://github.com/weierophinney/hal/pull/6) fixes a number of docblock
+- [#6](https://github.com/zendframework/zend-expressive-hal/pull/6) fixes a number of docblock
   annotations to reference `HalResource` vs `Resource` (which is a reserved
   word).
 
@@ -52,7 +56,7 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
-- [#6](https://github.com/weierophinney/hal/pull/6) fixes an issue with the XML
+- [#6](https://github.com/zendframework/zend-expressive-hal/pull/6) fixes an issue with the XML
   renderer when creating resource elements that represent an array.
 
 ## 0.4.0 - 2017-08-08
