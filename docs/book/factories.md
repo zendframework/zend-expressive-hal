@@ -44,12 +44,12 @@ provide services for `Psr\Http\Message\ResponseInterface` and
     - `Zend\Expressive\Helper\ServerUrlHelper` service (optional; if not provided,
       URIs will be generated without authority information)
 
-## Zend\Expressive\Hal\LinkGenerator\UrlGenerator
+## Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface
 
-- Registered as service: `Zend\Expressive\Hal\LinkGenerator\UrlGenerator`
+- Registered as service: `Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface`
 - Aliased to service: `Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator`
 
-You can either define an alternate alias, or map the `UrlGenerator` service
+You can either define an alternate alias, or map the `UrlGeneratorInterface` service
 directly to a factory that will return a valid instance.
 
 ## Zend\Expressive\Hal\Metadata\MetadataMapFactory
