@@ -13,7 +13,7 @@ use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-class UrlBasedResourceStrategy implements Strategy
+class UrlBasedResourceStrategy implements StrategyInterface
 {
     use ExtractInstanceTrait;
 

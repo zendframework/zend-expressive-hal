@@ -12,7 +12,7 @@ use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-interface Strategy
+interface StrategyInterface
 {
     /**
      * @param object $instance Instance from which to create HalResource.

@@ -14,7 +14,7 @@ use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-class UrlBasedCollectionStrategy implements Strategy
+class UrlBasedCollectionStrategy implements StrategyInterface
 {
     use ExtractCollectionTrait;
 
