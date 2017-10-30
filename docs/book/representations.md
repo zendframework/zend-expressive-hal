@@ -10,14 +10,14 @@ more detail.
 
 ## Renderers
 
-All renderers implement `Zend\Expressive\Hal\Renderer\Renderer`:
+All renderers implement `Zend\Expressive\Hal\Renderer\RendererInterface`:
 
 ```php
 namespace Zend\Expressive\Hal\Renderer;
 
 use Zend\Expressive\Hal\HalResource;
 
-interface Renderer
+interface RendererInterface
 {
     public function render(HalResource $resource) : string;
 }

@@ -8,7 +8,7 @@
 namespace Zend\Expressive\Hal\Exception;
 
 use InvalidArgumentException;
-use Zend\Expressive\Hal\ResourceGenerator\Strategy;
+use Zend\Expressive\Hal\ResourceGenerator\StrategyInterface;
 
 class InvalidStrategyException extends InvalidArgumentException implements ExceptionInterface
 {
@@ -17,7 +17,7 @@ class InvalidStrategyException extends InvalidArgumentException implements Excep
         return new self(sprintf(
             'Invalid strategy "%s"; does not exist, or does not implement %s',
             $strategy,
-            Strategy::class
+            StrategyInterface::class
         ));
     }
 
@@ -29,7 +29,7 @@ class InvalidStrategyException extends InvalidArgumentException implements Excep
         return new self(sprintf(
             'Invalid strategy of type "%s"; does not implement %s',
             is_object($strategy) ? get_class($strategy) : gettype($strategy),
-            Strategy::class
+            StrategyInterface::class
         ));
     }
 }

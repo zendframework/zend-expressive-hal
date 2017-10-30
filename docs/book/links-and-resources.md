@@ -78,15 +78,15 @@ specifications. `Link` expects only a string URI, however; how can you prevent
 hard-coding that URI?
 
 This component provides a tool for that: `Zend\Expressive\Hal\LinkGenerator`.
-This class composes a `Zend\Expressive\Hal\LinkGenerator\UrlGenerator` instance,
-which defines the following:
+This class composes a `Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface`
+instance, which defines the following:
 
 ```php
 namespace Zend\Expressive\Hal\LinkGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-interface UrlGenerator
+interface UrlGeneratorInterface
 {
     /**
      * Generate a URL for use as the HREF of a link.

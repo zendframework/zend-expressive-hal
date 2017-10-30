@@ -29,7 +29,7 @@ class ResourceGenerator
     private $metadataMap;
 
     /**
-     * @var ResourceGenerator\Strategy[]
+     * @var ResourceGenerator\StrategyInterface[]
      */
     private $strategies = [];
 
@@ -79,7 +79,7 @@ class ResourceGenerator
      * Link a metadata type to a strategy that can create a resource for it.
      *
      * @param string $metadataType
-     * @param string|ResourceGenerator\Strategy $strategy
+     * @param string|ResourceGenerator\StrategyInterface $strategy
      */
     public function addStrategy(string $metadataType, $strategy) : void
     {
@@ -92,7 +92,7 @@ class ResourceGenerator
         if (is_string($strategy)
             && (
                 ! class_exists($strategy)
-                || ! in_array(ResourceGenerator\Strategy::class, class_implements($strategy), true)
+                || ! in_array(ResourceGenerator\StrategyInterface::class, class_implements($strategy), true)
             )
         ) {
             throw Exception\InvalidStrategyException::forType($strategy);
@@ -102,7 +102,7 @@ class ResourceGenerator
             $strategy = new $strategy();
         }
 
-        if (! $strategy instanceof ResourceGenerator\Strategy) {
+        if (! $strategy instanceof ResourceGenerator\StrategyInterface) {
             throw Exception\InvalidStrategyException::forInstance($strategy);
         }
 

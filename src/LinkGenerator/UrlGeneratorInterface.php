@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Interface describing a class that can generate a URL for Link HREFs.
  */
-interface UrlGenerator
+interface UrlGeneratorInterface
 {
     /**
      * Generate a URL for use as the HREF of a link.

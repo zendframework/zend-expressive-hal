@@ -9,7 +9,7 @@ namespace Zend\Expressive\Hal\Renderer;
 
 use Zend\Expressive\Hal\HalResource;
 
-class JsonRenderer implements Renderer
+class JsonRenderer implements RendererInterface
 {
     // @codingStandardsIgnoreStart
     /**

@@ -12,11 +12,11 @@ use Psr\Http\Message\ServerRequestInterface;
 class LinkGenerator
 {
     /**
-     * @var LinkGenerator\UrlGenerator
+     * @var LinkGenerator\UrlGeneratorInterface
      */
     private $urlGenerator;
 
-    public function __construct(LinkGenerator\UrlGenerator $urlGenerator)
+    public function __construct(LinkGenerator\UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
     }

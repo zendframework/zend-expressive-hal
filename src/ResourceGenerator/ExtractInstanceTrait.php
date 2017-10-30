@@ -14,7 +14,7 @@ use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ExtractionInterface;
 
-trait ExtractInstance
+trait ExtractInstanceTrait
 {
     /**
      * @param object $instance

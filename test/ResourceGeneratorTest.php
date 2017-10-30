@@ -642,7 +642,7 @@ class ResourceGeneratorTest extends TestCase
      * @dataProvider strategyCollection
      * @dataProvider strategyResource
      */
-    public function testUnexpectedMetadataForStrategy(ResourceGenerator\Strategy $strategy)
+    public function testUnexpectedMetadataForStrategy(ResourceGenerator\StrategyInterface $strategy)
     {
         $this->generator->addStrategy(
             TestAsset\TestMetadata::class,
@@ -665,7 +665,7 @@ class ResourceGeneratorTest extends TestCase
      * @dataProvider strategyCollection
      */
     public function testNotTraversableInstanceForCollectionStrategy(
-        ResourceGenerator\Strategy $strategy,
+        ResourceGenerator\StrategyInterface $strategy,
         string $metadata
     ) {
         $collectionMetadata = new $metadata(

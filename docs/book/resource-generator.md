@@ -152,8 +152,8 @@ URIs for `Link` instances.)
 
 ### Customizing resource generation
 
-The `ResourceGenerator` allows composing `Zend\Expressive\Hal\ResourceGenerator\Strategy`
-instances. The `Strategy` interface defines the following:
+The `ResourceGenerator` allows composing `Zend\Expressive\Hal\ResourceGenerator\StrategyInterface`
+instances. The `StrategyInterface` defines the following:
 
 ```php
 namespace Zend\Expressive\Hal\ResourceGenerator;
@@ -163,7 +163,7 @@ use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-interface Strategy
+interface StrategyInterface
 {
     /**
      * @param object $instance Instance from which to create Resource.
@@ -194,6 +194,6 @@ If a strategy already is mapped for the given metadata type, this method will
 override it.
 
 To facilitate common operations, this library provides two traits,
-`Zend\Expressive\Hal\ResourceGenerator\ExtractCollection` and
-`Zend\Expressive\Hal\ResourceGenerator\ExtractInstance`; inspect these if you
+`Zend\Expressive\Hal\ResourceGenerator\ExtractCollectionTrait` and
+`Zend\Expressive\Hal\ResourceGenerator\ExtractInstanceTrait`; inspect these if you
 decide to write your own strategies.

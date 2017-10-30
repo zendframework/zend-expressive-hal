@@ -13,9 +13,9 @@ use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-class RouteBasedResourceStrategy implements Strategy
+class RouteBasedResourceStrategy implements StrategyInterface
 {
-    use ExtractInstance;
+    use ExtractInstanceTrait;
 
     public function createResource(
         $instance,

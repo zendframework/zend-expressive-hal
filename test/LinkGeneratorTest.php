@@ -18,7 +18,7 @@ class LinkGeneratorTest extends TestCase
     {
         $request = $this->prophesize(ServerRequestInterface::class)->reveal();
 
-        $urlGenerator = $this->prophesize(LinkGenerator\UrlGenerator::class);
+        $urlGenerator = $this->prophesize(LinkGenerator\UrlGeneratorInterface::class);
         $urlGenerator->generate(
             $request,
             'test',
@@ -48,7 +48,7 @@ class LinkGeneratorTest extends TestCase
     {
         $request = $this->prophesize(ServerRequestInterface::class)->reveal();
 
-        $urlGenerator = $this->prophesize(LinkGenerator\UrlGenerator::class);
+        $urlGenerator = $this->prophesize(LinkGenerator\UrlGeneratorInterface::class);
         $urlGenerator->generate(
             $request,
             'test',

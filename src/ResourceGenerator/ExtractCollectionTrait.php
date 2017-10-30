@@ -17,7 +17,7 @@ use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Expressive\Hal\ResourceGenerator\Exception;
 use Zend\Paginator\Paginator;
 
-trait ExtractCollection
+trait ExtractCollectionTrait
 {
     private $paginationTypes = [
         AbstractCollectionMetadata::TYPE_PLACEHOLDER,

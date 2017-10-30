@@ -12,7 +12,7 @@ use DOMNode;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Exception;
 
-class XmlRenderer implements Renderer
+class XmlRenderer implements RendererInterface
 {
     public function render(HalResource $resource) : string
     {
