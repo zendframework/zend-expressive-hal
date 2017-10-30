@@ -20,7 +20,7 @@ class ConfigProvider
     {
         return [
             'aliases' => [
-                LinkGenerator\UrlGenerator::class => LinkGenerator\ExpressiveUrlGenerator::class,
+                LinkGenerator\UrlGeneratorInterface::class => LinkGenerator\ExpressiveUrlGenerator::class,
             ],
             'factories' => [
                 HalResponseFactory::class => HalResponseFactoryFactory::class,
