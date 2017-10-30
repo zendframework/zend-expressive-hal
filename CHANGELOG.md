@@ -24,6 +24,10 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
+- [#18](https://github.com/zendframework/zend-expressive-hal/pull/18) fixes the
+  return type hint of `RouteBasedResourceMetadata::setRouteParams()` to correctly
+  be `void`.
+
 - [#13](https://github.com/zendframework/zend-expressive-hal/pull/13) updates
   `ExtractCollection::extractPaginator()` to validate that the pagination
   parameter is within the range of pages represented by the paginator instance;
