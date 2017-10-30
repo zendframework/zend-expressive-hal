@@ -24,6 +24,11 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
+- [#19](https://github.com/zendframework/zend-expressive-hal/pull/19) fixes the
+  behavior of `ResourceGenerator` when nesting a collection inside another
+  resource to properly nest it as an array of items, rather than a collection
+  resource.
+
 - [#18](https://github.com/zendframework/zend-expressive-hal/pull/18) fixes the
   return type hint of `RouteBasedResourceMetadata::setRouteParams()` to correctly
   be `void`.
