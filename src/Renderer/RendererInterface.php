@@ -9,7 +9,7 @@ namespace Zend\Expressive\Hal\Renderer;
 
 use Zend\Expressive\Hal\HalResource;
 
-interface Renderer
+interface RendererInterface
 {
     public function render(HalResource $resource) : string;
 }
