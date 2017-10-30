@@ -24,6 +24,11 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
+- [#13](https://github.com/zendframework/zend-expressive-hal/pull/13) updates
+  `ExtractCollection::extractPaginator()` to validate that the pagination
+  parameter is within the range of pages represented by the paginator instance;
+  if not, an `OutOfBoundsException` is raised.
+
 - [#12](https://github.com/zendframework/zend-expressive-hal/pull/12) fixes how pagination
   metadata (`_page`, `_page_count`, `_total_items`) is represented in generated
   resources, ensuring values are cast to integers.
