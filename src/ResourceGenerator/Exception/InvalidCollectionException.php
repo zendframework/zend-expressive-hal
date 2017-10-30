@@ -9,7 +9,7 @@ namespace Zend\Expressive\Hal\ResourceGenerator\Exception;
 
 use RuntimeException;
 
-class InvalidCollectionException extends RuntimeException implements Exception
+class InvalidCollectionException extends RuntimeException implements ExceptionInterface
 {
     /**
      * @param mixed $instance The invalid collection instance or value.

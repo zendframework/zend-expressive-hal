@@ -5,10 +5,13 @@
  * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Expressive\Hal\ResourceGenerator\Exception;
+namespace Zend\Expressive\Hal\Metadata\Exception;
 
-use Zend\Expressive\Hal\Exception\Exception as BaseException;
+use Zend\Expressive\Hal\Exception\ExceptionInterface as BaseException;
 
-interface Exception extends BaseException
+/**
+ * Marker interface for metadata exception types.
+ */
+interface ExceptionInterface extends BaseException
 {
 }

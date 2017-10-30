@@ -10,6 +10,6 @@ namespace Zend\Expressive\Hal\Exception;
 /**
  * Marker interface for component exceptions.
  */
-interface Exception
+interface ExceptionInterface
 {
 }
