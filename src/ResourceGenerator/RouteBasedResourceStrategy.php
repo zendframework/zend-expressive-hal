@@ -15,7 +15,7 @@ use Zend\Expressive\Hal\ResourceGenerator;
 
 class RouteBasedResourceStrategy implements Strategy
 {
-    use ExtractInstance;
+    use ExtractInstanceTrait;
 
     public function createResource(
         $instance,

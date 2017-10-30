@@ -16,7 +16,7 @@ use Zend\Expressive\Hal\ResourceGenerator;
 
 class UrlBasedCollectionStrategy implements Strategy
 {
-    use ExtractCollection;
+    use ExtractCollectionTrait;
 
     public function createResource(
         $instance,
