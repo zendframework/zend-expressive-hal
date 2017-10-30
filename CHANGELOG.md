@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 0.4.2 - 2017-10-30
+## 0.4.3 - 2017-10-30
 
 ### Added
 
@@ -41,6 +41,26 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 - [#12](https://github.com/zendframework/zend-expressive-hal/pull/12) fixes how pagination
   metadata (`_page`, `_page_count`, `_total_items`) is represented in generated
   resources, ensuring values are cast to integers.
+
+## 0.4.2 - 2017-09-20
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
 
 - [#7](https://github.com/zendframework/zend-expressive-hal/pull/7) fixes a number of issues in
   the various exception implementations due to failure to import classes
