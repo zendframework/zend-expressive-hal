@@ -14,7 +14,7 @@ class LinkGeneratorFactory
     public function __invoke(ContainerInterface $container) : LinkGenerator
     {
         return new LinkGenerator(
-            $container->get(LinkGenerator\UrlGenerator::class)
+            $container->get(LinkGenerator\UrlGeneratorInterface::class)
         );
     }
 }
