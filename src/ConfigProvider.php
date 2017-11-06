@@ -53,6 +53,13 @@ class ConfigProvider
                     Metadata\UrlBasedResourceMetadata::class     => ResourceGenerator\UrlBasedResourceStrategy::class,
                 ],
             ],
+            'metadata-factories' => [
+                Metadata\RouteBasedCollectionMetadata::class => Metadata\RouteBasedCollectionMetadataFactory::class,
+                Metadata\RouteBasedResourceMetadata::class   => Metadata\RouteBasedResourceMetadataFactory::class,
+
+                Metadata\UrlBasedCollectionMetadata::class   => Metadata\UrlBasedCollectionMetadataFactory::class,
+                Metadata\UrlBasedResourceMetadata::class     => Metadata\UrlBasedResourceMetadataFactory::class,
+            ],
         ];
     }
 }
