@@ -82,6 +82,16 @@ class RouteBasedCollectionWithRouteParamsTest extends TestCase
             $linkGenerator->reveal()
         );
 
+        $generator->addStrategy(
+            RouteBasedResourceMetadata::class,
+            ResourceGenerator\RouteBasedResourceStrategy::class
+        );
+
+        $generator->addStrategy(
+            RouteBasedCollectionMetadata::class,
+            ResourceGenerator\RouteBasedCollectionStrategy::class
+        );
+
         $resource = $generator->fromObject($collection, $request->reveal());
 
         $this->assertInstanceOf(HalResource::class, $resource);

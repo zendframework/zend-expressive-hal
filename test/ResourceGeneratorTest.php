@@ -10,6 +10,7 @@ namespace ZendTest\Expressive\Hal;
 use ArrayIterator;
 use Generator;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\Exception\InvalidObjectException;
@@ -30,6 +31,31 @@ class ResourceGeneratorTest extends TestCase
 {
     use Assertions;
 
+    /**
+     * @var ObjectProphecy|ServerRequestInterface
+     */
+    private $request;
+
+    /**
+     * @var ObjectProphecy|ContainerInterface
+     */
+    private $hydrators;
+
+    /**
+     * @var ObjectProphecy|LinkGenerator
+     */
+    private $linkGenerator;
+
+    /**
+     * @var ObjectProphecy|Metadata\MetadataMap
+     */
+    private $metadataMap;
+
+    /**
+     * @var ObjectProphecy|ResourceGenerator
+     */
+    private $generator;
+
     public function setUp()
     {
         $this->request = $this->prophesize(ServerRequestInterface::class);
@@ -40,6 +66,26 @@ class ResourceGeneratorTest extends TestCase
             $this->metadataMap->reveal(),
             $this->hydrators->reveal(),
             $this->linkGenerator->reveal()
+        );
+
+        $this->generator->addStrategy(
+            Metadata\RouteBasedResourceMetadata::class,
+            ResourceGenerator\RouteBasedResourceStrategy::class
+        );
+
+        $this->generator->addStrategy(
+            Metadata\RouteBasedCollectionMetadata::class,
+            ResourceGenerator\RouteBasedCollectionStrategy::class
+        );
+
+        $this->generator->addStrategy(
+            Metadata\UrlBasedCollectionMetadata::class,
+            ResourceGenerator\UrlBasedCollectionStrategy::class
+        );
+
+        $this->generator->addStrategy(
+            Metadata\UrlBasedResourceMetadata::class,
+            ResourceGenerator\UrlBasedResourceStrategy::class
         );
     }
 

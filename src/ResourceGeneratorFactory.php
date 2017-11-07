@@ -25,7 +25,7 @@ class ResourceGeneratorFactory
             throw ResourceGenerator\Exception\InvalidConfigException::dueToNonArray($config);
         }
 
-        if (!empty($config['zend-expressive-hal']['resource-generator']['strategies'])) {
+        if (! empty($config['zend-expressive-hal']['resource-generator']['strategies'])) {
             foreach ($config['zend-expressive-hal']['resource-generator']['strategies'] as $metadataType => $strategy) {
                 $generator->addStrategy(
                     $metadataType,
