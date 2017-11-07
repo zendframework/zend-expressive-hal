@@ -9,6 +9,7 @@ namespace ZendTest\Expressive\Hal\Metadata;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use stdClass;
 use Zend\Expressive\Hal\Metadata;
@@ -19,6 +20,16 @@ use ZendTest\Expressive\Hal\TestAsset;
 
 class MetadataMapFactoryTest extends TestCase
 {
+    /**
+     * @var MetadataMapFactory
+     */
+    private $factory;
+
+    /**
+     * @var ObjectProphecy|ContainerInterface
+     */
+    private $container;
+
     public function setUp()
     {
         $this->container = $this->prophesize(ContainerInterface::class);
@@ -98,7 +109,7 @@ class MetadataMapFactoryTest extends TestCase
             '__class__' => TestAsset\TestMetadata::class,
         ]]]);
         $this->expectException(InvalidConfigException::class);
-        $this->expectExceptionMessage('"createTestMetadata"');
+        $this->expectExceptionMessage('please provide a factory in your configuration');
         ($this->factory)($this->container->reveal());
     }
 
@@ -133,12 +144,23 @@ class MetadataMapFactoryTest extends TestCase
     public function testFactoryCanMapUrlBasedResourceMetadata()
     {
         $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([MetadataMap::class => [[
-            '__class__'      => Metadata\UrlBasedResourceMetadata::class,
-            'resource_class' => stdClass::class,
-            'url'            => '/test/foo',
-            'extractor'      => 'ObjectProperty',
-        ]]]);
+        $this->container->get('config')->willReturn(
+            [
+                MetadataMap::class => [
+                    [
+                        '__class__'      => Metadata\UrlBasedResourceMetadata::class,
+                        'resource_class' => stdClass::class,
+                        'url'            => '/test/foo',
+                        'extractor'      => 'ObjectProperty',
+                    ],
+                ],
+                'zend-expressive-hal' => [
+                    'metadata-factories' => [
+                        Metadata\UrlBasedResourceMetadata::class => Metadata\UrlBasedResourceMetadataFactory::class,
+                    ],
+                ],
+            ]
+        );
 
         $metadataMap = ($this->factory)($this->container->reveal());
         $this->assertInstanceOf(MetadataMap::class, $metadataMap);
@@ -154,14 +176,25 @@ class MetadataMapFactoryTest extends TestCase
     public function testFactoryCanMapUrlBasedCollectionMetadata()
     {
         $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([MetadataMap::class => [[
-            '__class__'             => Metadata\UrlBasedCollectionMetadata::class,
-            'collection_class'      => stdClass::class,
-            'collection_relation'   => 'foo',
-            'url'                   => '/test/foo',
-            'pagination_param'      => 'p',
-            'pagination_param_type' => Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER,
-        ]]]);
+        $this->container->get('config')->willReturn(
+            [
+                MetadataMap::class => [
+                    [
+                        '__class__'             => Metadata\UrlBasedCollectionMetadata::class,
+                        'collection_class'      => stdClass::class,
+                        'collection_relation'   => 'foo',
+                        'url'                   => '/test/foo',
+                        'pagination_param'      => 'p',
+                        'pagination_param_type' => Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER,
+                    ],
+                ],
+                'zend-expressive-hal' => [
+                    'metadata-factories' => [
+                        Metadata\UrlBasedCollectionMetadata::class => Metadata\UrlBasedCollectionMetadataFactory::class,
+                    ],
+                ],
+            ]
+        );
 
         $metadataMap = ($this->factory)($this->container->reveal());
         $this->assertInstanceOf(MetadataMap::class, $metadataMap);
@@ -179,15 +212,26 @@ class MetadataMapFactoryTest extends TestCase
     public function testFactoryCanMapRouteBasedResourceMetadata()
     {
         $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([MetadataMap::class => [[
-            '__class__'                    => Metadata\RouteBasedResourceMetadata::class,
-            'resource_class'               => stdClass::class,
-            'route'                        => 'foo',
-            'extractor'                    => 'ObjectProperty',
-            'resource_identifier'          => 'foo_id',
-            'route_identifier_placeholder' => 'foo_id',
-            'route_params'                 => ['foo' => 'bar'],
-        ]]]);
+        $this->container->get('config')->willReturn(
+            [
+                MetadataMap::class => [
+                    [
+                        '__class__'                    => Metadata\RouteBasedResourceMetadata::class,
+                        'resource_class'               => stdClass::class,
+                        'route'                        => 'foo',
+                        'extractor'                    => 'ObjectProperty',
+                        'resource_identifier'          => 'foo_id',
+                        'route_identifier_placeholder' => 'foo_id',
+                        'route_params'                 => ['foo' => 'bar'],
+                    ],
+                ],
+                'zend-expressive-hal' => [
+                    'metadata-factories' => [
+                        Metadata\RouteBasedResourceMetadata::class => Metadata\RouteBasedResourceMetadataFactory::class,
+                    ],
+                ],
+            ]
+        );
 
         $metadataMap = ($this->factory)($this->container->reveal());
         $this->assertInstanceOf(MetadataMap::class, $metadataMap);
@@ -206,16 +250,27 @@ class MetadataMapFactoryTest extends TestCase
     public function testFactoryCanMapRouteBasedCollectionMetadata()
     {
         $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([MetadataMap::class => [[
-            '__class__'              => Metadata\RouteBasedCollectionMetadata::class,
-            'collection_class'       => stdClass::class,
-            'collection_relation'    => 'foo',
-            'route'                  => 'foo',
-            'pagination_param'       => 'p',
-            'pagination_param_type'  => Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER,
-            'route_params'           => ['foo' => 'bar'],
-            'query_string_arguments' => ['baz' => 'bat'],
-        ]]]);
+        $this->container->get('config')->willReturn(
+            [
+                MetadataMap::class => [
+                    [
+                        '__class__'              => Metadata\RouteBasedCollectionMetadata::class,
+                        'collection_class'       => stdClass::class,
+                        'collection_relation'    => 'foo',
+                        'route'                  => 'foo',
+                        'pagination_param'       => 'p',
+                        'pagination_param_type'  => Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER,
+                        'route_params'           => ['foo' => 'bar'],
+                        'query_string_arguments' => ['baz' => 'bat'],
+                    ],
+                ],
+                'zend-expressive-hal' => [
+                    'metadata-factories' => [
+                        Metadata\RouteBasedCollectionMetadata::class => Metadata\RouteBasedCollectionMetadataFactory::class,
+                    ],
+                ],
+            ]
+        );
 
         $metadataMap = ($this->factory)($this->container->reveal());
         $this->assertInstanceOf(MetadataMap::class, $metadataMap);
