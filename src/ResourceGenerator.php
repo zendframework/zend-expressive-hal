@@ -93,9 +93,7 @@ class ResourceGenerator
     }
 
     /**
-     * Returns the registered strategies
-     *
-     * @return array
+     * Returns the registered strategies.
      */
     public function getStrategies(): array
     {
