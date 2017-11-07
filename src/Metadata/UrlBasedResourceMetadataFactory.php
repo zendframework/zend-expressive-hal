@@ -12,24 +12,24 @@ class UrlBasedResourceMetadataFactory implements MetadataFactoryInterface
     /**
      * Creates a UrlBasedResourceMetadata based on the MetadataMap configuration.
      *
-     * @param string $requestedName The requested name of the metadata type
-     * @param array  $metadata      The metadata should have the following structure:
-     * <code>
-     * [
-     *      // Fully qualified class name of the AbstractMetadata type.
-     *      '__class__'                    => RouteBasedResourceMetadata::class,
+     * @param string $requestedName The requested name of the metadata type.
+     * @param array $metadata The metadata should have the following structure:
+     *     <code>
+     *     [
+     *          // Fully qualified class name of the AbstractMetadata type.
+     *          '__class__' => RouteBasedResourceMetadata::class,
      *
-     *      // Fully qualified class name of the resource class.
-     *      'resource_class'               => MyResource::class,
+     *          // Fully qualified class name of the resource class.
+     *          'resource_class' => MyResource::class,
      *
-     *      // The URL to use when generating a self-relational link for the resource.
-     *      'url'                          => 'https://example.org/my-resource',
+     *          // The URL to use when generating a self-relational link for
+     *          // the resource.
+     *          'url' => 'https://example.org/my-resource',
      *
-     *      // The extractor/hydrator service to use to extract resource data.
-     *      'extractor'                    => 'MyExtractor',
-     * ]
-     * </code>
-     *
+     *          // The extractor/hydrator service to use to extract resource data.
+     *          'extractor' => 'MyExtractor',
+     *     ]
+     *     </code>
      * @return AbstractMetadata
      * @throws Exception\InvalidConfigException
      */
