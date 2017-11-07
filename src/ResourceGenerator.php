@@ -92,6 +92,16 @@ class ResourceGenerator
         $this->strategies[$metadataType] = $strategy;
     }
 
+    /**
+     * Returns the registered strategies
+     *
+     * @return array
+     */
+    public function getStrategies(): array
+    {
+        return $this->strategies;
+    }
+
     public function fromArray(array $data, string $uri = null) : HalResource
     {
         $resource = new HalResource($data);
