@@ -7,15 +7,61 @@
 
 namespace Zend\Expressive\Hal\Metadata;
 
-class RouteBasedCollectionMetadataFactory extends AbstractMetadataFactory
+class RouteBasedCollectionMetadataFactory implements MetadataFactoryInterface
 {
-    public function __invoke(array $metadata) : AbstractMetadata
+    /**
+     * Creates a RouteBasedCollectionMetadata based on the MetadataMap configuration.
+     *
+     * @param array $metadata The metadata should have the following structure:
+     * <code>
+     * [
+     *      // Fully qualified class name of the AbstractMetadata type.
+     *      '__class__'           => RouteBasedCollectionMetadata::class,
+     *
+     *      // Fully qualified class name of the collection class.
+     *      'collection_class'    => MyCollection::class,
+     *
+     *      // The embedded relation for the collection in the generated resource.
+     *      'collection_relation' => 'items',
+     *
+     *      // The route to use when generating a self relational link for the
+     *      // collection resource.
+     *      'route'               => 'items.list',
+     *
+     *      // Optional params
+     *
+     *      // The name of the parameter indicating what page of data is present.
+     *      // Defaults to "page".
+     *      'pagination_param'    => 'page',
+     *
+     *      // Whether the pagination parameter is a query string or path placeholder
+     *      // use either AbstractCollectionMetadata::TYPE_QUERY (the default)
+     *      // or AbstractCollectionMetadata::TYPE_PLACEHOLDER
+     *      'pagination_param_type' => AbstractCollectionMetadata::TYPE_QUERY,
+     *
+     *      // An array of additional routing parameters to use when generating
+     *      // the self relational link for the collection resource.
+     *      // Defaults to an empty array.
+     *      'route_params' => [],
+     *
+     *      // An array of query string parameters to include when generating the
+     *      // self relational link for the collection resource.
+     *      // Defaults to an empty array.
+     *      'query_string_arguments' => [],
+     * ]
+     * </code>
+     *
+     * @return AbstractMetadata
+     * @throws Exception\InvalidConfigException
+     */
+    public function createMetadata(array $metadata) : AbstractMetadata
     {
         $requiredKeys = [
             'collection_class',
             'collection_relation',
             'route',
         ];
+
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
             throw Exception\InvalidConfigException::dueToMissingMetadata(
                 RouteBasedCollectionMetadata::class,
@@ -23,19 +69,14 @@ class RouteBasedCollectionMetadataFactory extends AbstractMetadataFactory
             );
         }
 
-        $paginationParam      = $metadata['pagination_param'] ?? 'page';
-        $paginationParamType  = $metadata['pagination_param_type'] ?? RouteBasedCollectionMetadata::TYPE_QUERY;
-        $routeParams          = $metadata['route_params'] ?? [];
-        $queryStringArguments = $metadata['query_string_arguments'] ?? [];
-
         return new RouteBasedCollectionMetadata(
             $metadata['collection_class'],
             $metadata['collection_relation'],
             $metadata['route'],
-            $paginationParam,
-            $paginationParamType,
-            $routeParams,
-            $queryStringArguments
+            $metadata['pagination_param'] ?? 'page',
+            $metadata['pagination_param_type'] ?? RouteBasedCollectionMetadata::TYPE_QUERY,
+            $metadata['route_params'] ?? [],
+            $metadata['query_string_arguments'] ?? []
         );
     }
 }

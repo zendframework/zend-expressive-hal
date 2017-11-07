@@ -31,7 +31,6 @@ class ConfigProvider
                 ResourceGenerator::class                    => ResourceGeneratorFactory::class,
             ],
             'invokables' => [
-                // TODO Would you prefer an InvokableFactory instead?
                 ResourceGenerator\RouteBasedCollectionStrategy::class => ResourceGenerator\RouteBasedCollectionStrategy::class,
                 ResourceGenerator\RouteBasedResourceStrategy::class   => ResourceGenerator\RouteBasedResourceStrategy::class,
 
@@ -45,7 +44,7 @@ class ConfigProvider
     {
         return [
             'resource-generator' => [
-                'strategies' => [
+                'strategies' => [ // The registered strategies and their metadata types
                     Metadata\RouteBasedCollectionMetadata::class => ResourceGenerator\RouteBasedCollectionStrategy::class,
                     Metadata\RouteBasedResourceMetadata::class   => ResourceGenerator\RouteBasedResourceStrategy::class,
 
@@ -53,7 +52,7 @@ class ConfigProvider
                     Metadata\UrlBasedResourceMetadata::class     => ResourceGenerator\UrlBasedResourceStrategy::class,
                 ],
             ],
-            'metadata-factories' => [
+            'metadata-factories' => [ // The factories for the metadata types
                 Metadata\RouteBasedCollectionMetadata::class => Metadata\RouteBasedCollectionMetadataFactory::class,
                 Metadata\RouteBasedResourceMetadata::class   => Metadata\RouteBasedResourceMetadataFactory::class,
 

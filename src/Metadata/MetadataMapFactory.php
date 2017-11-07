@@ -18,67 +18,18 @@ use Psr\Container\ContainerInterface;
  *
  * <code>
  * [
- *     '__class__' => 'Fully qualified class name of an AbstractMetadata type',
- *     // additional key/value pairs as required by the metadata type.
+ *     // Fully qualified class name of an AbstractMetadata type
+ *     '__class__' => MyMetadata::class,
+ *
+ *     // additional key/value pairs as required by the metadata type. (See their respective factories)
  * ]
  * </code>
- *
- * The additional pairs are as follows:
- *
- * - For UrlBasedResourceMetadata:
- *   - resource_class: the resource class the metadata describes.
- *   - url: the URL to use when generating a self-relational link for the
- *     resource.
- *   - extractor: the extractor/hydrator service to use to extract resource
- *     data.
- * - For UrlBasedCollectionMetadata:
- *   - collection_class: the collection class the metadata describes.
- *   - collection_relation: the embedded relation for the collection in the
- *     generated resource.
- *   - url: the URL to use when generating a self-relational link for the
- *     collection resource.
- *   - pagination_param: the name of the parameter indicating what page of data
- *     is present. Defaults to "page".
- *   - pagination_param_type: whether the pagination parameter is a query string
- *     or path placeholder; use either AbstractCollectionMetadata::TYPE_QUERY
- *     ("query") or AbstractCollectionMetadata::TYPE_PLACEHOLDER ("placeholder");
- *     default is "query".
- * - For RouteBasedResourceMetadata:
- *   - resource_class: the resource class the metadata describes.
- *   - route: the route to use when generating a self relational link for the
- *     resource.
- *   - extractor: the extractor/hydrator service to use to extract resource
- *     data.
- *   - resource_identifier: what property in the resource represents its
- *     identifier; defaults to "id".
- *   - route_identifier_placeholder: what placeholder in the route string
- *     represents the resource identifier; defaults to "id".
- *   - route_params: an array of additional routing parameters to use when
- *     generating the self relational link for the resource.
- * - For RouteBasedCollectionMetadata:
- *   - collection_class: the collection class the metadata describes.
- *   - collection_relation: the embedded relation for the collection in the
- *     generated resource.
- *   - route: the route to use when generating a self relational link for the
- *     collection resource.
- *   - pagination_param: the name of the parameter indicating what page of data
- *     is present. Defaults to "page".
- *   - pagination_param_type: whether the pagination parameter is a query string
- *     or path placeholder; use either AbstractCollectionMetadata::TYPE_QUERY
- *     ("query") or AbstractCollectionMetadata::TYPE_PLACEHOLDER ("placeholder");
- *     default is "query".
- *   - route_params: an array of additional routing parameters to use when
- *     generating the self relational link for the collection resource. Defaults
- *     to an empty array.
- *   - query_string_arguments: an array of query string parameters to include
- *     when generating the self relational link for the collection resource.
- *     Defaults to an empty array.
  *
  * If you have created custom metadata types, you can have to register a factory
  * each in your configuration to support them. Add an entry to the config array:
  * $config['zend-expressive-hal']['metadata-factories'][MyMetadata::class] = MyMetadataFactory::class.
  *
- * Your factory should extends the `AbstractMetadataFactory`.
+ * Your factory should implement the `MetadataFactoryInterface`.
  */
 class MetadataMapFactory
 {
@@ -146,11 +97,12 @@ class MetadataMapFactory
         }
 
         $factoryClass = $metadataFactories[$metadataClass];
-        if (! in_array(AbstractMetadataFactory::class, class_parents($factoryClass), true)) {
+        if (! in_array(MetadataFactoryInterface::class, class_parents($factoryClass), true)) {
             throw Exception\InvalidConfigException::dueToNonMetadataFactoryClass($factoryClass);
         }
 
-        $factory = new $metadataFactories[$metadataClass];
-        $metadataMap->add($factory($metadata));
+        $factory = new $factoryClass();
+        /* @var $factory MetadataFactoryInterface */
+        $metadataMap->add($factory->createMetadata($metadata));
     }
 }
