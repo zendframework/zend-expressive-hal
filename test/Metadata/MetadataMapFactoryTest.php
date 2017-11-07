@@ -131,7 +131,7 @@ class MetadataMapFactoryTest extends TestCase
                 ],
                 'zend-expressive-hal' => [
                     'metadata-factories' => [
-                        TestAsset\TestMetadata::class => \stdClass::class,
+                        TestAsset\TestMetadata::class => stdClass::class,
                     ],
                 ],
             ]

@@ -11,6 +11,7 @@ use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
+use stdClass;
 use Zend\Expressive\Hal\LinkGenerator;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
@@ -43,7 +44,7 @@ class ResourceGeneratorFactoryTest extends TestCase
     public function testFactoryRaisesExceptionIfMetadataMapConfigIsNotAnArray()
     {
         $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn(new \stdClass());
+        $this->container->get('config')->willReturn(new stdClass());
 
         $object = new ResourceGeneratorFactory();
 

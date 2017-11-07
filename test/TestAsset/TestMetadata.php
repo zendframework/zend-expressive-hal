@@ -7,12 +7,13 @@
 
 namespace ZendTest\Expressive\Hal\TestAsset;
 
+use stdClass;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 
 class TestMetadata extends AbstractMetadata
 {
     public function getClass(): string
     {
-        return \stdClass::class;
+        return stdClass::class;
     }
 }

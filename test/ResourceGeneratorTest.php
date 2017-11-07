@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use stdClass;
 use Zend\Expressive\Hal\Exception\InvalidObjectException;
 use Zend\Expressive\Hal\Exception\InvalidStrategyException;
 use Zend\Expressive\Hal\Exception\UnknownMetadataTypeException;
@@ -737,7 +738,7 @@ class ResourceGeneratorTest extends TestCase
     {
         $this->expectException(UnknownMetadataTypeException::class);
         $this->expectExceptionMessage('does not exist, or does not extend');
-        $this->generator->addStrategy(\stdClass::class, 'invalid-strategy');
+        $this->generator->addStrategy(stdClass::class, 'invalid-strategy');
     }
 
     public function testAddStrategyRaisesExceptionIfInvalidStrategyClass()
