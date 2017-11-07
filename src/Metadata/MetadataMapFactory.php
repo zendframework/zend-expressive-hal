@@ -21,15 +21,19 @@ use Psr\Container\ContainerInterface;
  *     // Fully qualified class name of an AbstractMetadata type
  *     '__class__' => MyMetadata::class,
  *
- *     // additional key/value pairs as required by the metadata type. (See their respective factories)
+ *     // additional key/value pairs as required by the metadata type.
+ *     //  (See their respective factories)
  * ]
  * </code>
  *
  * If you have created a custom metadata type, you have to register a factory
  * in your configuration to support it. Add an entry to the config array:
- * $config['zend-expressive-hal']['metadata-factories'][MyMetadata::class] = MyMetadataFactory::class.
  *
- * This factory should implement the `MetadataFactoryInterface`.
+ * <code>
+ * $config['zend-expressive-hal']['metadata-factories'][MyMetadata::class] = MyMetadataFactory::class;
+ * </code>
+ *
+ * The factory mapped should implement `MetadataFactoryInterface`.
  */
 class MetadataMapFactory
 {
@@ -94,29 +98,27 @@ class MetadataMapFactory
 
         if (isset($metadataFactories[$metadataClass])) {
             // A factory was registered. Use it!
-            $metadataInstance = $this->createMetadataViaFactoryClass(
+            $metadataMap->add($this->createMetadataViaFactoryClass(
                 $metadataClass,
                 $metadata,
                 $metadataFactories[$metadataClass]
-            );
-        } else {
-            // No factory was not registered. Try to use the deprecated factory method
-            $metadataInstance = $this->createMetadataViaFactoryMethod(
-                $metadataClass,
-                $metadata
-            );
+            ));
+            return;
         }
 
-        $metadataMap->add($metadataInstance);
+        // No factory was registered. Use the deprecated factory method.
+        $metadataMap->add($this->createMetadataViaFactoryMethod(
+            $metadataClass,
+            $metadata
+        ));
     }
 
     /**
-     * Uses the registered factory class to create the metadata instance
+     * Uses the registered factory class to create the metadata instance.
      *
      * @param string $metadataClass
      * @param string $factoryClass
      * @param array  $metadata
-     *
      * @return AbstractMetadata
      */
     private function createMetadataViaFactoryClass(
@@ -136,11 +138,10 @@ class MetadataMapFactory
     /**
      * Call the factory method in this class namend "createMyMetadata(array $metadata)".
      *
-     * This function is to ensure backwards compatibility.
+     * This function is to ensure backwards compatibility with versions prior to 0.6.0.
      *
      * @param string $metadataClass
      * @param array  $metadata
-     *
      * @return AbstractMetadata
      */
     private function createMetadataViaFactoryMethod(string $metadataClass, array $metadata): AbstractMetadata
