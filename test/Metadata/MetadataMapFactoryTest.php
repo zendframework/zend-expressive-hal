@@ -330,4 +330,25 @@ class MetadataMapFactoryTest extends TestCase
         $this->assertSame(['foo' => 'bar'], $metadata->getRouteParams());
         $this->assertSame(['baz' => 'bat'], $metadata->getQueryStringArguments());
     }
+
+    public function testFactoryCanCreateMetadataViaFactoryMethod()
+    {
+        $this->container->has('config')->willReturn(true);
+        $this->container->get('config')->willReturn(
+            [
+                MetadataMap::class => [
+                    ['__class__' => TestAsset\TestMetadata::class],
+                ],
+            ]
+        );
+
+        $this->factory = new TestAsset\TestMetadataMapFactory();
+
+        $metadataMap = ($this->factory)($this->container->reveal());
+        $this->assertInstanceOf(MetadataMap::class, $metadataMap);
+        $this->assertTrue($metadataMap->has(stdClass::class));
+        $metadata = $metadataMap->get(stdClass::class);
+
+        $this->assertInstanceOf(TestAsset\TestMetadata::class, $metadata);
+    }
 }
