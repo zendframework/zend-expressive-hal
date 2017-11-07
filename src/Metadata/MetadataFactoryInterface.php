@@ -8,7 +8,7 @@
 namespace Zend\Expressive\Hal\Metadata;
 
 /**
- * Interface for a factory creating a metadata
+ * Interface describing factories that create metadata instances.
  */
 interface MetadataFactoryInterface
 {
@@ -17,16 +17,15 @@ interface MetadataFactoryInterface
      *
      * @param string $requestedName The requested name of the metadata type
      * @param array  $metadata      The metadata should have the following structure:
-     * <code>
-     * [
-     *     '__class__' => 'Fully qualified class name of an AbstractMetadata type',
-     *     // additional key/value pairs as required by the metadata type.
-     * ]
-     * </code>
+     *     <code>
+     *     [
+     *         '__class__' => 'Fully qualified class name of an AbstractMetadata type',
+     *         // additional key/value pairs as required by the metadata type.
+     *     ]
+     *     </code>
      *
-     * The '__class__' key decides which AbstractMetadata should be used
-     * (and which corresponding factory will be called to create it).
-     *
+     *     The '__class__' key decides which AbstractMetadata should be used
+     *     (and which corresponding factory will be called to create it).
      * @return AbstractMetadata
      */
     public function createMetadata(string $requestedName, array $metadata) : AbstractMetadata;
