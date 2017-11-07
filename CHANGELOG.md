@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 0.5.1 - 2017-11-07
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#21](https://github.com/zendframework/zend-expressive-hal/pull/21) fixes the
+  `LinkGeneratorFactory` to properly use the
+  `Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface` service when
+  creating and returning the `LinkGenerator` instance. (0.5.0 was incorrectly
+  attempting to use the `UrlGenerator` service, which does not exist.)
+
 ## 0.5.0 - 2017-10-30
 
 ### Added
