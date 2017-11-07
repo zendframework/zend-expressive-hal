@@ -12,7 +12,8 @@ class UrlBasedResourceMetadataFactory implements MetadataFactoryInterface
     /**
      * Creates a UrlBasedResourceMetadata based on the MetadataMap configuration.
      *
-     * @param array $metadata The metadata should have the following structure:
+     * @param string $requestedName The requested name of the metadata type
+     * @param array  $metadata      The metadata should have the following structure:
      * <code>
      * [
      *      // Fully qualified class name of the AbstractMetadata type.
@@ -32,7 +33,7 @@ class UrlBasedResourceMetadataFactory implements MetadataFactoryInterface
      * @return AbstractMetadata
      * @throws Exception\InvalidConfigException
      */
-    public function createMetadata(array $metadata) : AbstractMetadata
+    public function createMetadata(string $requestedName, array $metadata) : AbstractMetadata
     {
         $requiredKeys = [
             'resource_class',
@@ -47,7 +48,7 @@ class UrlBasedResourceMetadataFactory implements MetadataFactoryInterface
             );
         }
 
-        return new UrlBasedResourceMetadata(
+        return new $requestedName(
             $metadata['resource_class'],
             $metadata['url'],
             $metadata['extractor']

@@ -12,7 +12,8 @@ class RouteBasedCollectionMetadataFactory implements MetadataFactoryInterface
     /**
      * Creates a RouteBasedCollectionMetadata based on the MetadataMap configuration.
      *
-     * @param array $metadata The metadata should have the following structure:
+     * @param string $requestedName The requested name of the metadata type
+     * @param array  $metadata      The metadata should have the following structure:
      * <code>
      * [
      *      // Fully qualified class name of the AbstractMetadata type.
@@ -54,7 +55,7 @@ class RouteBasedCollectionMetadataFactory implements MetadataFactoryInterface
      * @return AbstractMetadata
      * @throws Exception\InvalidConfigException
      */
-    public function createMetadata(array $metadata) : AbstractMetadata
+    public function createMetadata(string $requestedName, array $metadata) : AbstractMetadata
     {
         $requiredKeys = [
             'collection_class',
@@ -69,7 +70,7 @@ class RouteBasedCollectionMetadataFactory implements MetadataFactoryInterface
             );
         }
 
-        return new RouteBasedCollectionMetadata(
+        return new $requestedName(
             $metadata['collection_class'],
             $metadata['collection_relation'],
             $metadata['route'],

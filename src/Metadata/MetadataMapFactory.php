@@ -25,11 +25,11 @@ use Psr\Container\ContainerInterface;
  * ]
  * </code>
  *
- * If you have created custom metadata types, you can have to register a factory
- * each in your configuration to support them. Add an entry to the config array:
+ * If you have created a custom metadata type, you have to register a factory
+ * in your configuration to support it. Add an entry to the config array:
  * $config['zend-expressive-hal']['metadata-factories'][MyMetadata::class] = MyMetadataFactory::class.
  *
- * Your factory should implement the `MetadataFactoryInterface`.
+ * This factory should implement the `MetadataFactoryInterface`.
  */
 class MetadataMapFactory
 {
@@ -92,17 +92,69 @@ class MetadataMapFactory
             throw Exception\InvalidConfigException::dueToNonMetadataClass($metadataClass);
         }
 
-        if (! isset($metadataFactories[$metadataClass])) {
-            throw Exception\InvalidConfigException::dueToUnrecognizedMetadataClass($metadataClass);
+        if (isset($metadataFactories[$metadataClass])) {
+            // A factory was registered. Use it!
+            $metadataInstance = $this->createMetadataViaFactoryClass(
+                $metadataClass,
+                $metadata,
+                $metadataFactories[$metadataClass]
+            );
+        } else {
+            // No factory was not registered. Try to use the deprecated factory method
+            $metadataInstance = $this->createMetadataViaFactoryMethod(
+                $metadataClass,
+                $metadata
+            );
         }
 
-        $factoryClass = $metadataFactories[$metadataClass];
+        $metadataMap->add($metadataInstance);
+    }
+
+    /**
+     * Uses the registered factory class to create the metadata
+     *
+     * @param string $factoryClass
+     * @param array  $metadata
+     *
+     * @return AbstractMetadata
+     */
+    private function createMetadataViaFactoryClass(
+        string $metadataClass,
+        array $metadata,
+        string $factoryClass
+    ) : AbstractMetadata {
         if (! in_array(MetadataFactoryInterface::class, class_parents($factoryClass), true)) {
             throw Exception\InvalidConfigException::dueToInvalidMetadataFactoryClass($factoryClass);
         }
 
         $factory = new $factoryClass();
         /* @var $factory MetadataFactoryInterface */
-        $metadataMap->add($factory->createMetadata($metadata));
+        return $factory->createMetadata($metadataClass, $metadata);
+    }
+
+    /**
+     * Call the factory method of this class namend "createMyMetadata(array $metadata)"
+     *
+     * @param string $metadataClass
+     * @param array  $metadata
+     *
+     * @return AbstractMetadata
+     */
+    private function createMetadataViaFactoryMethod(string $metadataClass, array $metadata): AbstractMetadata
+    {
+        $normalizedClass = $this->stripNamespaceFromClass($metadataClass);
+        $method          = sprintf('create%s', $normalizedClass);
+
+        if (! method_exists($this, $method)) {
+            throw Exception\InvalidConfigException::dueToUnrecognizedMetadataClass($metadataClass);
+        }
+
+        return $this->$method($metadata);
+    }
+
+    private function stripNamespaceFromClass(string $class) : string
+    {
+        $segments = explode('\\', $class);
+        return array_pop($segments);
     }
 }

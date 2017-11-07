@@ -12,7 +12,8 @@ class UrlBasedCollectionMetadataFactory implements MetadataFactoryInterface
     /**
      * Creates a UrlBasedCollectionMetadata based on the MetadataMap configuration.
      *
-     * @param array $metadata The metadata should have the following structure:
+     * @param string $requestedName The requested name of the metadata type
+     * @param array  $metadata      The metadata should have the following structure:
      * <code>
      * [
      *      // Fully qualified class name of the AbstractMetadata type.
@@ -43,7 +44,7 @@ class UrlBasedCollectionMetadataFactory implements MetadataFactoryInterface
      * @return AbstractMetadata
      * @throws Exception\InvalidConfigException
      */
-    public function createMetadata(array $metadata) : AbstractMetadata
+    public function createMetadata(string $requestedName, array $metadata) : AbstractMetadata
     {
         $requiredKeys = [
             'collection_class',
@@ -58,7 +59,7 @@ class UrlBasedCollectionMetadataFactory implements MetadataFactoryInterface
             );
         }
 
-        return new UrlBasedCollectionMetadata(
+        return new $requestedName(
             $metadata['collection_class'],
             $metadata['collection_relation'],
             $metadata['url'],
