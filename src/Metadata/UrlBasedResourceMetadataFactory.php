@@ -7,11 +7,39 @@
 
 namespace Zend\Expressive\Hal\Metadata;
 
-class UrlBasedResourceMetadataFactory extends AbstractMetadataFactory
+class UrlBasedResourceMetadataFactory implements MetadataFactoryInterface
 {
-    public function __invoke(array $metadata) : AbstractMetadata
+    /**
+     * Creates a UrlBasedResourceMetadata based on the MetadataMap configuration.
+     *
+     * @param array $metadata The metadata should have the following structure:
+     * <code>
+     * [
+     *      // Fully qualified class name of the AbstractMetadata type.
+     *      '__class__'                    => RouteBasedResourceMetadata::class,
+     *
+     *      // Fully qualified class name of the resource class.
+     *      'resource_class'               => MyResource::class,
+     *
+     *      // The URL to use when generating a self-relational link for the resource.
+     *      'url'                          => 'https://example.org/my-resource',
+     *
+     *      // The extractor/hydrator service to use to extract resource data.
+     *      'extractor'                    => 'MyExtractor',
+     * ]
+     * </code>
+     *
+     * @return AbstractMetadata
+     * @throws Exception\InvalidConfigException
+     */
+    public function createMetadata(array $metadata) : AbstractMetadata
     {
-        $requiredKeys = ['resource_class', 'url', 'extractor'];
+        $requiredKeys = [
+            'resource_class',
+            'url',
+            'extractor',
+        ];
+
         if ($requiredKeys !== array_intersect($requiredKeys, array_keys($metadata))) {
             throw Exception\InvalidConfigException::dueToMissingMetadata(
                 UrlBasedResourceMetadata::class,
