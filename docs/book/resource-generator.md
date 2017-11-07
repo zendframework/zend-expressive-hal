@@ -190,6 +190,19 @@ $resourceGenerator->addStrategy(CustomMetadata::class, CustomStrategy::class);
 $resourceGenerator->addStrategy(CustomMetadata::class, $strategyInstance);
 ```
 
+You can also add your strategies via the configuration:
+```php
+return [
+    'zend-expressive-hal' => [
+        'resource-generator' => [
+            'strategies' => [
+                CustomMetadata::class => CustomStrategy::class,
+            ],
+        ],
+    ],
+];
+```
+
 If a strategy already is mapped for the given metadata type, this method will
 override it.
 
@@ -197,3 +210,16 @@ To facilitate common operations, this library provides two traits,
 `Zend\Expressive\Hal\ResourceGenerator\ExtractCollectionTrait` and
 `Zend\Expressive\Hal\ResourceGenerator\ExtractInstanceTrait`; inspect these if you
 decide to write your own strategies.
+
+In order for the `MetadataMap` to be able to use your `CustomMetadata` you need to register 
+a factory (implementing `Zend\Expressive\Hal\Metadata\MetadataFactoryInterface`) for it.
+You can register them via the configuration:
+```php
+return [
+    'zend-expressive-hal' => [
+        'metadata-factories' => [
+            CustomMetadata::class => CustomMetadataFactory::class,
+        ],
+    ],
+];
+```
