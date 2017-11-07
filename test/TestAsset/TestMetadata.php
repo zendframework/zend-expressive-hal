@@ -12,7 +12,7 @@ use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 
 class TestMetadata extends AbstractMetadata
 {
-    public function getClass(): string
+    public function getClass() : string
     {
         return stdClass::class;
     }

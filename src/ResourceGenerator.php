@@ -95,7 +95,7 @@ class ResourceGenerator
     /**
      * Returns the registered strategies.
      */
-    public function getStrategies(): array
+    public function getStrategies() : array
     {
         return $this->strategies;
     }

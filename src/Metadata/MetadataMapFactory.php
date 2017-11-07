@@ -144,7 +144,7 @@ class MetadataMapFactory
      * @param array  $metadata
      * @return AbstractMetadata
      */
-    private function createMetadataViaFactoryMethod(string $metadataClass, array $metadata): AbstractMetadata
+    private function createMetadataViaFactoryMethod(string $metadataClass, array $metadata) : AbstractMetadata
     {
         $normalizedClass = $this->stripNamespaceFromClass($metadataClass);
         $method          = sprintf('create%s', $normalizedClass);
