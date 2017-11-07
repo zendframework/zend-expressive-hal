@@ -7,6 +7,7 @@ pages:
       - "HAL": hal.md
       - "Links and Resources": links-and-resources.md
       - "Generating Resources": resource-generator.md
+      - "Custom Resources": generating-custom-resources.md
       - "Representations": representations.md
       - "Factories": factories.md
     - Cookbook:
