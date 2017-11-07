@@ -5,7 +5,6 @@ language: php
 cache:
   directories:
     - $HOME/.composer/cache
-    - vendor
 
 env:
   global:
@@ -20,8 +19,8 @@ matrix:
     - php: 7.1
       env:
         - DEPS=locked
-        - TEST_COVERAGE=true
         - CS_CHECK=true
+        - TEST_COVERAGE=true
     - php: 7.1
       env:
         - DEPS=latest
@@ -34,15 +33,12 @@ matrix:
     - php: 7.2
       env:
         - DEPS=latest
-  allow_failures:
-    - php: 7.2
 
 before_install:
-  - if [[ $TEST_COVERAGE != 'true' && $TRAVIS_PHP_VERSION =~ ^7.1 ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
-  - travis_retry composer self-update
+  - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
 
 install:
-  - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
+  - travis_retry composer install $COMPOSER_ARGS
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
