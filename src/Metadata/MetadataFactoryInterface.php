@@ -24,7 +24,8 @@ interface MetadataFactoryInterface
      * ]
      * </code>
      *
-     * The '__class__' key decides which Metadata (and which corresponding) factory will be called to create it.
+     * The '__class__' key decides which AbstractMetadata should be used
+     * (and which corresponding factory will be called to create it).
      *
      * @return AbstractMetadata
      */
