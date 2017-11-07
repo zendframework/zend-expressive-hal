@@ -9,6 +9,7 @@ namespace Zend\Expressive\Hal\Metadata\Exception;
 
 use RuntimeException;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
+use Zend\Expressive\Hal\Metadata\MetadataFactoryInterface;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\MetadataMapFactory;
 
@@ -64,14 +65,22 @@ class InvalidConfigException extends RuntimeException implements ExceptionInterf
         ));
     }
 
-    public static function dueToUnrecognizedMetadataClass(string $class, string $classWithoutNamespace) : self
+    public static function dueToInvalidMetadataFactoryClass(string $class) : self
     {
         return new self(sprintf(
-            '%s does not know how to construct a %s instance; please extend the '
-            . 'factory and create a "create%s" method',
-            MetadataMapFactory::class,
+            '%s is not a valid metadata factory class; does not implement %s',
             $class,
-            $classWithoutNamespace
+            MetadataFactoryInterface::class
+        ));
+    }
+
+    public static function dueToUnrecognizedMetadataClass(string $class) : self
+    {
+        return new self(sprintf(
+            '%s does not know how to construct a %s instance; please provide a '
+            . 'factory in your configuration',
+            MetadataMapFactory::class,
+            $class
         ));
     }
 

@@ -7,12 +7,12 @@
 
 namespace ZendTest\Expressive\Hal\TestAsset;
 
-use Zend\Expressive\Hal\Metadata\AbstractMetadata;
+use Zend\Expressive\Hal\Metadata\MetadataMapFactory;
 
-class TestMetadata extends AbstractMetadata
+class TestMetadataMapFactory extends MetadataMapFactory
 {
-    public function getClass(): string
+    protected function createTestMetadata(array $metadata) : TestMetadata
     {
-        return \stdClass::class;
+        return new TestMetadata();
     }
 }
