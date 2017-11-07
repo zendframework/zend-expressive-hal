@@ -38,6 +38,12 @@
     </url>
         
     <url>
+     <loc>/generating-custom-resources/</loc>
+     <lastmod>2017-11-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>/representations/</loc>
      <lastmod>2017-11-07</lastmod>
      <changefreq>daily</changefreq>

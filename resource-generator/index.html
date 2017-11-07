@@ -84,6 +84,12 @@
                         
                             
 <li >
+    <a href="../generating-custom-resources/">Custom Resources</a>
+</li>
+
+                        
+                            
+<li >
     <a href="../representations/">Representations</a>
 </li>
 
@@ -164,7 +170,7 @@
         <a rel="prev" href="../links-and-resources/"><i class="fa fa-arrow-left"></i> Previous</a>
       </li>
       <li class="next">
-        <a rel="next" href="../representations/">Next <i class="fa fa-arrow-right"></i></a>
+        <a rel="next" href="../generating-custom-resources/">Next <i class="fa fa-arrow-right"></i></a>
       </li>
     </ul>
     
@@ -317,45 +323,6 @@ to use the <code>Zend\Hydrator\HydratorPluginManager</code>.</p>
 <p>(Where <code>$request</code> is a <code>Psr\Http\Message\ServerRequestInterface</code> instance; the
 instance is passed along to the <code>LinkGenerator</code> in order to generate route-based
 URIs for <code>Link</code> instances.)</p>
-<h3 id="customizing-resource-generation">Customizing resource generation</h3>
-<p>The <code>ResourceGenerator</code> allows composing <code>Zend\Expressive\Hal\ResourceGenerator\StrategyInterface</code>
-instances. The <code>StrategyInterface</code> defines the following:</p>
-<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\ResourceGenerator;
-
-use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Hal\HalResource;
-use Zend\Expressive\Hal\Metadata;
-use Zend\Expressive\Hal\ResourceGenerator;
-
-interface StrategyInterface
-{
-    /**
-     * @param object $instance Instance from which to create Resource.
-     * @throws Exception\UnexpectedMetadataTypeException for metadata types the
-     *     strategy cannot handle.
-     */
-    public function createResource(
-        $instance,
-        Metadata\AbstractMetadata $metadata,
-        ResourceGenerator $resourceGenerator,
-        ServerRequestInterface $request
-    ) : HalResource;
-}</code></pre>
-
-<p>When you register a strategy, you will map a metadata type to the strategy; the
-<code>ResourceGenerator</code> will then call your strategy whenever it encounteres
-metadata of that type.</p>
-<pre class="codehilite"><code class="language-php">$resourceGenerator-&gt;addStrategy(CustomMetadata::class, CustomStrategy::class);
-
-// or:
-$resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</code></pre>
-
-<p>If a strategy already is mapped for the given metadata type, this method will
-override it.</p>
-<p>To facilitate common operations, this library provides two traits,
-<code>Zend\Expressive\Hal\ResourceGenerator\ExtractCollectionTrait</code> and
-<code>Zend\Expressive\Hal\ResourceGenerator\ExtractInstanceTrait</code>; inspect these if you
-decide to write your own strategies.</p>
 
 <hr />
 
@@ -366,7 +333,7 @@ decide to write your own strategies.</p>
       <a rel="prev" href="../links-and-resources/"><i class="fa fa-arrow-left"></i> Previous</a>
     </li>
     <li class="next">
-      <a rel="next" href="../representations/">Next <i class="fa fa-arrow-right"></i></a>
+      <a rel="next" href="../generating-custom-resources/">Next <i class="fa fa-arrow-right"></i></a>
     </li>
   </ul>
 </nav>
