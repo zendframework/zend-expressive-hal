@@ -12,7 +12,8 @@ class RouteBasedResourceMetadataFactory implements MetadataFactoryInterface
     /**
      * Creates a RouteBasedResourceMetadata based on the MetadataMap configuration.
      *
-     * @param array $metadata The metadata should have the following structure:
+     * @param string $requestedName The requested name of the metadata type
+     * @param array  $metadata      The metadata should have the following structure:
      * <code>
      * [
      *      // Fully qualified class name of the AbstractMetadata type.
@@ -47,7 +48,7 @@ class RouteBasedResourceMetadataFactory implements MetadataFactoryInterface
      * @return AbstractMetadata
      * @throws Exception\InvalidConfigException
      */
-    public function createMetadata(array $metadata) : AbstractMetadata
+    public function createMetadata(string $requestedName, array $metadata) : AbstractMetadata
     {
         $requiredKeys = [
             'resource_class',
@@ -62,7 +63,7 @@ class RouteBasedResourceMetadataFactory implements MetadataFactoryInterface
             );
         }
 
-        return new RouteBasedResourceMetadata(
+        return new $requestedName(
             $metadata['resource_class'],
             $metadata['route'],
             $metadata['extractor'],
