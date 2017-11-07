@@ -124,7 +124,7 @@ class MetadataMapFactory
         array $metadata,
         string $factoryClass
     ) : AbstractMetadata {
-        if (! in_array(MetadataFactoryInterface::class, class_parents($factoryClass), true)) {
+        if (! in_array(MetadataFactoryInterface::class, class_implements($factoryClass), true)) {
             throw Exception\InvalidConfigException::dueToInvalidMetadataFactoryClass($factoryClass);
         }
 
