@@ -18,8 +18,6 @@ use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
-use Zend\Paginator\Adapter\ArrayAdapter;
-use Zend\Paginator\Paginator;
 use ZendTest\Expressive\Hal\Assertions;
 use ZendTest\Expressive\Hal\TestAsset;
 
@@ -48,6 +46,16 @@ class ResourceWithNestedInstancesTest extends TestCase
             $metadataMap->reveal(),
             $hydrators->reveal(),
             $linkGenerator->reveal()
+        );
+
+        $generator->addStrategy(
+            RouteBasedResourceMetadata::class,
+            ResourceGenerator\RouteBasedResourceStrategy::class
+        );
+
+        $generator->addStrategy(
+            RouteBasedCollectionMetadata::class,
+            ResourceGenerator\RouteBasedCollectionStrategy::class
         );
 
         $resource = $generator->fromObject($parent, $request->reveal());

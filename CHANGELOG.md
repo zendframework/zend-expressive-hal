@@ -4,6 +4,47 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 0.6.0 - 2017-11-07
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#23](https://github.com/zendframework/zend-expressive-hal/pull/23) modifies
+  how the resource generator factory adds strategies and maps metadata to
+  strategies. It now adds the following factories under the
+  `Zend\Expressive\Hal\Metadata` namespace:
+
+  - `RouteBasedCollectionMetadataFactory`
+  - `RouteBasedResourceMetadataFactory`
+  - `UrlBasedCollectionMetadataFactory`
+  - `UrlBasedResourceMetadataFactory`
+
+  Each implements a new `MetadataFactoryInterface` under that same namespace
+  that accepts the requested metadata type name and associated metadata in order
+  to create an `AbstractMetadata` instance. Metadata types are mapped to their
+  factories under the `zend-expressive-hal.metadata-factories` key.
+
+  Strategies are now configured as metadata => strategy class pairings under the
+  `zend-expressive-hal.resource-generator.strategies` key.
+
+  In both cases, defaults that mimic previous behavior are provided via the
+  `ConfigProvider`.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.5.1 - 2017-11-07
 
 ### Added

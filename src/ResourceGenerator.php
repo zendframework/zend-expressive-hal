@@ -41,23 +41,6 @@ class ResourceGenerator
         $this->metadataMap = $metadataMap;
         $this->hydrators = $hydrators;
         $this->linkGenerator = $linkGenerator;
-
-        $this->addStrategy(
-            Metadata\RouteBasedCollectionMetadata::class,
-            new ResourceGenerator\RouteBasedCollectionStrategy()
-        );
-        $this->addStrategy(
-            Metadata\RouteBasedResourceMetadata::class,
-            new ResourceGenerator\RouteBasedResourceStrategy()
-        );
-        $this->addStrategy(
-            Metadata\UrlBasedCollectionMetadata::class,
-            new ResourceGenerator\UrlBasedCollectionStrategy()
-        );
-        $this->addStrategy(
-            Metadata\UrlBasedResourceMetadata::class,
-            new ResourceGenerator\UrlBasedResourceStrategy()
-        );
     }
 
     public function getHydrators() : ContainerInterface
@@ -107,6 +90,14 @@ class ResourceGenerator
         }
 
         $this->strategies[$metadataType] = $strategy;
+    }
+
+    /**
+     * Returns the registered strategies.
+     */
+    public function getStrategies() : array
+    {
+        return $this->strategies;
     }
 
     public function fromArray(array $data, string $uri = null) : HalResource
