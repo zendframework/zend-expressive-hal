@@ -7,6 +7,7 @@
 
 namespace ZendTest\Expressive\Hal;
 
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
@@ -41,6 +42,7 @@ class ResourceGeneratorFactoryTest extends TestCase
 
     public function testFactoryRaisesExceptionIfMetadataMapConfigIsNotAnArray()
     {
+        $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn(new \stdClass());
 
         $object = new ResourceGeneratorFactory();
@@ -50,17 +52,40 @@ class ResourceGeneratorFactoryTest extends TestCase
         $object($this->container->reveal());
     }
 
-    public function testFactoryWithoutAnyStrategies()
+    public function missingOrEmptyStrategiesConfiguration()
     {
-        $this->container->get('config')->willReturn(
-            [
-                'zend-expressive-hal' => [
-                    'resource-generator' => [
-                        'strategies' => [],
-                    ],
+        yield 'missing-top-level' => [[]];
+        yield 'missing-second-level' => [[
+            'zend-expressive-hal' => [],
+        ]];
+        yield 'missing-third-level' => [[
+            'zend-expressive-hal' => [
+                'resource-generator' => [],
+            ],
+        ]];
+        yield 'empty-array' => [[
+            'zend-expressive-hal' => [
+                'resource-generator' => [
+                    'strategies' => [],
                 ],
-            ]
-        );
+            ],
+        ]];
+        yield 'empty-array-object' => [[
+            'zend-expressive-hal' => [
+                'resource-generator' => [
+                    'strategies' => new ArrayObject([]),
+                ],
+            ],
+        ]];
+    }
+
+    /**
+     * @depends missingOrEmptyStrategiesConfiguration
+     */
+    public function testFactoryWithoutAnyStrategies(array $config)
+    {
+        $this->container->has('config')->willReturn(true);
+        $this->container->get('config')->willReturn($config);
 
         $object = new ResourceGeneratorFactory();
 
@@ -69,8 +94,44 @@ class ResourceGeneratorFactoryTest extends TestCase
         self::assertEmpty($resourceGenerator->getStrategies());
     }
 
+    public function invalidStrategiesConfig()
+    {
+        yield 'null'       => [null];
+        yield 'false'      => [false];
+        yield 'true'       => [true];
+        yield 'zero'       => [0];
+        yield 'int'        => [1];
+        yield 'zero-float' => [0.0];
+        yield 'float'      => [1.1];
+        yield 'string'     => ['invalid'];
+        yield 'object'     => [(object) ['item' => 'invalid']];
+    }
+
+    /**
+     * @depends invalidStrategiesConfig
+     * @param mixed $strategies
+     */
+    public function testFactoryRaisesExceptionIfStrategiesConfigIsNonTraversable($strategies)
+    {
+        $this->container->has('config')->willReturn(true);
+        $this->container->get('config')->willReturn([
+            'zend-expressive-hal' => [
+                'resource-generator' => [
+                    'strategies' => $strategies,
+                ],
+            ],
+        ]);
+
+        $factory = new ResourceGeneratorFactory();
+
+        $this->expectException(ResourceGenerator\Exception\InvalidConfigException::class);
+        $this->expectExceptionMessage('strategies configuration');
+        $factory($this->container->reveal());
+    }
+
     public function testFactoryWithRouteBasedCollectionStrategy()
     {
+        $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn(
             [
                 'zend-expressive-hal' => [
