@@ -65,7 +65,7 @@ class InvalidConfigException extends RuntimeException implements ExceptionInterf
         ));
     }
 
-    public static function dueToNonMetadataFactoryClass(string $class) : self
+    public static function dueToInvalidMetadataFactoryClass(string $class) : self
     {
         return new self(sprintf(
             '%s is not a valid metadata factory class; does not implement %s',

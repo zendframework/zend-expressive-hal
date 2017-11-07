@@ -98,7 +98,7 @@ class MetadataMapFactory
 
         $factoryClass = $metadataFactories[$metadataClass];
         if (! in_array(MetadataFactoryInterface::class, class_parents($factoryClass), true)) {
-            throw Exception\InvalidConfigException::dueToNonMetadataFactoryClass($factoryClass);
+            throw Exception\InvalidConfigException::dueToInvalidMetadataFactoryClass($factoryClass);
         }
 
         $factory = new $factoryClass();
