@@ -111,8 +111,9 @@ class MetadataMapFactory
     }
 
     /**
-     * Uses the registered factory class to create the metadata
+     * Uses the registered factory class to create the metadata instance
      *
+     * @param string $metadataClass
      * @param string $factoryClass
      * @param array  $metadata
      *
@@ -133,7 +134,9 @@ class MetadataMapFactory
     }
 
     /**
-     * Call the factory method of this class namend "createMyMetadata(array $metadata)"
+     * Call the factory method in this class namend "createMyMetadata(array $metadata)".
+     *
+     * This function is to ensure backwards compatibility.
      *
      * @param string $metadataClass
      * @param array  $metadata
