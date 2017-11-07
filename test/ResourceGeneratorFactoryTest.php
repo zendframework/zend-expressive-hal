@@ -39,6 +39,17 @@ class ResourceGeneratorFactoryTest extends TestCase
             ->willReturn($this->prophesize(LinkGenerator::class));
     }
 
+    public function testFactoryRaisesExceptionIfMetadataMapConfigIsNotAnArray()
+    {
+        $this->container->get('config')->willReturn(new \stdClass());
+
+        $object = new ResourceGeneratorFactory();
+
+        $this->expectException(ResourceGenerator\Exception\InvalidConfigException::class);
+        $this->expectExceptionMessage('expected an array');
+        $object($this->container->reveal());
+    }
+
     public function testFactoryWithoutAnyStrategies()
     {
         $this->container->get('config')->willReturn(

@@ -14,6 +14,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\Exception\InvalidObjectException;
+use Zend\Expressive\Hal\Exception\InvalidStrategyException;
+use Zend\Expressive\Hal\Exception\UnknownMetadataTypeException;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\LinkGenerator;
@@ -23,6 +25,7 @@ use Zend\Expressive\Hal\ResourceGenerator\Exception\OutOfBoundsException;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
+use ZendTest\Expressive\Hal\TestAsset\TestMetadata;
 
 /**
  * @todo Create tests for cases where resources embed other resources.
@@ -728,5 +731,19 @@ class ResourceGeneratorTest extends TestCase
         $this->expectException(ResourceGenerator\Exception\InvalidCollectionException::class);
         $this->expectExceptionMessage('not a Traversable');
         $this->generator->fromObject($instance, $this->request->reveal());
+    }
+
+    public function testAddStrategyRaisesExceptionIfInvalidMetadataClass()
+    {
+        $this->expectException(UnknownMetadataTypeException::class);
+        $this->expectExceptionMessage('does not exist, or does not extend');
+        $this->generator->addStrategy(\stdClass::class, 'invalid-strategy');
+    }
+
+    public function testAddStrategyRaisesExceptionIfInvalidStrategyClass()
+    {
+        $this->expectException(InvalidStrategyException::class);
+        $this->expectExceptionMessage('does not exist, or does not implement');
+        $this->generator->addStrategy(TestMetadata::class, 'invalid-strategy');
     }
 }
