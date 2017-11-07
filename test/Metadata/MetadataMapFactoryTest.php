@@ -121,6 +121,26 @@ class MetadataMapFactoryTest extends TestCase
         ($this->factory)($this->container->reveal());
     }
 
+    public function testFactoryRaisesExceptionIfMetadataFactoryDoesNotImplementFactoryInterface()
+    {
+        $this->container->has('config')->willReturn(true);
+        $this->container->get('config')->willReturn(
+            [
+                MetadataMap::class => [
+                    ['__class__' => TestAsset\TestMetadata::class]
+                ],
+                'zend-expressive-hal' => [
+                    'metadata-factories' => [
+                        TestAsset\TestMetadata::class => \stdClass::class,
+                    ],
+                ],
+            ]
+        );
+        $this->expectException(InvalidConfigException::class);
+        $this->expectExceptionMessage('is not a valid metadata factory class; does not implement');
+        ($this->factory)($this->container->reveal());
+    }
+
     public function invalidMetadata() : Generator
     {
         $types = [
@@ -143,7 +163,20 @@ class MetadataMapFactoryTest extends TestCase
         string $expectExceptionString
     ) {
         $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([MetadataMap::class => [$metadata]]);
+        $this->container->get('config')->willReturn(
+            [
+                MetadataMap::class => [$metadata],
+                'zend-expressive-hal' => [
+                    'metadata-factories' => [
+                        RouteBasedCollectionMetadata::class => RouteBasedCollectionMetadataFactory::class,
+                        RouteBasedResourceMetadata::class   => RouteBasedResourceMetadataFactory::class,
+
+                        UrlBasedCollectionMetadata::class   => UrlBasedCollectionMetadataFactory::class,
+                        UrlBasedResourceMetadata::class     => UrlBasedResourceMetadataFactory::class,
+                    ],
+                ],
+            ]
+        );
         $this->expectException(InvalidConfigException::class);
         $this->expectExceptionMessage($expectExceptionString);
         ($this->factory)($this->container->reveal());
