@@ -8,7 +8,7 @@
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
     <link rel="shortcut icon" href="../img/favicon.ico">
 
-    <title>HAL - Hypertext Application Language</title>
+    <title>Representations - Hypertext Application Language</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
@@ -65,8 +65,8 @@
                         <ul class="dropdown-menu">
                         
                             
-<li class="active">
-    <a href="./">HAL</a>
+<li >
+    <a href="../hal/">HAL</a>
 </li>
 
                         
@@ -89,8 +89,8 @@
 
                         
                             
-<li >
-    <a href="../representations/">Representations</a>
+<li class="active">
+    <a href="./">Representations</a>
 </li>
 
                         
@@ -155,15 +155,15 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#hypertext-application-language">Hypertext Application Language</a></li>
+        <li class="main active"><a href="#generating-representations">Generating Representations</a></li>
         
-            <li><a href="#resources">Resources</a></li>
+            <li><a href="#renderers">Renderers</a></li>
         
-            <li><a href="#links">Links</a></li>
+            <li><a href="#halresponsefactory">HalResponseFactory</a></li>
         
-            <li><a href="#child-resources">Child Resources</a></li>
+            <li><a href="#using-the-factory">Using the factory</a></li>
         
-            <li><a href="#summary">Summary</a></li>
+            <li><a href="#forcing-collections-for-relations">Forcing collections for relations</a></li>
         
     
     </ul>
@@ -171,10 +171,10 @@
     
     <ul class="pager hidden-print">
       <li class="previous">
-        <a rel="prev" href="../intro/"><i class="fa fa-arrow-left"></i> Previous</a>
+        <a rel="prev" href="../cookbook/generating-custom-resources/"><i class="fa fa-arrow-left"></i> Previous</a>
       </li>
       <li class="next">
-        <a rel="next" href="../links-and-resources/">Next <i class="fa fa-arrow-right"></i></a>
+        <a rel="next" href="../factories/">Next <i class="fa fa-arrow-right"></i></a>
       </li>
     </ul>
     
@@ -190,163 +190,178 @@
       
     
   
-  <li class="active">HAL</li>
+  <li class="active">Representations</li>
 </ol>
 
-<h1 id="hypertext-application-language">Hypertext Application Language</h1>
-<p><a href="http://stateless.co/hal_specification.html">Hypertext Application Language</a>, or
-HAL) is a <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">proposed IETF specification</a>
-for representing API resources and their relations with hyperlinks. While the
-original specification targets JSON, an additional IETF proposal
-<a href="https://tools.ietf.org/html/draft-michaud-xml-hal-01">targets XML</a>.</p>
-<p>HAL is a minimal specification, and addresses three specific things:</p>
-<ul>
-<li>How to represent the elements of an API resource.</li>
-<li>How to represent hypertext links of an API resource.</li>
-<li>How to represent child resources.</li>
-</ul>
-<h2 id="resources">Resources</h2>
-<p>HAL opts to keep out of the way. Where other specifications may push the data
-for a resource into a subkey (e.g., "data", "collection.items", etc.), HAL
-specifies resources as the primary payload.</p>
-<p>As such, a resource is simply a <em>document</em>:</p>
-<pre class="codehilite"><code class="language-json">{
-  &quot;id&quot;: &quot;XXXX-YYYY-ZZZZ-AAAA&quot;,
-  &quot;title&quot;: &quot;Life, the Universe, and Everything&quot;,
-  &quot;author&quot;: &quot;Adams, Douglas&quot;
+<h1 id="generating-representations">Generating Representations</h1>
+<p>This component provides two renderers, one each for creating JSON and XML
+payloads.</p>
+<p>Additionally, as noted in the <a href="../intro/">introduction</a> examples, this component
+provides <code>Zend\Expressive\Hal\HalResponseFactory</code> for generating a PSR-7
+response containing the HAL representation. This chapter dives into that with
+more detail.</p>
+<h2 id="renderers">Renderers</h2>
+<p>All renderers implement <code>Zend\Expressive\Hal\Renderer\RendererInterface</code>:</p>
+<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\Renderer;
+
+use Zend\Expressive\Hal\HalResource;
+
+interface RendererInterface
+{
+    public function render(HalResource $resource) : string;
 }</code></pre>
 
-<p>For XML documents, the element <code>&lt;resource&gt;</code> is reserved to detail the resource;
-every other element represents the document:</p>
-<pre class="codehilite"><code class="language-xml">&lt;resource&gt;
-  &lt;id&gt;XXXX-YYYY-ZZZZ-AAAA&lt;/id&gt;
-  &lt;title&gt;Life, the Universe, and Everything&lt;/title&gt;
-  &lt;author&gt;Adams, Douglas&lt;/author&gt;
-&lt;/resource&gt;</code></pre>
+<p>Two implementations are provided, <code>Zend\Expressive\Hal\Renderer\JsonRenderer</code> and
+<code>Zend\Expressive\Hal\Renderer\XmlRenderer</code></p>
+<h3 id="jsonrenderer">JsonRenderer</h3>
+<p>The <code>JsonRenderer</code> constructor allows you to specify a bitmask of flags for use
+with <code>json_encode()</code>. By default, if none are provided, it uses the value of
+<code>JsonRenderer::DEFAULT_JSON_FLAGS</code>, which evaluates to:</p>
+<pre class="codehilite"><code class="language-php">JSON_PRETTY_PRINT
+| JSON_UNESCAPED_SLASHES
+| JSON_UNESCAPED_UNICODE
+| JSON_PRESERVE_ZERO_FRACTION</code></pre>
 
-<p>This decision makes both consuming and generating HAL payloads trivial.</p>
-<h2 id="links">Links</h2>
-<p>One goal of REST is to allow any given resource to provide <em>hypertext controls</em>,
-or <em>links</em>, allowing the consumer to know what they can do next. Most resources
-will provide a <em>self relational link</em>, so that the consumer knows how to request
-the resource again. However, a consumer might want to know what other actions
-are possible. For example, they may want to know:</p>
+<p>This provides human-readable JSON output.</p>
+<h3 id="xmlrenderer">XmlRenderer</h3>
+<p>The <code>XmlRenderer</code> produces XML representations of HAL resources. It has no
+constructor arguments at this time.</p>
+<h2 id="halresponsefactory">HalResponseFactory</h2>
+<p><code>HalResponseFactory</code> generates a PSR-7 response containing a representation of
+the provided <code>HalResource</code> instance. In order to keep the component agnostic of
+PSR-7 implementation, the factory composes:</p>
 <ul>
-<li>how to get a list of related resources</li>
-<li>how to access the first, previous, next, or last pages of a collection of
-  resources</li>
-<li>what resources are related: e.g., transactions, products, invoices, users,
-  etc.</li>
+<li>A PSR-7 response prototype. A zend-diactoros <code>Response</code> is used if none is
+  provided.</li>
+<li>A callable capable of generating an empty, writable, PSR-7 stream instance.
+  If none is provided, a callable returning a zend-diactoros <code>Stream</code> is
+  provided.</li>
 </ul>
-<p>HAL addresses <em>how</em> to provide such links. This is necessary because JSON has no
-specific semantics around linking, and XML, while it has <em>some</em> semantics, does
-not cover how to provide <em>multiple</em> links for a given element.</p>
-<p>HAL addresses JSON by reserving a special <code>_links</code> property, and specifying a
-structure for how links are represented. Each element of the <code>_links</code> property
-is named for the link relation, and the value is either an array, or a link
-object. A link object contains minimally an <code>href</code> property, with several other
-properties allowed. As an example:</p>
-<pre class="codehilite"><code class="language-json">{
-  &quot;_links&quot;: {
-    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot; },
-    &quot;books&quot;: { &quot;href&quot;: &quot;/api/books&quot; }
-  }
+<p>As an example:</p>
+<pre class="codehilite"><code class="language-php">use Slim\Http\Response;
+use Slim\Http\Stream;
+use Zend\Expressive\Hal\HalResponseFactory;
+
+$factory = new HalResponseFactory(
+    new Response(),
+    function () {
+        return new Stream(fopen('php://temp', 'wb+'));
+    }
+);</code></pre>
+
+<blockquote>
+<h3 id="streams">Streams</h3>
+<p>A factory callable is necessary for generating streams as they are usually
+backed by PHP resources, which are not immutable. Sharing instances could
+thus potentially lead to appending or overwriting contents!</p>
+</blockquote>
+<p>By default, if you pass no arguments to the <code>HalResponseFactory</code> constructor, it
+assumes the following:</p>
+<ul>
+<li>Usage of <code>Zend\Diactoros\Response</code>.</li>
+<li>A callable that returns a new <code>Zend\Diactoros\Stream</code> using <code>php://temp</code> as
+  its backing resource.</li>
+<li>A <code>JsonRenderer</code> instance is created if none is provided.</li>
+<li>An <code>XmlRenderer</code> instance is created if none is provided.</li>
+</ul>
+<p>We provide a PSR-11 compatible factory for generating the <code>HalResponseFactory</code>
+which uses zend-diactoros by default.</p>
+<h2 id="using-the-factory">Using the factory</h2>
+<p>The factory exposes one method:</p>
+<pre class="codehilite"><code class="language-php">use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Hal\HalResource;
+
+public function createResponse(
+    ServerRequestInterface $request,
+    HalResource $resource,
+    string $mediaType = self::DEFAULT_CONTENT_TYPE
+) : ResponseInterface {</code></pre>
+
+<p>Generally speaking, you'll pass the current request instance, and the resource
+for which you want to generate a response, and the factory will return a
+response based on its response prototype, with the following:</p>
+<ul>
+<li>A <code>Content-Type</code> header with the base media type of <code>application/hal</code>.</li>
+<li>A message body containing the representation.</li>
+</ul>
+<p>The request instance is used to determine what representation to create, based
+on the <code>Accept</code> header. If it matches a JSON media type, a JSON representation
+is created, and the <code>Content-Type</code> will be appended with <code>+json</code>; for XML, an
+XML representation is created, and the <code>Content-Type</code> will be appended with
+<code>+xml</code>. If no media type is matched, XML is generated.</p>
+<p>One practice often used is to provide a <em>custom media type</em> for your
+representations. While they will still be HAL, this allows you to document the
+specific structure of your resources, and potentially even validate them against
+JSON schema.</p>
+<p>To do this, pass the media type when creating the response:</p>
+<pre class="codehilite"><code class="language-php">$response = $factory-&gt;createResponse(
+    $request,
+    $resource,
+    'application/vnd.book'
+);</code></pre>
+
+<p><em>Do not</em> pass the format (e.g., <code>+json</code>, <code>+xml</code>) when doing so; the factory will
+append the appropriate one based on content negotiation.</p>
+<h2 id="forcing-collections-for-relations">Forcing collections for relations</h2>
+<p>HAL allows links and embedded resources to be represented as:</p>
+<ul>
+<li>a single object</li>
+<li>an array of objects of the same type</li>
+</ul>
+<p>Internally, this package checks to see if only one of the item exists, and, if
+so, it will render it by itself. However, there are times you may want to force
+an array representation. As an example, if your resource models a car, and you
+have a <code>wheels</code> relation, it would not make sense to return a single wheel, even
+if that's all the car currently has associated with it.</p>
+<p>To accommodate this, we provide two features.</p>
+<p>For links, you may pass a special attribute, <code>Hal\Link::AS_COLLECTION</code>, with a
+boolean value of <code>true</code>; when encountered, this will then be rendered as an
+array of links, even if only one link for that relation is present.</p>
+<pre class="codehilite"><code class="language-php">$link = new Link(
+    'wheels',
+    '/api/car/XXXX-YYYY-ZZZZ/wheels/111',
+    false,
+    [Link::AS_COLLECTION =&gt; true]
+);
+
+$resource = $resource-&gt;withLink($link);</code></pre>
+
+<p>In the above, you will then get the following within your representation:</p>
+<pre class="codehilite"><code class="language-json">&quot;_links&quot;: {
+  &quot;wheels&quot;: [
+    {&quot;href&quot;: &quot;/api/car/XXXX-YYYY-ZZZZ/wheels/111&quot;}
+  ]
 }</code></pre>
 
-<p>At this point, the consumer knows they can access the current resource via the
-"self" relation, and a collection of "books" via the URI "/api/books".</p>
-<p>HAL addresses links in XML with two semantics. First, the <code>&lt;resource&gt;</code> element
-can contain linking information, using the "rel" and "href" attributes (and any
-others necessary to describe the link).  Typically, the "self" relational link
-is defined in the <code>&lt;resource&gt;</code> element. Second, the specification also reserves
-the <code>&lt;link&gt;</code> element; the relation, URI, and other attributes become attributes
-of that XML element.</p>
-<p>An equivalent XML document to the JSON document above looks like the following:</p>
-<pre class="codehilite"><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot;&gt;
-  &lt;link rel=&quot;books&quot; href=&quot;/api/books&quot;/&gt;
-&lt;/resource&gt;</code></pre>
+<p>To force an embedded resource to be rendered within an array, you have two
+options.</p>
+<p>First, and simplest, pass the resource within an array when calling
+<code>withElement()</code>, <code>embed()</code>, or passing data to the constructor:</p>
+<pre class="codehilite"><code class="language-php">// Constructor:
+$resource = new HalResource(['wheels' =&gt; [$wheel]]);
 
-<h2 id="child-resources">Child Resources</h2>
-<p>An API payload may have <em>child resources</em> for several reasons:</p>
-<ul>
-<li>The resource may be related to the current payload, and providing it directly
-  would prevent another request to the API.</li>
-<li>The payload may represent a <em>collection</em> of resources (or even <em>multiple</em>
-  collections of resources).</li>
-</ul>
-<p>Generally, a child resource represents a <em>relation</em>. As such, HAL has very
-specific semantics for providing them.</p>
-<p>In JSON documents, the specification reserves the property <code>_embedded</code>. This is
-an object, with the keys being the <em>relations</em>, and the values either resources,
-or arrays of resources. Each resource follows the same structure as a basic
-HAL resource, with a <code>_links</code> member, other members representing the resource,
-and optionally an <code>_embedded</code> member.</p>
-<pre class="codehilite"><code class="language-json">{
-    &quot;_links&quot;: {
-        &quot;self&quot;: { &quot;href&quot;: &quot;/api/books?page=7&quot; },
-        &quot;first&quot;: { &quot;href&quot;: &quot;/api/books?page=1&quot; },
-        &quot;prev&quot;: { &quot;href&quot;: &quot;/api/books?page=6&quot; },
-        &quot;next&quot;: { &quot;href&quot;: &quot;/api/books?page=8&quot; },
-        &quot;last&quot;: { &quot;href&quot;: &quot;/api/books?page=17&quot; }
-        &quot;search&quot;: {
-            &quot;href&quot;: &quot;/api/books?query={searchTerms}&quot;,
-            &quot;templated&quot;: true
-        }
+// withElement():
+$resource = $resource-&gt;withElement('wheels', [$wheel]);
+
+// embed():
+$resource = $resource-&gt;embed('wheels', [$wheel]);</code></pre>
+
+<p>Alternately, you can call the <code>HalResource::embed</code> method with only the
+resource, passing the method a third argument, a flag indicating whether or not
+to force an array:</p>
+<pre class="codehilite"><code class="language-php">$resource = $resource-&gt;embed('wheels', $wheel, true);</code></pre>
+
+<p>In each of these cases, assuming no other wheels were provided to the final
+resource, you might get a representation such as the following:</p>
+<pre class="codehilite"><code class="language-json">&quot;_embedded&quot;: {
+  &quot;wheels&quot;: [
+    {
+      &quot;_links&quot; =&gt; {&quot;self&quot;: {&quot;href&quot;: &quot;...&quot;}}
+      &quot;id&quot;: &quot;...&quot;
     },
-    &quot;_embedded&quot;: {
-        &quot;book&quot;: [
-            {
-                &quot;_links&quot;: {
-                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
-                }
-                &quot;id&quot;: 1234,
-                &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
-                &quot;author&quot;: &quot;Adams, Douglas&quot;
-            },
-            {
-                &quot;_links&quot;: {
-                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/6789&quot; }
-                }
-                &quot;id&quot;: 6789,
-                &quot;title&quot;: &quot;Ancillary Justice&quot;,
-                &quot;author&quot;: &quot;Leckie, Ann&quot;
-            }
-        ]
-    },
-    &quot;_page&quot;: 7,
-    &quot;_per_page&quot;: 2,
-    &quot;_total&quot;: 33
+  ]
 }</code></pre>
-
-<p>The above represents a <em>collection</em> of <em>book</em> resources.</p>
-<p>To address XML, the specification uses the <code>&lt;resource&gt;</code> element to embed
-additional resources. Resources of the same type use the same <code>rel</code> attribute.
-The XML equivalent of the above JSON documentation thus becomes:</p>
-<pre class="codehilite"><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books?page=7&quot;&gt;
-    &lt;link rel=&quot;first&quot; href=&quot;/api/books?page=1&quot;/&gt;
-    &lt;link rel=&quot;prev&quot; href=&quot;/api/books?page=6&quot;/&gt;
-    &lt;link rel=&quot;next&quot; href=&quot;/api/books?page=8&quot;/&gt;
-    &lt;link rel=&quot;last&quot; href=&quot;/api/books?page=17&quot; templated=&quot;true&quot;/&gt;
-    &lt;resource rel=&quot;book&quot; href=&quot;/api/books/1234&quot;&gt;
-        &lt;id&gt;1234&lt;/id&gt;
-        &lt;title&gt;Hitchhiker's Guide to the Galaxy&lt;/title&gt;
-        &lt;author&gt;Adams, Douglas&lt;/author&gt;
-    &lt;/resource&gt;
-    &lt;resource rel=&quot;book&quot; href=&quot;/api/books/6789&quot;&gt;
-        &lt;id&gt;6789&lt;/id&gt;
-        &lt;title&gt;Ancillary Justice&lt;/title&gt;
-        &lt;author&gt;Leckie, Ann&lt;/author&gt;
-    &lt;/resource&gt;
-    &lt;_page&gt;7&lt;/_page&gt;
-    &lt;_per_page&gt;2&lt;/_per_page&gt;
-    &lt;_total&gt;33&lt;/_total&gt;
-&lt;/resource&gt;</code></pre>
-
-<h2 id="summary">Summary</h2>
-<p>With these three semantics &mdash; resources, links, and child resources &mdash;
-HAL allows you to describe any payload, and provide the hypertext controls
-necessary to allow API consumers to know what resources they can access next.</p>
-<p>The next step, then, is learning how to create HAL payloads for your API!</p>
 
 <hr />
 
@@ -354,10 +369,10 @@ necessary to allow API consumers to know what resources they can access next.</p
 <nav>
   <ul class="pager hidden-print">
     <li class="previous">
-      <a rel="prev" href="../intro/"><i class="fa fa-arrow-left"></i> Previous</a>
+      <a rel="prev" href="../cookbook/generating-custom-resources/"><i class="fa fa-arrow-left"></i> Previous</a>
     </li>
     <li class="next">
-      <a rel="next" href="../links-and-resources/">Next <i class="fa fa-arrow-right"></i></a>
+      <a rel="next" href="../factories/">Next <i class="fa fa-arrow-right"></i></a>
     </li>
   </ul>
 </nav>
