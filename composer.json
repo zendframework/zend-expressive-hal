@@ -15,14 +15,6 @@
         "zendframework",
         "zend-expressive"
     ],
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "zf": {
-            "config-provider": "Zend\\Expressive\\Hal\\ConfigProvider"
-        }
-    },
     "support": {
         "docs": "https://docs.zendframework.com/zend-expressive-hal/",
         "issues": "https://github.com/zendframework/zend-expressive-hal/issues",
@@ -63,6 +55,14 @@
     "autoload-dev": {
         "psr-4": {
             "ZendTest\\Expressive\\Hal\\": "test/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "zf": {
+            "config-provider": "Zend\\Expressive\\Hal\\ConfigProvider"
         }
     },
     "scripts": {
