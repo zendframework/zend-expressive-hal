@@ -34,7 +34,7 @@
         "phpunit/phpunit": "^6.4.3",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-diactoros": "^1.6",
-        "zendframework/zend-expressive-helpers": "^4.2",
+        "zendframework/zend-expressive-helpers": "^4.2 || ^5.0.0-dev || ^5.0.0",
         "zendframework/zend-hydrator": "^2.3.1",
         "zendframework/zend-paginator": "^2.7"
     },
