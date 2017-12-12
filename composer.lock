@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "863a254455b1cc1476e60cf5194ecf8a",
+    "content-hash": "1ae6038383d96a5ea655303e1f4a509e",
     "packages": [
         {
             "name": "psr/http-message",
@@ -2249,7 +2249,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "zendframework/zend-expressive-helpers": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
