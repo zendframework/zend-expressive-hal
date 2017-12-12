@@ -20,4 +20,16 @@ class InvalidResourceValueException extends RuntimeException implements Exceptio
             HalResource::class
         ));
     }
+
+    /**
+     * @param object $object
+     */
+    public static function fromObject($object) : self
+    {
+        return new self(sprintf(
+            'Encountered object of type "%s" when serializing %s instance; unable to serialize',
+            get_class($object),
+            HalResource::class
+        ));
+    }
 }

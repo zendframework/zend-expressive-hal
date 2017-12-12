@@ -7,7 +7,10 @@
 
 namespace ZendTest\Expressive\Hal\Renderer;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
+use Zend\Expressive\Hal\HalResource;
+use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Renderer\XmlRenderer;
 
 class XmlRendererTest extends TestCase
@@ -60,5 +63,18 @@ EOX;
         $renderer = new XmlRenderer();
 
         $this->assertSame($expected, $renderer->render($resource));
+    }
+
+    public function testCanRenderPhpDateTimeInstances()
+    {
+        $dateTime = new DateTime('now');
+        $resource = new HalResource([
+            'date' => $dateTime,
+        ]);
+        $resource = $resource->withLink(new Link('self', '/example'));
+
+        $renderer = new XmlRenderer();
+        $xml = $renderer->render($resource);
+        $this->assertContains((string) $dateTime, $xml);
     }
 }
