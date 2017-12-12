@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 0.6.1 - 2017-12-12
+
+### Added
+
+- [#26](https://github.com/zendframework/zend-expressive-hal/pull/26) adds
+  support for the zend-expressive-helpers 5.0 series of releases.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.6.0 - 2017-11-07
 
 ### Added
