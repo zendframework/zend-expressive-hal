@@ -65,6 +65,9 @@ EOX;
         $this->assertSame($expected, $renderer->render($resource));
     }
 
+    /**
+     * @see https://github.com/zendframework/zend-expressive-hal/issues/3
+     */
     public function testCanRenderPhpDateTimeInstances()
     {
         $dateTime = new DateTime('now');
@@ -75,6 +78,6 @@ EOX;
 
         $renderer = new XmlRenderer();
         $xml = $renderer->render($resource);
-        $this->assertContains((string) $dateTime, $xml);
+        $this->assertContains($dateTime->format('c'), $xml);
     }
 }

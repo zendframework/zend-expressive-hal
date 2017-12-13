@@ -7,6 +7,7 @@
 
 namespace Zend\Expressive\Hal\Renderer;
 
+use DateTimeInterface;
 use DOMDocument;
 use DOMNode;
 use Zend\Expressive\Hal\HalResource;
@@ -152,17 +153,20 @@ class XmlRenderer implements RendererInterface
      * @todo Detect JsonSerializable, and pass to
      *     json_decode(json_encode($object), true), passing the final value
      *     back to createResourceElement()?
-     * @todo How should we handle DateTimeInterface implementations?
-     *     $date->format('c')?
      * @param object $object
      * @throws Exception\InvalidResourceValueException if unable to serialize
      *     the data to a string.
      */
     private function createDataFromObject($object) : string
     {
+        if ($object instanceof DateTimeInterface) {
+            return $object->format('c');
+        }
+
         if (! method_exists($object, '__toString')) {
             throw Exception\InvalidResourceValueException::fromObject($object);
         }
+
         return (string) $object;
     }
 }
