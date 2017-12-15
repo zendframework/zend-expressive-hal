@@ -126,6 +126,11 @@ support them. Create `create<type>(array $metadata)` methods for each
 type you wish to support, where `<type>` is your custom class name, minus
 the namespace.
 
+**Please note**: There is a [known issue](https://github.com/zendframework/zend-expressive-hal/issues/5) for at least Zend Router (probably
+others as well) for using routes with optional parameters. If in doubt, always
+configure your router with separate routing entries for such cases. See the
+issue for a comprehensive example.
+
 ## Zend\Expressive\Hal\ResourceGeneratorFactory
 
 - Registered as service: `Zend\Expressive\Hal\ResourceGenerator`
