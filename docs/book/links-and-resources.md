@@ -142,6 +142,17 @@ $link = $linkGenerator->templatedFromRoute(
 If you need to generate custom links based on routing, we recommend composing
 the `LinkGenerator` in your own classes to do so.
 
+> ### Limitation
+> 
+> There is a [known limitation](https://github.com/zendframework/zend-expressive-hal/issues/5)
+> with zend-router when using routes with optional parameters (e.g., `/books[/:id]`,
+> where `:id` is optional). In such cases, if no matching parameter is provided
+> (such as when generating a URI without an `:id`), the router will raise an
+> exception due to the missing parameter.
+> 
+> If you encounter this issue, create separate routing entries for each optional
+> parameter. See the issue for a comprehensive example.
+
 ## Resources
 
 A HAL resource is simply the representation you want to return for your API.
