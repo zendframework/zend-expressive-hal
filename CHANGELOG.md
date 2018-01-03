@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 0.6.2 - 2018-01-03
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#27](https://github.com/zendframework/zend-expressive-hal/pull/27) modifies
+  the `XmlRenderer` to raise an exception when attempting to render objects that
+  are not serializable to strings.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#27](https://github.com/zendframework/zend-expressive-hal/pull/27) adds
+  handling for `DateTime` and string serializable objects to the `XmlRenderer`,
+  allowing them to be rendered.
+
 ## 0.6.1 - 2017-12-12
 
 ### Added

@@ -7,8 +7,13 @@
 
 namespace ZendTest\Expressive\Hal\Renderer;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
+use stdClass;
+use Zend\Expressive\Hal\HalResource;
+use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Renderer\XmlRenderer;
+use ZendTest\Expressive\Hal\TestAsset\StringSerializable;
 
 class XmlRendererTest extends TestCase
 {
@@ -60,5 +65,35 @@ EOX;
         $renderer = new XmlRenderer();
 
         $this->assertSame($expected, $renderer->render($resource));
+    }
+
+    /**
+     * @see https://github.com/zendframework/zend-expressive-hal/issues/3
+     */
+    public function testCanRenderPhpDateTimeInstances()
+    {
+        $dateTime = new DateTime('now');
+        $resource = new HalResource([
+            'date' => $dateTime,
+        ]);
+        $resource = $resource->withLink(new Link('self', '/example'));
+
+        $renderer = new XmlRenderer();
+        $xml = $renderer->render($resource);
+        $this->assertContains($dateTime->format('c'), $xml);
+    }
+
+    public function testCanRenderObjectsThatImplementToString()
+    {
+        $instance = new StringSerializable();
+
+        $resource = new HalResource([
+            'key' => $instance,
+        ]);
+        $resource = $resource->withLink(new Link('self', '/example'));
+
+        $renderer = new XmlRenderer();
+        $xml = $renderer->render($resource);
+        $this->assertContains((string) $instance, $xml);
     }
 }
