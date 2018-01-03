@@ -309,6 +309,16 @@ $link = $linkGenerator-&gt;templatedFromRoute(
 <code>templatedFromRoute()</code> generates a templated instance.</p>
 <p>If you need to generate custom links based on routing, we recommend composing
 the <code>LinkGenerator</code> in your own classes to do so.</p>
+<blockquote>
+<h3 id="limitation">Limitation</h3>
+<p>There is a <a href="https://github.com/zendframework/zend-expressive-hal/issues/5">known limitation</a>
+with zend-router when using routes with optional parameters (e.g., <code>/books[/:id]</code>,
+where <code>:id</code> is optional). In such cases, if no matching parameter is provided
+(such as when generating a URI without an <code>:id</code>), the router will raise an
+exception due to the missing parameter.</p>
+<p>If you encounter this issue, create separate routing entries for each optional
+parameter. See the issue for a comprehensive example.</p>
+</blockquote>
 <h2 id="resources">Resources</h2>
 <p>A HAL resource is simply the representation you want to return for your API.
 <code>Zend\Expressive\Hal\HalResource</code> allows you to model these representations,
