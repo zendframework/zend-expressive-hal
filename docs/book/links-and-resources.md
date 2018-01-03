@@ -143,10 +143,15 @@ If you need to generate custom links based on routing, we recommend composing
 the `LinkGenerator` in your own classes to do so.
 
 > ### Limitation
-> There is a [known limitation](https://github.com/zendframework/zend-expressive-hal/issues/5) for at least Zend Router (probably
-> others as well) for using routes with optional parameters. If in doubt, always
-> configure your router with separate routing entries for such cases. See the
-> issue for a comprehensive example.
+> 
+> There is a [known limitation](https://github.com/zendframework/zend-expressive-hal/issues/5)
+> with zend-router when using routes with optional parameters (e.g., `/books[/:id]`,
+> where `:id` is optional). In such cases, if no matching parameter is provided
+> (such as when generating a URI without an `:id`), the router will raise an
+> exception due to the missing parameter.
+> 
+> If you encounter this issue, create separate routing entries for each optional
+> parameter. See the issue for a comprehensive example.
 
 ## Resources
 
