@@ -3,7 +3,7 @@
         {
             "location": "/",
             "text": "Hypertext Application Language (HAL) for PSR-7 Applications\n\n\n\n\n\n\nThis library provides utilities for modeling HAL resources with links and\ngenerating \nPSR-7\n responses representing\nboth JSON and XML serializations of them.\n\n\nInstallation\n\n\nRun the following to install this library:\n\n\n$ composer require zendframework/zend-expressive-hal\n\n\n\nDocumentation\n\n\nDocumentation is \nin the doc tree\n, and can be compiled using \nmkdocs\n:\n\n\n$ mkdocs build\n\n\n\nYou may also \nbrowse the documentation online\n.",
-            "title": "Home"
+            "title": "Hypertext Application Language (HAL) for PSR-7 Applications"
         },
         {
             "location": "/#hypertext-application-language-hal-for-psr-7-applications",
