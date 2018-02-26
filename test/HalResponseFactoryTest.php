@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
  */
 
@@ -26,11 +26,13 @@ class HalResponseFactoryTest extends TestCase
     public function setUp()
     {
         $this->request      = $this->prophesize(ServerRequestInterface::class);
+        $this->response     = $this->prophesize(ResponseInterface::class);
         $this->jsonRenderer = $this->prophesize(Renderer\JsonRenderer::class);
         $this->xmlRenderer  = $this->prophesize(Renderer\XmlRenderer::class);
         $this->factory      = new HalResponseFactory(
-            null,
-            null,
+            function () {
+                return $this->response->reveal();
+            },
             $this->jsonRenderer->reveal(),
             $this->xmlRenderer->reveal()
         );
@@ -42,14 +44,17 @@ class HalResponseFactoryTest extends TestCase
         $this->jsonRenderer->render($resource)->willReturn('{}');
         $this->xmlRenderer->render($resource)->shouldNotBeCalled();
         $this->request->getHeaderLine('Accept')->willReturn('');
+
+        $stream = $this->prophesize(StreamInterface::class);
+        $stream->write('{}')->shouldBeCalled();
+        $this->response->getBody()->will([$stream, 'reveal']);
+        $this->response->withHeader('Content-Type', 'application/hal+json')->will([$this->response, 'reveal']);
+
         $response = $this->factory->createResponse(
             $this->request->reveal(),
             $resource
         );
-        $this->assertInstanceOf(ResponseInterface::class, $response);
-        $this->assertContains('application/hal+json', $response->getHeaderLine('Content-Type'));
-        $json = (string) $response->getBody();
-        $this->assertEquals('{}', $json);
+        $this->assertSame($this->response->reveal(), $response);
     }
 
     public function jsonAcceptHeaders()
@@ -70,14 +75,17 @@ class HalResponseFactoryTest extends TestCase
         $this->jsonRenderer->render($resource)->willReturn('{}');
         $this->xmlRenderer->render($resource)->shouldNotBeCalled();
         $this->request->getHeaderLine('Accept')->willReturn($header);
+
+        $stream = $this->prophesize(StreamInterface::class);
+        $stream->write('{}')->shouldBeCalled();
+        $this->response->getBody()->will([$stream, 'reveal']);
+        $this->response->withHeader('Content-Type', 'application/hal+json')->will([$this->response, 'reveal']);
+
         $response = $this->factory->createResponse(
             $this->request->reveal(),
             $resource
         );
-        $this->assertInstanceOf(ResponseInterface::class, $response);
-        $this->assertContains('application/hal+json', $response->getHeaderLine('Content-Type'));
-        $json = (string) $response->getBody();
-        $this->assertEquals('{}', $json);
+        $this->assertSame($this->response->reveal(), $response);
     }
 
     public function xmlAcceptHeaders()
@@ -99,14 +107,17 @@ class HalResponseFactoryTest extends TestCase
         $this->xmlRenderer->render($resource)->willReturn('<resource/>');
         $this->jsonRenderer->render($resource)->shouldNotBeCalled();
         $this->request->getHeaderLine('Accept')->willReturn($header);
+
+        $stream = $this->prophesize(StreamInterface::class);
+        $stream->write('<resource/>')->shouldBeCalled();
+        $this->response->getBody()->will([$stream, 'reveal']);
+        $this->response->withHeader('Content-Type', 'application/hal+xml')->will([$this->response, 'reveal']);
+
         $response = $this->factory->createResponse(
             $this->request->reveal(),
             $resource
         );
-        $this->assertInstanceOf(ResponseInterface::class, $response);
-        $this->assertContains('application/hal+xml', $response->getHeaderLine('Content-Type'));
-        $xml = (string) $response->getBody();
-        $this->assertEquals('<resource/>', $xml);
+        $this->assertSame($this->response->reveal(), $response);
     }
 
     public function customMediaTypes()
@@ -142,70 +153,17 @@ class HalResponseFactoryTest extends TestCase
                 break;
         }
         $this->request->getHeaderLine('Accept')->willReturn($header);
+
+        $stream = $this->prophesize(StreamInterface::class);
+        $stream->write($responseBody)->shouldBeCalled();
+        $this->response->getBody()->will([$stream, 'reveal']);
+        $this->response->withHeader('Content-Type', $expectedMediaType)->will([$this->response, 'reveal']);
+
         $response = $this->factory->createResponse(
             $this->request->reveal(),
             $resource,
             $mediaType
         );
-        $this->assertInstanceOf(ResponseInterface::class, $response);
-        $this->assertContains($expectedMediaType, $response->getHeaderLine('Content-Type'));
-        $payload = (string) $response->getBody();
-        $this->assertEquals($responseBody, $payload);
-    }
-
-    public function testAllowsProvidingResponsePrototypeToConstructor()
-    {
-        $resource = $this->createExampleResource();
-
-        $prototype = $this->prophesize(ResponseInterface::class);
-        $prototype->withBody(Argument::type(StreamInterface::class))->will([$prototype, 'reveal']);
-        $prototype->withHeader('Content-Type', 'application/hal+json')->will([$prototype, 'reveal']);
-
-        $this->jsonRenderer->render($resource)->willReturn('{}');
-        $this->xmlRenderer->render($resource)->shouldNotBeCalled();
-        $this->request->getHeaderLine('Accept')->willReturn('application/json');
-
-        $factory = new HalResponseFactory(
-            $prototype->reveal(),
-            null,
-            $this->jsonRenderer->reveal(),
-            $this->xmlRenderer->reveal()
-        );
-        $response = $factory->createResponse(
-            $this->request->reveal(),
-            $resource
-        );
-
-        $this->assertSame($prototype->reveal(), $response);
-    }
-
-    public function testAllowsProvidingStreamFactoryToConstructor()
-    {
-        $resource = $this->createExampleResource();
-
-        $this->jsonRenderer->render($resource)->willReturn('{}');
-        $this->xmlRenderer->render($resource)->shouldNotBeCalled();
-        $this->request->getHeaderLine('Accept')->willReturn('application/json');
-
-        $stream = $this->prophesize(StreamInterface::class);
-        $stream->write('{}')->shouldBeCalled();
-
-        $streamFactory = function () use ($stream) {
-            return $stream->reveal();
-        };
-
-        $factory = new HalResponseFactory(
-            null,
-            $streamFactory,
-            $this->jsonRenderer->reveal(),
-            $this->xmlRenderer->reveal()
-        );
-
-        $response = $factory->createResponse(
-            $this->request->reveal(),
-            $resource
-        );
-        $this->assertInstanceOf(ResponseInterface::class, $response);
-        $this->assertContains('application/hal+json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame($this->response->reveal(), $response);
     }
 }
