@@ -81,7 +81,7 @@ $metadataMap->add($booksMetadata);
 
 To automate generation of the `MetadataMap`, we provide
 `Zend\Expressive\Hal\Metadata\MetadataMapFactory`. This factory may be used with any
-[PSR-11](http://www.php-fig.org/psr/psr-11/) container. It utilizes the `config`
+[PSR-11](https://www.php-fig.org/psr/psr-11/) container. It utilizes the `config`
 service, and pulls its configuration from a key named after the
 `Zend\Expressive\Hal\Metadata\MetadataMap` class.
 

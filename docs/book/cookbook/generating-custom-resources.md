@@ -39,6 +39,7 @@ $resourceGenerator->addStrategy(CustomMetadata::class, $strategyInstance);
 ```
 
 You can also add your strategies via the configuration:
+
 ```php
 return [
     'zend-expressive-hal' => [
@@ -62,6 +63,7 @@ decide to write your own strategies.
 In order for the `MetadataMap` to be able to use your `CustomMetadata` you need to register 
 a factory (implementing `Zend\Expressive\Hal\Metadata\MetadataFactoryInterface`) for it.
 You can register them via the configuration:
+
 ```php
 return [
     'zend-expressive-hal' => [

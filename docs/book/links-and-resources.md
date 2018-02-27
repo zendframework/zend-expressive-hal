@@ -13,7 +13,7 @@ The basic building blocks of this component are links and resources:
 
 > ### PSR-13
 > 
-> zendframework/zend-expressive-hal implements [PSR-13](http://www.php-fig.org/psr/psr-13/),
+> zendframework/zend-expressive-hal implements [PSR-13](https://www.php-fig.org/psr/psr-13/),
 > which provides interfaces for relational links and collections of relational
 > links. `Zend\Expressive\Hal\Link` implements `Psr\Link\EvolvableLinkInterface`, and
 > `Zend\Expressive\Hal\HalResource` implements `Psr\Link\EvolvableLinkProviderInterface`.
