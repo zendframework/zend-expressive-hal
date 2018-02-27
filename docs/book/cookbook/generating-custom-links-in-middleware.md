@@ -1,4 +1,4 @@
-# Generating custom links in middleware
+# Generating custom links in middleware and request handlers
 
 In most cases, you can rely on the `ResourceGenerator` to generate self
 relational links, and, in the case of paginated collections, pagination links.

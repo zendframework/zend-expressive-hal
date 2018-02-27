@@ -1,7 +1,7 @@
 # Provided factories
 
 This component provides a number of factories for use with
-[PSR-11](http://www.php-fig.org/psr/psr-11/), in order to generate fully
+[PSR-11](https://www.php-fig.org/psr/psr-11/), in order to generate fully
 configured instances for your use.
 
 ## Zend\Expressive\Hal\HalResponseFactoryFactory
@@ -9,23 +9,16 @@ configured instances for your use.
 - Registered as service: `Zend\Expressive\Hal\HalResponseFactory`
 - Generates instance of: `Zend\Expressive\Hal\HalResponseFactory`
 - Depends on:
-    - `Psr\Http\Message\ResponseInterface` service. If not present, it will
-      check if zend-diactoros is installed, and use a new `Response` instance
-      from that library; if not, it raises an exception.
-    - `Psr\Http\Message\StreamInterface` service. This service must return a
-      a callable capable of returning a `StreamInterface` instance (in other
-      words, the service returns a _factory_, and not the stream itself). If th
-      service is not present, the factory will check if zend-diactoros is
-      installed, and return a callable that returns a new `Stream` instance from
-      that library; if not, it raises an exception.
+    - `Psr\Http\Message\ResponseInterface` service. The service must resolve to
+      a PHP callable capable of generating a [PSR-7](https://www.php-fig.org/psr/psr-7/)
+      `ResponseInterface` instance; it must not resolve to a `ResponseInterface`
+      instance directly. This service is **required**, and must be supplied by
+      the application. If you are using with zend-expressive v3 and above, the
+      service will already be registered.
     - `Zend\Expressive\Hal\Renderer\JsonRenderer` service. If the service is not
       present, it instantiates an instance itself.
     - `Zend\Expressive\Hal\Renderer\XmlRenderer` service. If the service is not
       present, it instantiates an instance itself.
-
-If you want to use a different PSR-7 implementation for the response and stream,
-provide services for `Psr\Http\Message\ResponseInterface` and
-`Psr\Http\Message\StreamInterface`, as described above.
 
 ## Zend\Expressive\Hal\LinkGeneratorFactory
 

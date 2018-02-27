@@ -4,9 +4,9 @@ This component provides two renderers, one each for creating JSON and XML
 payloads.
 
 Additionally, as noted in the [introduction](intro.md) examples, this component
-provides `Zend\Expressive\Hal\HalResponseFactory` for generating a PSR-7
-response containing the HAL representation. This chapter dives into that with
-more detail.
+provides `Zend\Expressive\Hal\HalResponseFactory` for generating a
+[PSR-7](https://www.php-fig.org/psr/psr-7/) response containing the HAL
+representation. This chapter dives into that with more detail.
 
 ## Renderers
 
@@ -33,13 +33,13 @@ with `json_encode()`. By default, if none are provided, it uses the value of
 `JsonRenderer::DEFAULT_JSON_FLAGS`, which evaluates to:
 
 ```php
-JSON_PRETTY_PRINT
-| JSON_UNESCAPED_SLASHES
+JSON_UNESCAPED_SLASHES
 | JSON_UNESCAPED_UNICODE
 | JSON_PRESERVE_ZERO_FRACTION
 ```
 
-This provides human-readable JSON output.
+When your application is in "debug" mode, it also adds the `JSON_PRETTY_PRINT`
+flag to the default list, in order to provide human-readable JSON output.
 
 ### XmlRenderer
 
@@ -50,13 +50,8 @@ constructor arguments at this time.
 
 `HalResponseFactory` generates a PSR-7 response containing a representation of
 the provided `HalResource` instance. In order to keep the component agnostic of
-PSR-7 implementation, the factory composes:
-
-- A PSR-7 response prototype. A zend-diactoros `Response` is used if none is
-  provided.
-- A callable capable of generating an empty, writable, PSR-7 stream instance.
-  If none is provided, a callable returning a zend-diactoros `Stream` is
-  provided.
+PSR-7 implementation, `HalResponseFactory` itself composes a callable factory
+capable of producing an empty PSR-7 response.
 
 As an example:
 
@@ -66,30 +61,21 @@ use Slim\Http\Stream;
 use Zend\Expressive\Hal\HalResponseFactory;
 
 $factory = new HalResponseFactory(
-    new Response(),
     function () {
-        return new Stream(fopen('php://temp', 'wb+'));
+        return new Response();
     }
 );
 ```
 
-> ### Streams
->
-> A factory callable is necessary for generating streams as they are usually
-> backed by PHP resources, which are not immutable. Sharing instances could
-> thus potentially lead to appending or overwriting contents!
+Additionally, the `HalResponseFactory` constructor can accept the following
+arguments, with the described defaults if none is provided:
 
-By default, if you pass no arguments to the `HalResponseFactory` constructor, it
-assumes the following:
-
-- Usage of `Zend\Diactoros\Response`.
-- A callable that returns a new `Zend\Diactoros\Stream` using `php://temp` as
-  its backing resource.
 - A `JsonRenderer` instance is created if none is provided.
 - An `XmlRenderer` instance is created if none is provided.
 
-We provide a PSR-11 compatible factory for generating the `HalResponseFactory`
-which uses zend-diactoros by default.
+We provide a [PSR-11](https://www.php-fig.org/psr/psr-11) compatible factory for
+generating the `HalResponseFactory`, described in [the factories
+chapter](factories.md#zendexpressivehalhalresponsefactoryfactory).
 
 ## Using the factory
 
@@ -153,9 +139,9 @@ if that's all the car currently has associated with it.
 
 To accommodate this, we provide two features.
 
-For links, you may pass a special attribute, `Hal\Link::AS_COLLECTION`, with a
-boolean value of `true`; when encountered, this will then be rendered as an
-array of links, even if only one link for that relation is present.
+For links, you may pass a special attribute, `Zend\Expressive\Hal\Link::AS_COLLECTION`,
+with a boolean value of `true`; when encountered, this will then be rendered as
+an array of links, even if only one link for that relation is present.
 
 ```php
 $link = new Link(
