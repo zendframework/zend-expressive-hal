@@ -100,6 +100,5 @@ class HalResponseFactoryFactoryTest extends TestCase
         self::assertInstanceOf(HalResponseFactory::class, $instance);
         self::assertAttributeSame($jsonRenderer, 'jsonRenderer', $instance);
         self::assertAttributeSame($xmlRenderer, 'xmlRenderer', $instance);
-        self::assertAttributeSame($stream, 'streamFactory', $instance);
     }
 }
