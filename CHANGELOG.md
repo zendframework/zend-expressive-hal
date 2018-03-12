@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 0.6.3 - 2018-03-12
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#32](https://github.com/zendframework/zend-expressive-hal/pull/32) modifies
+  `HalResponseFactoryFactory` to test if a `ResponseInterface` service instance
+  is `callable` before returning it; if it is, it calls it first. This allows
+  the `ResponseInterface` service to return a response _factory_ instead of an
+  instance.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.6.2 - 2018-01-03
 
 ### Added
