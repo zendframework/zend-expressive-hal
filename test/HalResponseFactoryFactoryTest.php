@@ -70,4 +70,36 @@ class HalResponseFactoryFactoryTest extends TestCase
         self::assertAttributeInstanceOf(Renderer\XmlRenderer::class, 'xmlRenderer', $instance);
         self::assertResponseFactoryReturns($response, $instance);
     }
+
+    public function testReturnsHalResponseFactoryInstanceWhenResponseInterfaceReturnsFactory()
+    {
+        $jsonRenderer = $this->prophesize(Renderer\JsonRenderer::class)->reveal();
+        $xmlRenderer = $this->prophesize(Renderer\XmlRenderer::class)->reveal();
+        $response = $this->prophesize(ResponseInterface::class)->reveal();
+        $responseFactory = function () use ($response) {
+            return $response;
+        };
+        $stream = new class()
+        {
+            public function __invoke()
+            {
+            }
+        };
+
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has(Renderer\JsonRenderer::class)->willReturn(true);
+        $container->get(Renderer\JsonRenderer::class)->willReturn($jsonRenderer);
+        $container->has(Renderer\XmlRenderer::class)->willReturn(true);
+        $container->get(Renderer\XmlRenderer::class)->willReturn($xmlRenderer);
+        $container->has(ResponseInterface::class)->willReturn(true);
+        $container->get(ResponseInterface::class)->willReturn($responseFactory);
+        $container->has(StreamInterface::class)->willReturn(true);
+        $container->get(StreamInterface::class)->willReturn($stream);
+
+        $instance = (new HalResponseFactoryFactory())($container->reveal());
+        self::assertInstanceOf(HalResponseFactory::class, $instance);
+        self::assertAttributeSame($jsonRenderer, 'jsonRenderer', $instance);
+        self::assertAttributeSame($xmlRenderer, 'xmlRenderer', $instance);
+        self::assertAttributeSame($stream, 'streamFactory', $instance);
+    }
 }
