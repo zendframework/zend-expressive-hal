@@ -62,7 +62,8 @@ class HalResponseFactoryFactory
     private function getResponseInstance(ContainerInterface $container) : ResponseInterface
     {
         if ($container->has(ResponseInterface::class)) {
-            return $container->get(ResponseInterface::class);
+            $response = $container->get(ResponseInterface::class);
+            return is_callable($response) ? $response() : $response;
         }
 
         if (class_exists(Response::class)) {
