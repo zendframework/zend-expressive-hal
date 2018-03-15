@@ -7,7 +7,6 @@
 
 namespace Zend\Expressive\Hal\ResourceGenerator;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;

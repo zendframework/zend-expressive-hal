@@ -12,7 +12,6 @@ use Prophecy\Argument;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator;
-use Zend\Expressive\Hal\LinkGenerator\UrlGenerator;
 use Zend\Expressive\Helper\ServerUrlHelper;
 use Zend\Expressive\Helper\UrlHelper;
 

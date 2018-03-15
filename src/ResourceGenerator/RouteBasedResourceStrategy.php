@@ -9,7 +9,6 @@ namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\HalResource;
-use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 

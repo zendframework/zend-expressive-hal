@@ -14,7 +14,6 @@ use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
-use Zend\Expressive\Hal\ResourceGenerator\Exception;
 use Zend\Paginator\Paginator;
 
 use function get_class;

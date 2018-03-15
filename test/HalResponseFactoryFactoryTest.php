@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace ZendTest\Expressive\Hal;
 
-use Closure;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionProperty;
-use Zend\Expressive\Hal\HalResponseFactoryFactory;
 use Zend\Expressive\Hal\HalResponseFactory;
+use Zend\Expressive\Hal\HalResponseFactoryFactory;
 use Zend\Expressive\Hal\Renderer;
 
 class HalResponseFactoryFactoryTest extends TestCase

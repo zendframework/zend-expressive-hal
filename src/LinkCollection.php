@@ -7,9 +7,8 @@
 
 namespace Zend\Expressive\Hal;
 
-use Psr\Link\LinkInterface;
 use Psr\Link\EvolvableLinkProviderInterface;
-use Traversable;
+use Psr\Link\LinkInterface;
 
 use function array_filter;
 use function in_array;

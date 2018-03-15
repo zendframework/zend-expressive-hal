@@ -8,14 +8,10 @@
 namespace ZendTest\Expressive\Hal;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
-use ReflectionProperty;
-use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\HalResponseFactory;
-use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Renderer;
 use ZendTest\Expressive\Hal\Renderer\TestAsset;
 
