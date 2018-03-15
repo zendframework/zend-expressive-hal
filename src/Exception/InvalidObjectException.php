@@ -10,6 +10,9 @@ namespace Zend\Expressive\Hal\Exception;
 use InvalidArgumentException;
 use Zend\Expressive\Hal\HalResource;
 
+use function gettype;
+use function sprintf;
+
 class InvalidObjectException extends InvalidArgumentException implements ExceptionInterface
 {
     /**

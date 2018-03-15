@@ -7,12 +7,14 @@
 
 namespace Zend\Expressive\Hal\ResourceGenerator;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ExtractionInterface;
+
+use function get_class;
+use function is_object;
 
 trait ExtractInstanceTrait
 {

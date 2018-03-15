@@ -10,6 +10,18 @@ namespace Zend\Expressive\Hal;
 use InvalidArgumentException;
 use Psr\Link\EvolvableLinkInterface;
 
+use function array_filter;
+use function array_reduce;
+use function get_class;
+use function gettype;
+use function in_array;
+use function is_array;
+use function is_object;
+use function is_scalar;
+use function is_string;
+use function method_exists;
+use function sprintf;
+
 class Link implements EvolvableLinkInterface
 {
     const AS_COLLECTION = '__FORCE_COLLECTION__';

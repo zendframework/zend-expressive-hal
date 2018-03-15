@@ -10,6 +10,9 @@ namespace Zend\Expressive\Hal\Exception;
 use RuntimeException;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 
+use function get_class;
+use function sprintf;
+
 class UnknownMetadataTypeException extends RuntimeException implements ExceptionInterface
 {
     public static function forMetadata(AbstractMetadata $metadata) : self

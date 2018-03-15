@@ -9,7 +9,6 @@ namespace ZendTest\Expressive\Hal\Renderer;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Renderer\XmlRenderer;

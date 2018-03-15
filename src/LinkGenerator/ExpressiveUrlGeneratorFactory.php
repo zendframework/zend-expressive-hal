@@ -12,6 +12,8 @@ use RuntimeException;
 use Zend\Expressive\Helper\ServerUrlHelper;
 use Zend\Expressive\Helper\UrlHelper;
 
+use function sprintf;
+
 class ExpressiveUrlGeneratorFactory
 {
     public function __invoke(ContainerInterface $container) : ExpressiveUrlGenerator

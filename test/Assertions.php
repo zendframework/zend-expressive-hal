@@ -10,6 +10,15 @@ namespace ZendTest\Expressive\Hal;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 
+use function array_shift;
+use function count;
+use function get_class;
+use function gettype;
+use function in_array;
+use function is_object;
+use function sprintf;
+use function var_export;
+
 trait Assertions
 {
     public static function getLinkByRel(string $rel, HalResource $resource) : Link
