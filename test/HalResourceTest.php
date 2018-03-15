@@ -13,6 +13,8 @@ use RuntimeException;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 
+use function array_values;
+
 class HalResourceTest extends TestCase
 {
     public function testCanConstructWithData()

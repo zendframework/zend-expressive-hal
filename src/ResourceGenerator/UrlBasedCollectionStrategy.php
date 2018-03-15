@@ -14,6 +14,17 @@ use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
+use function get_class;
+use function http_build_query;
+use function parse_str;
+use function parse_url;
+use function preg_replace;
+use function sprintf;
+use function str_replace;
+
+use const PHP_URL_FRAGMENT;
+use const PHP_URL_QUERY;
+
 class UrlBasedCollectionStrategy implements StrategyInterface
 {
     use ExtractCollectionTrait;

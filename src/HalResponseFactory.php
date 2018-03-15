@@ -1,19 +1,17 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Expressive\Hal;
 
-use Closure;
 use Negotiation\Negotiator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Stream;
+
+use function strstr;
 
 class HalResponseFactory
 {
@@ -32,28 +30,25 @@ class HalResponseFactory
     /** @var Renderer\JsonRenderer */
     private $jsonRenderer;
 
-    /** @var ResponseInterface */
-    private $responsePrototype;
-
     /**
-     * Factory that, when called, returns a new, writable StreamInterface
-     * instance to use as the response body.
+     * A callable capable of producing an empty ResponseInterface instance.
      *
      * @var callable
      */
-    private $streamFactory;
+    private $responseFactory;
 
     /** @var Renderer\XmlRenderer */
     private $xmlRenderer;
 
     public function __construct(
-        ResponseInterface $responsePrototype = null,
-        callable $streamFactory = null,
+        callable $responseFactory,
         Renderer\JsonRenderer $jsonRenderer = null,
         Renderer\XmlRenderer $xmlRenderer = null
     ) {
-        $this->responsePrototype = $responsePrototype ?: new Response();
-        $this->streamFactory = $streamFactory ?: Closure::fromCallable([$this, 'generateStream']);
+        // Ensures type safety of the composed factory
+        $this->responseFactory = function () use ($responseFactory) : ResponseInterface {
+            return $responseFactory();
+        };
         $this->jsonRenderer = $jsonRenderer ?: new Renderer\JsonRenderer();
         $this->xmlRenderer = $xmlRenderer ?: new Renderer\XmlRenderer();
     }
@@ -79,33 +74,8 @@ class HalResponseFactory
                 break;
         }
 
-        $body = ($this->streamFactory)();
-        $body->write($renderer->render($resource));
-        return $this->responsePrototype
-            ->withBody($body)
-            ->withHeader('Content-Type', $mediaType);
-    }
-
-    /**
-     * @throws Exception\InvalidResponseBodyException if the stream factory
-     *     does not return a StreamInterface.
-     * @throws Exception\InvalidResponseBodyException if the stream generated
-     *     by the stream factory is not writable.
-     */
-    public function createStream() : StreamInterface
-    {
-        $stream = ($this->streamFactory)();
-        if (! $body instanceof StreamInterface) {
-            throw Exception\InvalidResponseBodyException::forIncorrectStreamType();
-        }
-        if (! $body->isWritable()) {
-            throw Exception\InvalidResponseBodyException::forNonWritableStream();
-        }
-        return $stream;
-    }
-
-    private function generateStream() : Stream
-    {
-        return new Stream('php://temp', 'wb+');
+        $response = ($this->responseFactory)();
+        $response->getBody()->write($renderer->render($resource));
+        return $response->withHeader('Content-Type', $mediaType);
     }
 }

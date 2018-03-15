@@ -23,18 +23,17 @@
         "slack": "https://zendframework-slack.herokuapp.com",
         "forum": "https://discourse.zendframework.com/c/questions/expressive"
     },
+    "minimum-stability": "alpha",
     "require": {
         "php": "^7.1",
         "psr/http-message": "^1.0.1",
-        "psr/http-message-implementation": "^1.0",
         "psr/link": "^1.0",
         "willdurand/negotiation": "^2.3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4.3",
+        "phpunit/phpunit": "^7.0.1",
         "zendframework/zend-coding-standard": "~1.0.0",
-        "zendframework/zend-diactoros": "^1.6",
-        "zendframework/zend-expressive-helpers": "^4.2 || ^5.0.0-dev || ^5.0.0",
+        "zendframework/zend-expressive-helpers": "^5.0.0alpha3",
         "zendframework/zend-hydrator": "^2.3.1",
         "zendframework/zend-paginator": "^2.7"
     },
@@ -43,7 +42,7 @@
     },
     "suggest": {
         "psr/container-implementation": "^1.0 in order to use the provided PSR-11 factories",
-        "zendframework/zend-expressive-helpers": "^4.2 in order to use UrlHelper/ServerUrlHelper-based ExpressiveUrlGenerator with the LinkGenerator",
+        "zendframework/zend-expressive-helpers": "^5.0 in order to use UrlHelper/ServerUrlHelper-based ExpressiveUrlGenerator with the LinkGenerator",
         "zendframework/zend-hydrator": "^2.3.1 in order to use the ResourceGenerator to create Resource instances from objects",
         "zendframework/zend-paginator": "^2.7 in order to provide paginated collections"
     },
@@ -61,6 +60,10 @@
         "sort-packages": true
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev",
+            "dev-develop": "1.1.x-dev"
+        },
         "zf": {
             "config-provider": "Zend\\Expressive\\Hal\\ConfigProvider"
         }

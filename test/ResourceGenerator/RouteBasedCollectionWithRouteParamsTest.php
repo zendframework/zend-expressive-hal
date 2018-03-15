@@ -23,6 +23,8 @@ use Zend\Paginator\Paginator;
 use ZendTest\Expressive\Hal\Assertions;
 use ZendTest\Expressive\Hal\TestAsset;
 
+use function sprintf;
+
 class RouteBasedCollectionWithRouteParamsTest extends TestCase
 {
     use Assertions;

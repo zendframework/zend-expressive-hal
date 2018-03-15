@@ -7,6 +7,8 @@
 
 namespace Zend\Expressive\Hal\Metadata;
 
+use function class_exists;
+
 class MetadataMap
 {
     private $map = [];

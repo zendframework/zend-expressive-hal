@@ -11,7 +11,7 @@ pages:
       - "Representations": representations.md
       - "Factories": factories.md
     - Cookbook:
-        - "Generating Custom Links In Middleware": cookbook/generating-custom-links-in-middleware.md
+        - "Generating Custom Links In Middleware and Request Handlers": cookbook/generating-custom-links-in-middleware.md
 site_name: Hypertext Application Language
 site_description: 'Hypertext Application Language for PSR-7 Applications'
 repo_url: 'https://github.com/zendframework/zend-expressive-hal'

@@ -9,6 +9,11 @@ namespace Zend\Expressive\Hal\ResourceGenerator\Exception;
 
 use RuntimeException;
 
+use function get_class;
+use function gettype;
+use function is_object;
+use function sprintf;
+
 class InvalidCollectionException extends RuntimeException implements ExceptionInterface
 {
     /**

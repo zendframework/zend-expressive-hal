@@ -10,6 +10,8 @@ namespace ZendTest\Expressive\Hal\Renderer;
 use PHPUnit\Framework\TestCase;
 use Zend\Expressive\Hal\Renderer\JsonRenderer;
 
+use function json_encode;
+
 class JsonRendererTest extends TestCase
 {
     use TestAsset;

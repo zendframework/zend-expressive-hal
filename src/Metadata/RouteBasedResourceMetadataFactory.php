@@ -7,6 +7,9 @@
 
 namespace Zend\Expressive\Hal\Metadata;
 
+use function array_intersect;
+use function array_keys;
+
 class RouteBasedResourceMetadataFactory implements MetadataFactoryInterface
 {
     /**

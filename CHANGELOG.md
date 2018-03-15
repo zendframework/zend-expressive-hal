@@ -4,6 +4,51 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 1.0.0 - 2018-03-15
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#31](https://github.com/zendframework/zend-expressive-hal/pull/31) changes
+  the constructor signature of `Zend\Expressive\Hal\HalResponseFactory` to read:
+
+  ```php
+  public function __construct(
+      callable $responseFactory,
+      Renderer\JsonRenderer $jsonRenderer = null,
+      Renderer\XmlRenderer $xmlRenderer = null
+  )
+  ```
+
+  Previously, the `$responseFactory` argument was a
+  `Psr\Http\Message\ResponseInterface $responsePrototype`; it is now a PHP
+  callable capable of producing a new, empty instance of that type.
+
+  Additionally, the signature previously included a callable `$streamFactory`;
+  this has been removed.
+
+- [#31](https://github.com/zendframework/zend-expressive-hal/pull/31) updates
+  the `HalResponseFactoryFactory` to follow the changes made to the
+  `HalResponseFactory` constructor. It now **requires** that a
+  `Psr\Http\Message\ResponseInterface` service be registered, and that the
+  service resolve to a `callable` capable of producing a `ResponseInterface`
+  instance.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 0.6.3 - 2018-03-12
 
 ### Added

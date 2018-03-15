@@ -10,8 +10,15 @@ namespace Zend\Expressive\Hal\Renderer;
 use DateTimeInterface;
 use DOMDocument;
 use DOMNode;
-use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Exception;
+use Zend\Expressive\Hal\HalResource;
+
+use function array_values;
+use function is_array;
+use function is_object;
+use function is_scalar;
+use function method_exists;
+use function trim;
 
 class XmlRenderer implements RendererInterface
 {

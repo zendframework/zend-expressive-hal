@@ -10,6 +10,11 @@ namespace Zend\Expressive\Hal\Exception;
 use RuntimeException;
 use Zend\Expressive\Hal\HalResource;
 
+use function get_class;
+use function gettype;
+use function is_object;
+use function sprintf;
+
 class InvalidResourceValueException extends RuntimeException implements ExceptionInterface
 {
     public static function fromValue($value) : self

@@ -9,6 +9,8 @@ namespace Zend\Expressive\Hal\Metadata\Exception;
 
 use UnexpectedValueException;
 
+use function sprintf;
+
 class UndefinedClassException extends UnexpectedValueException implements ExceptionInterface
 {
     public static function create($class)

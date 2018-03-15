@@ -9,6 +9,8 @@ namespace Zend\Expressive\Hal\Metadata\Exception;
 
 use RuntimeException;
 
+use function sprintf;
+
 class UndefinedMetadataException extends RuntimeException implements ExceptionInterface
 {
     public static function create($class)

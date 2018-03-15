@@ -9,6 +9,9 @@ namespace Zend\Expressive\Hal\Metadata;
 
 use InvalidArgumentException;
 
+use function in_array;
+use function sprintf;
+
 class UrlBasedCollectionMetadata extends AbstractCollectionMetadata
 {
     /**
