@@ -13,6 +13,23 @@ use Psr\Link\EvolvableLinkProviderInterface;
 use Psr\Link\LinkInterface;
 use RuntimeException;
 
+use function array_key_exists;
+use function array_keys;
+use function array_map;
+use function array_merge;
+use function array_push;
+use function array_reduce;
+use function array_shift;
+use function array_walk;
+use function count;
+use function get_class;
+use function gettype;
+use function in_array;
+use function is_array;
+use function is_object;
+use function sort;
+use function sprintf;
+
 /**
  * Object representation of Hypertext Application Language resource.
  *

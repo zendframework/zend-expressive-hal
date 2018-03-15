@@ -10,6 +10,11 @@ namespace Zend\Expressive\Hal\ResourceGenerator\Exception;
 use RuntimeException;
 use Zend\Expressive\Hal\ResourceGenerator;
 
+use function get_class;
+use function gettype;
+use function is_object;
+use function sprintf;
+
 class InvalidConfigException extends RuntimeException implements ExceptionInterface
 {
     /**

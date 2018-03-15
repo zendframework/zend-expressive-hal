@@ -13,6 +13,13 @@ use Zend\Expressive\Hal\Metadata\MetadataFactoryInterface;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\MetadataMapFactory;
 
+use function get_class;
+use function gettype;
+use function implode;
+use function is_object;
+use function is_string;
+use function sprintf;
+
 class InvalidConfigException extends RuntimeException implements ExceptionInterface
 {
     /**

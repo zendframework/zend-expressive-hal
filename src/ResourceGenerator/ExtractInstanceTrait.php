@@ -14,6 +14,9 @@ use Zend\Expressive\Hal\Metadata\AbstractMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ExtractionInterface;
 
+use function get_class;
+use function is_object;
+
 trait ExtractInstanceTrait
 {
     /**

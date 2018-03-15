@@ -13,6 +13,13 @@ use DOMNode;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Exception;
 
+use function array_values;
+use function is_array;
+use function is_object;
+use function is_scalar;
+use function method_exists;
+use function trim;
+
 class XmlRenderer implements RendererInterface
 {
     public function render(HalResource $resource) : string

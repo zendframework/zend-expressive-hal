@@ -9,6 +9,8 @@ namespace Zend\Expressive\Hal\Metadata\Exception;
 
 use DomainException;
 
+use function sprintf;
+
 class DuplicateMetadataException extends DomainException implements ExceptionInterface
 {
     public static function create(string $class)

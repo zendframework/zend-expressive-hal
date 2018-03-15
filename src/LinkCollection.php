@@ -11,6 +11,9 @@ use Psr\Link\LinkInterface;
 use Psr\Link\EvolvableLinkProviderInterface;
 use Traversable;
 
+use function array_filter;
+use function in_array;
+
 /**
  * Properties and methods suitable for an
  * EvolvableLinkProviderInterface implementation.

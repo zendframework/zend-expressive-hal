@@ -14,6 +14,9 @@ use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 
+use function array_merge;
+use function get_class;
+
 class RouteBasedCollectionStrategy implements StrategyInterface
 {
     use ExtractCollectionTrait;

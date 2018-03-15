@@ -9,6 +9,14 @@ namespace Zend\Expressive\Hal;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+
+use function class_exists;
+use function class_implements;
+use function class_parents;
+use function get_class;
+use function in_array;
+use function is_object;
+use function is_string;
 use Zend\Hydrator\ExtractionInterface;
 
 class ResourceGenerator

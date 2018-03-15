@@ -17,6 +17,10 @@ use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Expressive\Hal\ResourceGenerator\Exception;
 use Zend\Paginator\Paginator;
 
+use function get_class;
+use function in_array;
+use function sprintf;
+
 trait ExtractCollectionTrait
 {
     private $paginationTypes = [

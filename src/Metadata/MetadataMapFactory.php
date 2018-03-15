@@ -9,6 +9,16 @@ namespace Zend\Expressive\Hal\Metadata;
 
 use Psr\Container\ContainerInterface;
 
+use function array_pop;
+use function class_exists;
+use function class_implements;
+use function class_parents;
+use function explode;
+use function in_array;
+use function is_array;
+use function method_exists;
+use function sprintf;
+
 /**
  * Create a MetadataMap based on configuration.
  *

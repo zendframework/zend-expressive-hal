@@ -14,6 +14,12 @@ use PHPUnit\Framework\TestCase;
 use Zend\Expressive\Hal\Exception\ExceptionInterface as HalExceptionInterface;
 use Zend\Expressive\Hal\Metadata\Exception\ExceptionInterface;
 
+use function basename;
+use function glob;
+use function is_a;
+use function strrpos;
+use function substr;
+
 class ExceptionTest extends TestCase
 {
     public function testExceptionInterfaceExtendsHalExceptionInterface() : void

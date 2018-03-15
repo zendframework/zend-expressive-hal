@@ -19,6 +19,8 @@ use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Renderer;
 use ZendTest\Expressive\Hal\Renderer\TestAsset;
 
+use function strstr;
+
 class HalResponseFactoryTest extends TestCase
 {
     use TestAsset;

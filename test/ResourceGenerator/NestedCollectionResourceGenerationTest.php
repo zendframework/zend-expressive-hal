@@ -21,6 +21,8 @@ use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use ZendTest\Expressive\Hal\Assertions;
 use ZendTest\Expressive\Hal\TestAsset;
 
+use function array_shift;
+
 class NestedCollectionResourceGenerationTest extends TestCase
 {
     use Assertions;

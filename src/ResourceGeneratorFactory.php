@@ -13,6 +13,8 @@ use Traversable;
 use Zend\Expressive\Hal\ResourceGenerator\Exception\InvalidConfigException;
 use Zend\Hydrator\HydratorPluginManager;
 
+use function is_array;
+
 class ResourceGeneratorFactory
 {
     public function __invoke(ContainerInterface $container) : ResourceGenerator
