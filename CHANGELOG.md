@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 1.0.0alpha1 - 2018-02-27
+## 1.0.0 - 2018-03-15
 
 ### Added
 
