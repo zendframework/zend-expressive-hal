@@ -132,7 +132,7 @@
                             
 
 <li >
-    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware and Request Handlers</a>
 </li>
 
 
@@ -222,22 +222,19 @@
 
 <h1 id="provided-factories">Provided factories</h1>
 <p>This component provides a number of factories for use with
-<a href="http://www.php-fig.org/psr/psr-11/">PSR-11</a>, in order to generate fully
+<a href="https://www.php-fig.org/psr/psr-11/">PSR-11</a>, in order to generate fully
 configured instances for your use.</p>
 <h2 id="zendexpressivehalhalresponsefactoryfactory">Zend\Expressive\Hal\HalResponseFactoryFactory</h2>
 <ul>
 <li>Registered as service: <code>Zend\Expressive\Hal\HalResponseFactory</code></li>
 <li>Generates instance of: <code>Zend\Expressive\Hal\HalResponseFactory</code></li>
 <li>Depends on:<ul>
-<li><code>Psr\Http\Message\ResponseInterface</code> service. If not present, it will
-  check if zend-diactoros is installed, and use a new <code>Response</code> instance
-  from that library; if not, it raises an exception.</li>
-<li><code>Psr\Http\Message\StreamInterface</code> service. This service must return a
-  a callable capable of returning a <code>StreamInterface</code> instance (in other
-  words, the service returns a <em>factory</em>, and not the stream itself). If th
-  service is not present, the factory will check if zend-diactoros is
-  installed, and return a callable that returns a new <code>Stream</code> instance from
-  that library; if not, it raises an exception.</li>
+<li><code>Psr\Http\Message\ResponseInterface</code> service. The service must resolve to
+  a PHP callable capable of generating a <a href="https://www.php-fig.org/psr/psr-7/">PSR-7</a>
+  <code>ResponseInterface</code> instance; it must not resolve to a <code>ResponseInterface</code>
+  instance directly. This service is <strong>required</strong>, and must be supplied by
+  the application. If you are using with zend-expressive v3 and above, the
+  service will already be registered.</li>
 <li><code>Zend\Expressive\Hal\Renderer\JsonRenderer</code> service. If the service is not
   present, it instantiates an instance itself.</li>
 <li><code>Zend\Expressive\Hal\Renderer\XmlRenderer</code> service. If the service is not
@@ -245,9 +242,6 @@ configured instances for your use.</p>
 </ul>
 </li>
 </ul>
-<p>If you want to use a different PSR-7 implementation for the response and stream,
-provide services for <code>Psr\Http\Message\ResponseInterface</code> and
-<code>Psr\Http\Message\StreamInterface</code>, as described above.</p>
 <h2 id="zendexpressivehallinkgeneratorfactory">Zend\Expressive\Hal\LinkGeneratorFactory</h2>
 <ul>
 <li>Registered as service: <code>Zend\Expressive\Hal\LinkGenerator</code></li>

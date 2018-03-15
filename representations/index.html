@@ -132,7 +132,7 @@
                             
 
 <li >
-    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware and Request Handlers</a>
 </li>
 
 
@@ -220,9 +220,9 @@
 <p>This component provides two renderers, one each for creating JSON and XML
 payloads.</p>
 <p>Additionally, as noted in the <a href="../intro/">introduction</a> examples, this component
-provides <code>Zend\Expressive\Hal\HalResponseFactory</code> for generating a PSR-7
-response containing the HAL representation. This chapter dives into that with
-more detail.</p>
+provides <code>Zend\Expressive\Hal\HalResponseFactory</code> for generating a
+<a href="https://www.php-fig.org/psr/psr-7/">PSR-7</a> response containing the HAL
+representation. This chapter dives into that with more detail.</p>
 <h2 id="renderers">Renderers</h2>
 <p>All renderers implement <code>Zend\Expressive\Hal\Renderer\RendererInterface</code>:</p>
 <pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\Renderer;
@@ -240,55 +240,40 @@ interface RendererInterface
 <p>The <code>JsonRenderer</code> constructor allows you to specify a bitmask of flags for use
 with <code>json_encode()</code>. By default, if none are provided, it uses the value of
 <code>JsonRenderer::DEFAULT_JSON_FLAGS</code>, which evaluates to:</p>
-<pre class="codehilite"><code class="language-php">JSON_PRETTY_PRINT
-| JSON_UNESCAPED_SLASHES
+<pre class="codehilite"><code class="language-php">JSON_UNESCAPED_SLASHES
 | JSON_UNESCAPED_UNICODE
 | JSON_PRESERVE_ZERO_FRACTION</code></pre>
 
-<p>This provides human-readable JSON output.</p>
+<p>When your application is in "debug" mode, it also adds the <code>JSON_PRETTY_PRINT</code>
+flag to the default list, in order to provide human-readable JSON output.</p>
 <h3 id="xmlrenderer">XmlRenderer</h3>
 <p>The <code>XmlRenderer</code> produces XML representations of HAL resources. It has no
 constructor arguments at this time.</p>
 <h2 id="halresponsefactory">HalResponseFactory</h2>
 <p><code>HalResponseFactory</code> generates a PSR-7 response containing a representation of
 the provided <code>HalResource</code> instance. In order to keep the component agnostic of
-PSR-7 implementation, the factory composes:</p>
-<ul>
-<li>A PSR-7 response prototype. A zend-diactoros <code>Response</code> is used if none is
-  provided.</li>
-<li>A callable capable of generating an empty, writable, PSR-7 stream instance.
-  If none is provided, a callable returning a zend-diactoros <code>Stream</code> is
-  provided.</li>
-</ul>
+PSR-7 implementation, <code>HalResponseFactory</code> itself composes a callable factory
+capable of producing an empty PSR-7 response.</p>
 <p>As an example:</p>
 <pre class="codehilite"><code class="language-php">use Slim\Http\Response;
 use Slim\Http\Stream;
 use Zend\Expressive\Hal\HalResponseFactory;
 
 $factory = new HalResponseFactory(
-    new Response(),
     function () {
-        return new Stream(fopen('php://temp', 'wb+'));
+        return new Response();
     }
 );</code></pre>
 
-<blockquote>
-<h3 id="streams">Streams</h3>
-<p>A factory callable is necessary for generating streams as they are usually
-backed by PHP resources, which are not immutable. Sharing instances could
-thus potentially lead to appending or overwriting contents!</p>
-</blockquote>
-<p>By default, if you pass no arguments to the <code>HalResponseFactory</code> constructor, it
-assumes the following:</p>
+<p>Additionally, the <code>HalResponseFactory</code> constructor can accept the following
+arguments, with the described defaults if none is provided:</p>
 <ul>
-<li>Usage of <code>Zend\Diactoros\Response</code>.</li>
-<li>A callable that returns a new <code>Zend\Diactoros\Stream</code> using <code>php://temp</code> as
-  its backing resource.</li>
 <li>A <code>JsonRenderer</code> instance is created if none is provided.</li>
 <li>An <code>XmlRenderer</code> instance is created if none is provided.</li>
 </ul>
-<p>We provide a PSR-11 compatible factory for generating the <code>HalResponseFactory</code>
-which uses zend-diactoros by default.</p>
+<p>We provide a <a href="https://www.php-fig.org/psr/psr-11">PSR-11</a> compatible factory for
+generating the <code>HalResponseFactory</code>, described in <a href="../factories/#zendexpressivehalhalresponsefactoryfactory">the factories
+chapter</a>.</p>
 <h2 id="using-the-factory">Using the factory</h2>
 <p>The factory exposes one method:</p>
 <pre class="codehilite"><code class="language-php">use Psr\Http\Message\ResponseInterface;
@@ -338,9 +323,9 @@ an array representation. As an example, if your resource models a car, and you
 have a <code>wheels</code> relation, it would not make sense to return a single wheel, even
 if that's all the car currently has associated with it.</p>
 <p>To accommodate this, we provide two features.</p>
-<p>For links, you may pass a special attribute, <code>Hal\Link::AS_COLLECTION</code>, with a
-boolean value of <code>true</code>; when encountered, this will then be rendered as an
-array of links, even if only one link for that relation is present.</p>
+<p>For links, you may pass a special attribute, <code>Zend\Expressive\Hal\Link::AS_COLLECTION</code>,
+with a boolean value of <code>true</code>; when encountered, this will then be rendered as
+an array of links, even if only one link for that relation is present.</p>
 <pre class="codehilite"><code class="language-php">$link = new Link(
     'wheels',
     '/api/car/XXXX-YYYY-ZZZZ/wheels/111',

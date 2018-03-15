@@ -132,7 +132,7 @@
                             
 
 <li >
-    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware and Request Handlers</a>
 </li>
 
 
@@ -292,7 +292,7 @@ $metadataMap-&gt;add($booksMetadata);</code></pre>
 <h3 id="configuration-based-metadata">Configuration-based metadata</h3>
 <p>To automate generation of the <code>MetadataMap</code>, we provide
 <code>Zend\Expressive\Hal\Metadata\MetadataMapFactory</code>. This factory may be used with any
-<a href="http://www.php-fig.org/psr/psr-11/">PSR-11</a> container. It utilizes the <code>config</code>
+<a href="https://www.php-fig.org/psr/psr-11/">PSR-11</a> container. It utilizes the <code>config</code>
 service, and pulls its configuration from a key named after the
 <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> class.</p>
 <p>Each item in the map will be an associative array. The member <code>__class__</code> will

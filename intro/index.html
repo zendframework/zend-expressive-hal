@@ -132,7 +132,7 @@
                             
 
 <li >
-    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+    <a href="../cookbook/generating-custom-links-in-middleware/">Generating Custom Links In Middleware and Request Handlers</a>
 </li>
 
 
@@ -223,7 +223,7 @@
 <p>These two tools allow you to model payloads of varying complexity.</p>
 <p>To allow providing <em>representations</em> of these, we provide
 <code>Zend\Expressive\Hal\HalResponseFactory</code>. This factory generates a
-<a href="http://www.php-fig.org/psr/psr-7/">PSR-7</a> response for the provided resource,
+<a href="https://www.php-fig.org/psr/psr-7/">PSR-7</a> response for the provided resource,
 including its links and any embedded/child resources it composes.</p>
 <p>Creating link URIs by hand is error-prone, as URI schemas may change; most
 frameworks provide route-based URI generation for this reason. To address this,
@@ -330,24 +330,24 @@ MetadataMap::class =&gt; [
 ],</code></pre>
 
 <h3 id="manually-creating-and-rendering-a-resource">Manually creating and rendering a resource</h3>
-<p>The following middleware creates a <code>HalResource</code> with its associated links, and
-then manually renders it using <code>Zend\Expressive\Hal\Renderer\JsonRenderer</code>. (An
-<code>XmlRenderer</code> is also provided, but not demonstrated here.)</p>
+<p>The following request handler creates a <code>HalResource</code> with its associated links,
+and then manually renders it using <code>Zend\Expressive\Hal\Renderer\JsonRenderer</code>.
+(An <code>XmlRenderer</code> is also provided, but not demonstrated here.)</p>
 <p>We'll assume that <code>Api\Books\Repository</code> handles retrieving data from persistent
 storage.</p>
 <pre class="codehilite"><code class="language-php">namespace Api\Books\Action;
 
 use Api\Books\Repository;
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Zend\Diactoros\Response\TextResponse;
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\Renderer\JsonRenderer;
 
-class BookAction implements MiddlewareInterface
+class BookAction implements RequestHandlerInterface
 {
     /** @var JsonRenderer */
     private $renderer;
@@ -363,7 +363,7 @@ class BookAction implements MiddlewareInterface
         $this-&gt;renderer = $renderer;
     }
 
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $id = $request-&gt;getAttribute('id', false);
         if (! $id) {
@@ -395,24 +395,25 @@ the resource. The payload generated might look like the following:</p>
 instance. As the complexity of your objects increase, and the number of objects
 you want to represent via HAL increases, you may not want to manually generate
 them.</p>
-<h3 id="middleware-using-the-resourcegenerator-and-responsefactory">Middleware using the ResourceGenerator and ResponseFactory</h3>
-<p>In this next example, our middleware will compose a <code>Zend\Expressive\Hal\ResourceGenerator</code>
-instance for generating a <code>Zend\Expressive\Hal\HalResource</code> from our objects,
-and a <code>Zend\Expressive\Hal\HalResponseFactory</code> for creating a response based on
-the returned resource.</p>
-<p>First, we'll look at middleware that displays a single book. We'll assume that
+<h3 id="request-handler-using-the-resourcegenerator-and-responsefactory">Request handler using the ResourceGenerator and ResponseFactory</h3>
+<p>In this next example, our request handler will compose a
+<code>Zend\Expressive\Hal\ResourceGenerator</code> instance for generating a
+<code>Zend\Expressive\Hal\HalResource</code> from our objects, and a
+<code>Zend\Expressive\Hal\HalResponseFactory</code> for creating a response based on the
+returned resource.</p>
+<p>First, we'll look at a handler that displays a single book. We'll assume that
 <code>Api\Books\Repository</code> handles retrieving data from persistent storage.</p>
 <pre class="codehilite"><code class="language-php">namespace Api\Books\Action;
 
 use Api\Books\Repository;
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
-use Psr\Http\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Zend\Expressive\Hal\HalResponseFactory;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-class BookAction
+class BookAction implements RequestHandlerInterface
 {
     /** @var Repository */
     private $repository;
@@ -433,7 +434,7 @@ class BookAction
         $this-&gt;responseFactory = $responseFactory;
     }
 
-    public function __invoke(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $id = $request-&gt;getAttribute('id', false);
         if (! $id) {
@@ -465,22 +466,22 @@ response factory:</p>
     &quot;author&quot;: &quot;Adams, Douglas&quot;
 }</code></pre>
 
-<h3 id="middleware-returning-a-collection">Middleware returning a collection</h3>
-<p>Next, we'll create middleware that returns a <em>collection</em> of books. The
+<h3 id="request-handler-returning-a-collection">Request handler returning a collection</h3>
+<p>Next, we'll create a request handler that returns a <em>collection</em> of books. The
 collection will be <em>paginated</em> (assume our repository class creates a
 <code>BookCollection</code> backed by an appropriate adapter), and use a query string
 parameter to determine which page of results to return.</p>
 <pre class="codehilite"><code class="language-php">namespace Api\Books\Action;
 
 use Api\Books\Repository;
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
-use Psr\Http\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Zend\Expressive\Hal\HalResponseFactory;
 use Zend\Expressive\Hal\ResourceGenerator;
 
-class BooksAction
+class BooksAction implements RequestHandlerInterface
 {
     /** @var Repository */
     private $repository;
@@ -501,7 +502,7 @@ class BooksAction
         $this-&gt;responseFactory = $responseFactory;
     }
 
-    public function __invoke(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $page = $request-&gt;getQueryParams()['page'] ?? 1;
 

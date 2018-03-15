@@ -132,7 +132,7 @@
                             
 
 <li >
-    <a href="../generating-custom-links-in-middleware/">Generating Custom Links In Middleware</a>
+    <a href="../generating-custom-links-in-middleware/">Generating Custom Links In Middleware and Request Handlers</a>
 </li>
 
 
@@ -241,7 +241,7 @@ metadata of that type.</p>
 // or:
 $resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</code></pre>
 
-<p>You can also add your strategies via the configuration:
+<p>You can also add your strategies via the configuration:</p>
 <pre class="codehilite"><code class="language-php">return [
     'zend-expressive-hal' =&gt; [
         'resource-generator' =&gt; [
@@ -250,7 +250,8 @@ $resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</c
             ],
         ],
     ],
-];</code></pre></p>
+];</code></pre>
+
 <p>If a strategy already is mapped for the given metadata type, this method will
 override it.</p>
 <p>To facilitate common operations, this library provides two traits,
@@ -259,14 +260,14 @@ override it.</p>
 decide to write your own strategies.</p>
 <p>In order for the <code>MetadataMap</code> to be able to use your <code>CustomMetadata</code> you need to register 
 a factory (implementing <code>Zend\Expressive\Hal\Metadata\MetadataFactoryInterface</code>) for it.
-You can register them via the configuration:
+You can register them via the configuration:</p>
 <pre class="codehilite"><code class="language-php">return [
     'zend-expressive-hal' =&gt; [
         'metadata-factories' =&gt; [
             CustomMetadata::class =&gt; CustomMetadataFactory::class,
         ],
     ],
-];</code></pre></p>
+];</code></pre>
 
 <hr />
 
