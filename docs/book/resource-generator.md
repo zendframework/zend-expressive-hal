@@ -57,6 +57,11 @@ following information:
     - string `$paginationParam = 'page'` (name of the parameter indicating the
       current page of results)
     - string `$paginationParamType = self::TYPE_QUERY` (one of "query" or "placeholder")
+- `Zend\Expressive\Hal\Metadata\UrlBasedResourceMetadata`
+    - string `$class`
+    - string `$url`
+    - string `$extractor` (string service name of the zend-hydrator hydrator to
+        use for extracting data from the instance)
 
 We aggregate metadata in a `Zend\Expressive\Hal\Metadata\MetadataMap` instance:
 
@@ -115,6 +120,28 @@ return [
     ],
 ];
 ```
+
+The rest of the parameters follow underscore delimiter naming convention:
+
+- `RouteBasedResourceMetadata::class`
+    - `resource_identifier` (name of the property uniquely identifying the resource)
+    - `route_identifier_placeholder` (name of the routing parameter that maps to the resource identifier)
+    - `route_params` (associative array of substitutions to use with the designated route)
+- `RouteBasedCollectionMetadata::class`
+    - `pagination_param`  (name of the parameter indicating the current page of results)
+    - `pagination_param_type` (one of "query" or "placeholder")
+    - `route_params` (associative array of substitutions to use with the designated route)
+    - `query_string_arguments` (associative array of additional routing parameters to substitute when generating the URI)
+- `UrlBasedResourceMetadata::class`
+    - `resource_class`
+    - `url`
+    - `extractor`
+- `UrlBasedCollectionMetadata::class`
+    - `collection_class`
+    - `collection_relation`
+    - `url`
+    - `pagination_param` (name of the parameter indicating the current page of results)
+    - `pagination_param_type` (one of "query" or "placeholder")
 
 ## ResourceGenerator
 
