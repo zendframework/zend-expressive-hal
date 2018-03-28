@@ -71,7 +71,7 @@ class UrlBasedCollectionStrategy implements StrategyInterface
     ) : Link {
         $paginationParam = $metadata->getPaginationParam();
         $paginationType = $metadata->getPaginationParamType();
-        $url = $metadata->getUrl() . '?' . http_build_query($request->getQueryParams());;
+        $url = $metadata->getUrl() . '?' . http_build_query($request->getQueryParams());
 
         switch ($paginationType) {
             case Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER:
@@ -104,7 +104,7 @@ class UrlBasedCollectionStrategy implements StrategyInterface
 
         $queryStringArgs = $request->getQueryParams();
         $url = $metadata->getUrl();
-        if($queryStringArgs !== null) {
+        if ($queryStringArgs !== null) {
             $url .= '?' . http_build_query($queryStringArgs);
         }
 

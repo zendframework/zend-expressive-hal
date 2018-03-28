@@ -24,7 +24,8 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
-- Nothing.
+- [#36](https://github.com/zendframework/zend-expressive-hal/pull/36) 
+    Fixes lost parameter queries in collection output.
 
 ## 1.0.0 - 2018-03-15
 
