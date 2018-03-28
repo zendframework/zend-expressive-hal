@@ -272,6 +272,13 @@ following information:</p>
 <li>string <code>$paginationParamType = self::TYPE_QUERY</code> (one of "query" or "placeholder")</li>
 </ul>
 </li>
+<li><code>Zend\Expressive\Hal\Metadata\UrlBasedResourceMetadata</code><ul>
+<li>string <code>$class</code></li>
+<li>string <code>$url</code></li>
+<li>string <code>$extractor</code> (string service name of the zend-hydrator hydrator to
+    use for extracting data from the instance)</li>
+</ul>
+</li>
 </ul>
 <p>We aggregate metadata in a <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> instance:</p>
 <pre class="codehilite"><code class="language-php">$bookMetadata = new RouteBasedResourceMetadata(
@@ -323,6 +330,36 @@ return [
     ],
 ];</code></pre>
 
+<p>The rest of the parameters follow underscore delimiter naming convention:</p>
+<ul>
+<li><code>RouteBasedResourceMetadata::class</code><ul>
+<li><code>resource_identifier</code> (name of the property uniquely identifying the resource)</li>
+<li><code>route_identifier_placeholder</code> (name of the routing parameter that maps to the resource identifier)</li>
+<li><code>route_params</code> (associative array of substitutions to use with the designated route)</li>
+</ul>
+</li>
+<li><code>RouteBasedCollectionMetadata::class</code><ul>
+<li><code>pagination_param</code>  (name of the parameter indicating the current page of results)</li>
+<li><code>pagination_param_type</code> (one of "query" or "placeholder")</li>
+<li><code>route_params</code> (associative array of substitutions to use with the designated route)</li>
+<li><code>query_string_arguments</code> (associative array of additional routing parameters to substitute when generating the URI)</li>
+</ul>
+</li>
+<li><code>UrlBasedResourceMetadata::class</code><ul>
+<li><code>resource_class</code></li>
+<li><code>url</code></li>
+<li><code>extractor</code></li>
+</ul>
+</li>
+<li><code>UrlBasedCollectionMetadata::class</code><ul>
+<li><code>collection_class</code></li>
+<li><code>collection_relation</code></li>
+<li><code>url</code></li>
+<li><code>pagination_param</code> (name of the parameter indicating the current page of results)</li>
+<li><code>pagination_param_type</code> (one of "query" or "placeholder")</li>
+</ul>
+</li>
+</ul>
 <h2 id="resourcegenerator">ResourceGenerator</h2>
 <p>Once you have defined the metadata for the various objects you will represent in
 your API, you can start generating resources.</p>
