@@ -100,8 +100,18 @@ class RouteBasedCollectionStrategy implements StrategyInterface
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
     ) {
+
+        $routeParams = $metadata->getRouteParams() ?? [];
+        $queryStringArgs = array_merge($request->getQueryParams() ?? [], $metadata->getQueryStringArguments() ?? []);
+
         return $resourceGenerator
             ->getLinkGenerator()
-            ->fromRoute('self', $request, $metadata->getRoute());
+            ->fromRoute(
+                'self',
+                $request,
+                $metadata->getRoute(),
+                $routeParams,
+                $queryStringArgs
+            );
     }
 }

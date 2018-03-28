@@ -14,8 +14,8 @@ use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
 use Zend\Expressive\Hal\LinkGenerator;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
-use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
+use Zend\Expressive\Hal\Metadata\UrlBasedCollectionMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use Zend\Paginator\Adapter\ArrayAdapter;
@@ -23,24 +23,20 @@ use Zend\Paginator\Paginator;
 use ZendTest\Expressive\Hal\Assertions;
 use ZendTest\Expressive\Hal\TestAsset;
 
-use function sprintf;
-
-class RouteBasedCollectionWithRouteParamsTest extends TestCase
+class UrlBasedCollectionWithRouteParamsTest extends TestCase
 {
     use Assertions;
 
-    public function testUsesRouteParamsAndQueriesWithPaginatorSpecifiedInMetadataWhenGeneratingLinkHref()
+    public function testUsesQueriesWithPaginatorSpecifiedInMetadataWhenGeneratingLinkHref()
     {
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('p', 1)->willReturn(3);
-        $request->getQueryParams()->shouldNotBeCalled();
+        $request->getQueryParams()->willReturn([
+            'query_1' => 'value_1',
+            'p' => 3,
+            'sort' => 'ASC',
+        ]);
 
         $linkGenerator = $this->prophesize(LinkGenerator::class);
-        $this->createLinkGeneratorProphecy($linkGenerator, $request, 'self', 3);
-        $this->createLinkGeneratorProphecy($linkGenerator, $request, 'first', 1);
-        $this->createLinkGeneratorProphecy($linkGenerator, $request, 'prev', 2);
-        $this->createLinkGeneratorProphecy($linkGenerator, $request, 'next', 4);
-        $this->createLinkGeneratorProphecy($linkGenerator, $request, 'last', 5);
 
         $metadataMap = $this->prophesize(MetadataMap::class);
 
@@ -56,14 +52,12 @@ class RouteBasedCollectionWithRouteParamsTest extends TestCase
         $metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
         $metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
 
-        $collectionMetadata = new RouteBasedCollectionMetadata(
+        $collectionMetadata = new UrlBasedCollectionMetadata(
             Paginator::class,
             'foo-bar',
-            'foo-bar',
+            'http://test.local/collection/',
             'p',
-            RouteBasedCollectionMetadata::TYPE_PLACEHOLDER,
-            ['foo_id' => 1234],
-            ['sort' => 'ASC']
+            'query'
         );
 
         $metadataMap->has(Paginator::class)->willReturn(true);
@@ -72,10 +66,7 @@ class RouteBasedCollectionWithRouteParamsTest extends TestCase
         $hydrators = $this->prophesize(ContainerInterface::class);
         $hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
 
-        $collection = new Paginator(new ArrayAdapter($this->createCollectionItems(
-            $linkGenerator,
-            $request
-        )));
+        $collection = new Paginator(new ArrayAdapter($this->createCollectionItems($linkGenerator, $request)));
         $collection->setItemCountPerPage(3);
 
         $generator = new ResourceGenerator(
@@ -90,29 +81,28 @@ class RouteBasedCollectionWithRouteParamsTest extends TestCase
         );
 
         $generator->addStrategy(
-            RouteBasedCollectionMetadata::class,
-            ResourceGenerator\RouteBasedCollectionStrategy::class
+            UrlBasedCollectionMetadata::class,
+            ResourceGenerator\UrlBasedCollectionStrategy::class
         );
 
         $resource = $generator->fromObject($collection, $request->reveal());
 
         $this->assertInstanceOf(HalResource::class, $resource);
         $self = $this->getLinkByRel('self', $resource);
-        $this->assertLink('self', '/api/foo/1234/p/3?sort=ASC', $self);
+        $this->assertLink('self', 'http://test.local/collection/?query_1=value_1&p=3&sort=ASC', $self);
         $first = $this->getLinkByRel('first', $resource);
-        $this->assertLink('first', '/api/foo/1234/p/1?sort=ASC', $first);
+        $this->assertLink('first', 'http://test.local/collection/?query_1=value_1&p=1&sort=ASC', $first);
         $prev = $this->getLinkByRel('prev', $resource);
-        $this->assertLink('prev', '/api/foo/1234/p/2?sort=ASC', $prev);
+        $this->assertLink('prev', 'http://test.local/collection/?query_1=value_1&p=2&sort=ASC', $prev);
         $next = $this->getLinkByRel('next', $resource);
-        $this->assertLink('next', '/api/foo/1234/p/4?sort=ASC', $next);
+        $this->assertLink('next', 'http://test.local/collection/?query_1=value_1&p=4&sort=ASC', $next);
         $last = $this->getLinkByRel('last', $resource);
-        $this->assertLink('last', '/api/foo/1234/p/5?sort=ASC', $last);
+        $this->assertLink('last', 'http://test.local/collection/?query_1=value_1&p=5&sort=ASC', $last);
     }
 
-    public function testUsesRouteParamsAndQueriesSpecifiedInMetadataWhenGeneratingLinkHref()
+    public function testUsesQueriesSpecifiedInMetadataWhenGeneratingLinkHref()
     {
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('param_1', 1)->willReturn(3);
         $request->getQueryParams()->willReturn([
             'query_1' => 'value_1',
             'query_2' => 'value_2',
@@ -132,23 +122,14 @@ class RouteBasedCollectionWithRouteParamsTest extends TestCase
         $metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
         $metadataMap->get(TestAsset\FooBar::class)->willReturn($resourceMetadata);
 
-        $collectionMetadata = new RouteBasedCollectionMetadata(
+        $collectionMetadata = new UrlBasedCollectionMetadata(
             \ArrayObject::class,
             'foo-bar',
-            'foo-bar',
+            'http://test.local/collection/',
             'p',
-            RouteBasedCollectionMetadata::TYPE_PLACEHOLDER,
-            [],
-            ['query_2' => 'overridden_2']
+            'query'
         );
         $linkGenerator = $this->prophesize(LinkGenerator::class);
-        $linkGenerator->fromRoute(
-            'self',
-            $request->reveal(),
-            'foo-bar',
-            [],
-            ['query_1' => 'value_1', 'query_2' => 'overridden_2']
-        )->willReturn(new Link('self', '/api/foo/1234/p/3?query1=value_1&query_2=overridden_2'));
 
         $metadataMap->has(\ArrayObject::class)->willReturn(true);
         $metadataMap->get(\ArrayObject::class)->willReturn($collectionMetadata);
@@ -156,10 +137,7 @@ class RouteBasedCollectionWithRouteParamsTest extends TestCase
         $hydrators = $this->prophesize(ContainerInterface::class);
         $hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
 
-        $collection = new \ArrayObject($this->createCollectionItems(
-            $linkGenerator,
-            $request
-        ));
+        $collection = new \ArrayObject();
 
         $generator = new ResourceGenerator(
             $metadataMap->reveal(),
@@ -173,26 +151,15 @@ class RouteBasedCollectionWithRouteParamsTest extends TestCase
         );
 
         $generator->addStrategy(
-            RouteBasedCollectionMetadata::class,
-            ResourceGenerator\RouteBasedCollectionStrategy::class
+            UrlBasedCollectionMetadata::class,
+            ResourceGenerator\UrlBasedCollectionStrategy::class
         );
 
         $resource = $generator->fromObject($collection, $request->reveal());
 
         $this->assertInstanceOf(HalResource::class, $resource);
         $self = $this->getLinkByRel('self', $resource);
-        $this->assertLink('self', '/api/foo/1234/p/3?query1=value_1&query_2=overridden_2', $self);
-    }
-
-    private function createLinkGeneratorProphecy($linkGenerator, $request, string $rel, int $page)
-    {
-        $linkGenerator->fromRoute(
-            $rel,
-            $request->reveal(),
-            'foo-bar',
-            ['foo_id' => 1234, 'p' => $page],
-            ['sort' => 'ASC']
-        )->willReturn(new Link($rel, sprintf('/api/foo/1234/p/%d?sort=ASC', $page)));
+        $this->assertLink('self', 'http://test.local/collection/?query_1=value_1&query_2=value_2', $self);
     }
 
     private function createCollectionItems($linkGenerator, $request) : array
