@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 1.0.1 - TBD
+## 1.0.1 - 2018-03-28
 
 ### Added
 
@@ -25,7 +25,9 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 ### Fixed
 
 - [#36](https://github.com/zendframework/zend-expressive-hal/pull/36) 
-    Fixes lost parameter queries in collection output.
+  fixes an issue whereby query string arguments were not being added to
+  links generated for a resource. It now correctly merges those specified in
+  metadata with those from the request when generating links.
 
 ## 1.0.0 - 2018-03-15
 
