@@ -71,7 +71,7 @@ class UrlBasedCollectionStrategy implements StrategyInterface
     ) : Link {
         $paginationParam = $metadata->getPaginationParam();
         $paginationType = $metadata->getPaginationParamType();
-        $url = $metadata->getUrl();
+        $url = $metadata->getUrl() . '?' . http_build_query($request->getQueryParams());;
 
         switch ($paginationType) {
             case Metadata\AbstractCollectionMetadata::TYPE_PLACEHOLDER:
@@ -101,7 +101,14 @@ class UrlBasedCollectionStrategy implements StrategyInterface
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
     ) {
-        return new Link('self', $metadata->getUrl());
+
+        $queryStringArgs = $request->getQueryParams();
+        $url = $metadata->getUrl();
+        if($queryStringArgs !== null) {
+            $url .= '?' . http_build_query($queryStringArgs);
+        }
+
+        return new Link('self', $url);
     }
 
     private function stripUrlFragment(string $url) : string
