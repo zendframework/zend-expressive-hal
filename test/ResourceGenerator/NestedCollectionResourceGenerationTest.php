@@ -153,7 +153,9 @@ class NestedCollectionResourceGenerationTest extends TestCase
             ->fromRoute(
                 'self',
                 $request->reveal(),
-                'collection'
+                'collection',
+                [],
+                []
             )
             ->willReturn(new Link('self', '/api/collection'));
 
