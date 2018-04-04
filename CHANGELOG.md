@@ -26,6 +26,28 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 - Nothing.
 
+## 1.0.3 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.0.2 - 2018-04-04
 
 ### Added
