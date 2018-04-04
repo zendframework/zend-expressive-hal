@@ -24,7 +24,9 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
-- Nothing.
+- [#34](https://github.com/zendframework/zend-expressive-hal/pull/37) adds ability
+  to provide _empty_ values eg. empty array as element data and avoids addition of
+  of empty data as **embedded** element.
 
 ## 1.0.1 - 2018-03-28
 
