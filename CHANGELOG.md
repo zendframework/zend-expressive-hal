@@ -26,7 +26,7 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 - Nothing.
 
-## 1.0.2 - TBD
+## 1.0.2 - 2018-04-04
 
 ### Added
 
@@ -46,7 +46,11 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
-- Nothing.
+- [#37](https://github.com/zendframework/zend-expressive-hal/pull/37) modifies
+  `HalResource` to no longer treat empty arrays as embedded collections when
+  passed via the constructor or `withElement()`. If an empty embedded collection
+  is required, use `embed()` with a boolean third argument to force
+  representation as an array of resources.
 
 ## 1.0.1 - 2018-03-28
 
