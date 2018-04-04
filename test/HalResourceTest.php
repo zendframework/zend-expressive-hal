@@ -92,6 +92,14 @@ class HalResourceTest extends TestCase
         $resource = new HalResource([], [], ['foo' => 'bar']);
     }
 
+    public function testEmptyArrayAsDataWillNotBeEmbeddedDuringConstruction()
+    {
+        $resource = new HalResource(['bar' => []]);
+        $this->assertEquals(['bar' => []], $resource->getElements());
+        $representation = $resource->toArray();
+        $this->assertArrayNotHasKey('_embeded', $representation);
+    }
+
     /**
      * @dataProvider invalidElementNames
      */
@@ -220,6 +228,15 @@ class HalResourceTest extends TestCase
         $this->assertNotSame($resource, $new);
         $this->assertEquals([], $resource->getElements());
         $this->assertEquals(['foo' => $collection], $new->getElements());
+    }
+
+    public function testWithElementDoesNotProxyToEmbedIfAnEmptyArrayValueIsProvided()
+    {
+        $resource = new HalResource(['foo' => 'bar']);
+        $new = $resource->withElement('bar', []);
+
+        $representation = $new->toArray();
+        $this->assertEquals(['foo' => 'bar', 'bar' => []], $representation);
     }
 
     /**

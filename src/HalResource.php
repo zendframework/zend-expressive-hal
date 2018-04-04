@@ -61,7 +61,9 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
         $context = __CLASS__;
         array_walk($data, function ($value, $name) use ($context) {
             $this->validateElementName($name, $context);
-            if ($value instanceof self || $this->isResourceCollection($value, $name, $context)) {
+            if (! empty($value)
+                && ($value instanceof self || $this->isResourceCollection($value, $name, $context))
+            ) {
                 $this->embedded[$name] = $value;
                 return;
             }
@@ -148,7 +150,9 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
     {
         $this->validateElementName($name, __METHOD__);
 
-        if ($value instanceof self || $this->isResourceCollection($value, $name, __METHOD__)) {
+        if (! empty($value)
+            && ($value instanceof self || $this->isResourceCollection($value, $name, __METHOD__))
+        ) {
             return $this->embed($name, $value);
         }
 
