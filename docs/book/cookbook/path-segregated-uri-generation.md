@@ -68,6 +68,7 @@ class ConfigProvider
                 LinkGenerator::class          => new LinkGeneratorFactory(UrlGenerator::class),
                 ResourceGenerator::class      => new ResourceGeneratorFactory(LinkGenerator::class),
                 Router::class                 => FastRouteRouterFactory::class,
+                RouteMiddleware::class        => new RotueMiddlewareFactory(Router::class),
                 UrlHelper::class              => new UrlHelperFactory('/api', Router::class),
                 UrlHelperMiddleware::class    => new UrlHelperMiddlewareFactory(UrlHelper::class),
                 UrlGenerator::class           => new ExpressiveUrlGeneratorFactory(UrlHelper::class),
