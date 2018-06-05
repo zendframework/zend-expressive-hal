@@ -25,7 +25,15 @@ configured instances for your use.
 - Registered as service: `Zend\Expressive\Hal\LinkGenerator`
 - Generates instance of: `Zend\Expressive\Hal\LinkGenerator`
 - Depends on:
-    - `Zend\Expressive\Hal\LinkGenerator\UrlGenerator` service
+    - `Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface` service
+
+Since version 1.1.0, this factory allows an optional constructor argument,
+`$urlGeneratorServiceName`. It defaults to
+`Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface`,
+but you may specify an alternate service if desired. This may be useful, for
+instance, when using an alternate router in a path-segregated middleware
+pipeline, which would necessitate a different `UrlHelper` instance, and an
+alternate URL generator that consumes it.
 
 ## Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGeneratorFactory
 
@@ -36,6 +44,12 @@ configured instances for your use.
     - `Zend\Expressive\Helper\UrlHelper` service
     - `Zend\Expressive\Helper\ServerUrlHelper` service (optional; if not provided,
       URIs will be generated without authority information)
+
+Since version 1.1.0, this factory allows an optional constructor argument, `$urlHelperServiceName`.
+It defaults to `Zend\Expressive\Helper\UrlHelper`, but you may specify an
+alternate service if desired. This may be useful, for instance, when using an
+alternate router in a path-segregated middleware pipeline, which would
+necessitate a different `UrlHelper` instance.
 
 ## Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface
 
@@ -142,3 +156,10 @@ the namespace.
 If you wish to use a container implementation other than the
 `Zend\Hydrator\HydratorPluginManager`, either register it under that service
 name, or create an alternate factory.
+
+Since version 1.1.0, this factory allows an optional constructor argument, `$linkGeneratorServiceName`.
+It defaults to `Zend\Expressive\Hal\LinkGenerator`, but you may specify an
+alternate service if desired. This may be useful, for instance, when using an
+alternate router in a path-segregated middleware pipeline, which would
+necessitate a different `UrlHelper` instance, an alternate URL generator that
+consumes it, and an alternate `LinkGenerator` consuming the URL generator.

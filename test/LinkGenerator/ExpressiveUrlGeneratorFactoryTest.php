@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
  */
 
@@ -66,5 +66,31 @@ class ExpressiveUrlGeneratorFactoryTest extends TestCase
         $this->assertInstanceOf(ExpressiveUrlGenerator::class, $generator);
         $this->assertAttributeSame($urlHelper, 'urlHelper', $generator);
         $this->assertAttributeSame($serverUrlHelper, 'serverUrlHelper', $generator);
+    }
+
+    public function testFactoryCanAcceptUrlHelperServiceNameToConstructor()
+    {
+        $urlHelper = $this->prophesize(UrlHelper::class)->reveal();
+
+        $this->container->has(CustomUrlHelper::class)->willReturn(true);
+        $this->container->get(CustomUrlHelper::class)->willReturn($urlHelper);
+        $this->container->has(ServerUrlHelper::class)->willReturn(false);
+
+        $factory = new ExpressiveUrlGeneratorFactory(CustomUrlHelper::class);
+        $generator = $factory($this->container->reveal());
+
+        $this->assertInstanceOf(ExpressiveUrlGenerator::class, $generator);
+        $this->assertAttributeSame($urlHelper, 'urlHelper', $generator);
+        $this->assertAttributeEmpty('serverUrlHelper', $generator);
+    }
+
+    public function testFactoryIsSerializable()
+    {
+        $factory = ExpressiveUrlGeneratorFactory::__set_state([
+            'urlHelperServiceName' => CustomUrlHelper::class,
+        ]);
+
+        $this->assertInstanceOf(ExpressiveUrlGeneratorFactory::class, $factory);
+        $this->assertAttributeSame(CustomUrlHelper::class, 'urlHelperServiceName', $factory);
     }
 }
