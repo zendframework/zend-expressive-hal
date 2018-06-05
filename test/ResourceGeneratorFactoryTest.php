@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-hal for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-hal/blob/master/LICENSE.md New BSD License
  */
 
@@ -146,7 +146,7 @@ class ResourceGeneratorFactoryTest extends TestCase
         );
 
         $this->container->get(RouteBasedCollectionStrategy::class)->willReturn(
-            $this->prophesize(RouteBasedCollectionStrategy::class)
+            $this->prophesize(RouteBasedCollectionStrategy::class)->reveal()
         );
 
         $object = new ResourceGeneratorFactory();
@@ -161,5 +161,42 @@ class ResourceGeneratorFactoryTest extends TestCase
             RouteBasedCollectionStrategy::class,
             $registeredStrategies[RouteBasedCollectionMetadata::class]
         );
+    }
+
+    public function testConstructorAllowsSpecifyingLinkGeneratorServiceName()
+    {
+        $container = $this->prophesize(ContainerInterface::class);
+
+        $container
+            ->get(Metadata\MetadataMap::class)
+            ->willReturn($this->prophesize(Metadata\MetadataMap::class)->reveal());
+
+        $container
+            ->get(HydratorPluginManager::class)
+            ->willReturn($this->prophesize(ContainerInterface::class)->reveal());
+
+        $linkGenerator = $this->prophesize(LinkGenerator::class)->reveal();
+        $container
+            ->get(CustomLinkGenerator::class)
+            ->willReturn($linkGenerator);
+
+        $container->has('config')->willReturn(false);
+
+        $factory = new ResourceGeneratorFactory(CustomLinkGenerator::class);
+
+        $generator = $factory($container->reveal());
+
+        $this->assertInstanceOf(ResourceGenerator::class, $generator);
+        $this->assertAttributeSame($linkGenerator, 'linkGenerator', $generator);
+    }
+
+    public function testFactoryIsSerializable()
+    {
+        $factory = ResourceGeneratorFactory::__set_state([
+            'linkGeneratorServiceName' => CustomLinkGenerator::class,
+        ]);
+
+        $this->assertInstanceOf(ResourceGeneratorFactory::class, $factory);
+        $this->assertAttributeSame(CustomLinkGenerator::class, 'linkGeneratorServiceName', $factory);
     }
 }
