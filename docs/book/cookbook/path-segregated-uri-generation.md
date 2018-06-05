@@ -63,23 +63,20 @@ class ConfigProvider
     public function getDependencies() : array
     {
         return [
-            'delegators' => [
-                // module class name => delegators
-                Router::class => [
-                    RoutesDelegatorFactory::class,
-                ],
-            ],
             'factories' => [
-                // module class name       => factory
-                LinkGenerator::class       => new LinkGeneratorFactory(UrlGenerator::class),
-                ResourceGenerator::class   => new ResourceGeneratorFactory(LinkGenerator::class),
-                Router::class              => FastRouteRouterFactory::class,
-                UrlHelper::class           => new UrlHelperFactory('/api', Router::class),
-                UrlHelperMiddleware::class => new UrlHelperMiddlewareFactory(UrlHelper::class),
-                UrlGenerator::class        => new ExpressiveUrlGeneratorFactory(UrlHelper::class),
+                // module-specific class name => factory
+                LinkGenerator::class          => new LinkGeneratorFactory(UrlGenerator::class),
+                ResourceGenerator::class      => new ResourceGeneratorFactory(LinkGenerator::class),
+                Router::class                 => FastRouteRouterFactory::class,
+                UrlHelper::class              => new UrlHelperFactory('/api', Router::class),
+                UrlHelperMiddleware::class    => new UrlHelperMiddlewareFactory(UrlHelper::class),
+                UrlGenerator::class           => new ExpressiveUrlGeneratorFactory(UrlHelper::class),
 
                 // Our handler:
-                CreateBookHandler::class   => CreateBookHandlerFactory::class,
+                CreateBookHandler::class => CreateBookHandlerFactory::class,
+
+                // And our pipeline:
+                Pipeline::class => PipelineFactory::class,
             ],
         ];
     }
@@ -174,55 +171,15 @@ class CreateBookHandlerFactory
 }
 ```
 
-## Creating path-segregated routes
+You can create any number of such handlers for your module; the above
+demonstrates how and where injection of the alternate resource generator occurs.
 
-Finally, we need to create a route to it. We can do that by creating a delegator
-factory (which we have already referenced above):
+## Creating our pipeline and routes
 
-```php
-// In src/Api/RoutesDelegatorFactory.php:
-namespace Api;
+Now we can create our pipeline and routes.
 
-use Psr\Container\ContainerInterface;
-use Zend\Expressive\MiddlewareFactory;
-use Zend\Expressive\Router\RouteCollector;
-use Zend\Expressive\Router\RouterInterface;
-
-/**
- * Add routes to the router.
- *
- * This delegator decorates creation of the router, and is used to
- * inject routes into it via a `RouteCollector` instance, using a combination of
- * the HTTP method name as the instance method, a path, a middleware/handler, and
- * optionally a name.
- *
- * You will need to use the MiddlewareFactory to prepare your middleware,
- * as the `RouteCollector` expects valid middleware instances.
- */
-class RoutesDelegatorFactory
-{
-    public function __invoke(ContainerInterface $container, string $serviceName, callable $routerFactory) : RouterInterface
-    {
-        $router = $routerFactory();
-        $routes = new RouteCollector($router);
-        $factory = $container->get(MiddlewareFactory::class);
-
-        // Add routing here:
-        $routes->post('/books', $factory->lazy(CreateBookHandler::class));
-        
-        // Return the router at the end!
-        return $router;
-    }
-}
-```
-
-Note that the routing does **not** include the string `/api`; this is because
-that string will be stripped when we path-segregate our API middleware pipeline.
-All routing will be _relative_ to that path.
-
-## Creating a path-segregated pipeline
-
-Finally, we will create our path-segregated middleware pipeline:
+Generally when piping to an application instance, we can specify a class name of
+middleware to pipe, or an array of middleware:
 
 ```php
 // in config/pipeline.php:
@@ -238,41 +195,74 @@ $app->pipe('/api', [
 ]);
 ```
 
-> You might want to create the above as a middleware pipeline _service_ via a
-> factory:
->
-> ```php
-> namespace Api;
-> 
-> use Psr\Container\ContainerInterface;
-> use Zend\Expressive\MiddlewareFactory;
-> use Zend\Expressive\Router\Middleware as RouterMiddleware;
-> use Zend\ProblemDetails\ProblemDetailsMiddleware;
-> use Zend\ProblemDetails\ProblemDetailsNotFoundHandler;
-> use Zend\Stratigility\MiddlewarePipe;
-> 
-> class PipelineFactory
-> {
->     public function __invoke(ContainerInterface $container) : MiddlewarePipe
->     {
->         $factory = $container->get(MiddlewareFactory::class);
->         $pipeline = new MiddlewarePipe();
->         $pipeline->pipe($factory->lazy(ProblemDetailsMiddleware::class));
->         $pipeline->pipe($factory->lazy(RouteMiddleware::class)); // module-specific!
->         $pipeline->pipe($factory->lazy(RouterMiddleware\ImplicitHeadMiddleware::class));
->         $pipeline->pipe($factory->lazy(RouterMiddleware\ImplicitOptionsMiddleware::class));
->         $pipeline->pipe($factory->lazy(RouterMiddleware\MethodNotAllowedMiddleware::class));
->         $pipeline->pipe($factory->lazy(UrlHelperMiddlweare::class)); // module-specific!
->         $pipeline->pipe($factory->lazy(RouterMiddleware\DispatchMiddleware::class));
->         $pipeline->pipe($factory->lazy(ProblemDetailsNotFoundHandler::class));
->         return $pipeline;
->     }
-> }
-> ```
->
-> Such an approach keeps the pipeline definition in the module, which allows you
-> to better re-use it later.
+However, we have both the pipeline _and_ routes, and we likely want to indicate
+the exact behavior of this pipeline. Additionally, we may want to re-use this
+pipeline in other applications; pushing this into the application configuration
+makes that more error-prone.
 
-The above approach will allow you to create a custom pipeline that can be
-dropped into an existing application, and allows defining per-module routing and
-dispatch relative to a given path.
+As such, we will create a factory that generates and returns a
+`Zend\Stratigility\MiddlewarePipe` instance that is fully configured for our
+module. As part of this functionality, we will also add our module-specific
+routing.
+
+```php
+// In src/Api/PipelineFactory.php:
+namespace Api;
+
+use Psr\Container\ContainerInterface;
+use Zend\Expressive\MiddlewareFactory;
+use Zend\Expressive\Router\Middleware as RouterMiddleware;
+use Zend\ProblemDetails\ProblemDetailsMiddleware;
+use Zend\ProblemDetails\ProblemDetailsNotFoundHandler;
+use Zend\Stratigility\MiddlewarePipe;
+
+class PipelineFactory
+{
+    public function __invoke(ContainerInterface $container) : MiddlewarePipe
+    {
+        $factory = $container->get(MiddlewareFactory::class);
+
+        // First, create our middleware pipeline
+        $pipeline = new MiddlewarePipe();
+        $pipeline->pipe($factory->lazy(ProblemDetailsMiddleware::class));
+        $pipeline->pipe($factory->lazy(RouteMiddleware::class)); // module-specific!
+        $pipeline->pipe($factory->lazy(RouterMiddleware\ImplicitHeadMiddleware::class));
+        $pipeline->pipe($factory->lazy(RouterMiddleware\ImplicitOptionsMiddleware::class));
+        $pipeline->pipe($factory->lazy(RouterMiddleware\MethodNotAllowedMiddleware::class));
+        $pipeline->pipe($factory->lazy(UrlHelperMiddlweare::class)); // module-specific!
+        $pipeline->pipe($factory->lazy(RouterMiddleware\DispatchMiddleware::class));
+        $pipeline->pipe($factory->lazy(ProblemDetailsNotFoundHandler::class));
+
+        // Second, we'll create our routes
+        $router = $container->get(Router::class); // Retrieve our module-specific router
+        $routes = new RouteCollector($router);    // Create a route collector to simplify routing
+
+        // Start routing:
+        $routes->post('/books', $factory->lazy(CreateBookHandler::class));
+
+        // Return the pipeline now that we're done!
+        return $pipeline;
+    }
+}
+```
+
+Note that the routing definitions do **not** include the prefix `/api`; this is
+because that prefix will be stripped when we path-segregate our API middleware
+pipeline. All routing will be _relative_ to that path.
+
+## Creating a path-segregated pipeline
+
+Finally, we will attach our pipeline to the application, using path segregation:
+
+```php
+// in config/pipeline.php:
+$app->pipe('/api', \Api\Pipeline::class);
+```
+
+This statement tells the application to pipe the pipeline returned by our
+`PipelineFactory` under the path `/api`; that path will be stripped from
+requests when passed to the underlying middleware.
+
+At this point, we now have a re-usable module, complete with its own routing,
+with URI generation that will include the base path under which we have
+segregated the pipeline!
