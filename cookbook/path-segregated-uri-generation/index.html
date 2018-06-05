@@ -9,7 +9,7 @@
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Custom Resources - Hypertext Application Language</title>
+    <title>Using the ResourceGenerator in path-segregated middleware - Hypertext Application Language</title>
 
     <link rel="stylesheet" href="../../css/styles-f773ae3616.css">
 </head>
@@ -109,8 +109,8 @@
 
                             
                                 
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Custom Resources</a>
+    <li class="subnavigation__list-item ">
+        <a href="../generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
@@ -142,8 +142,8 @@
 
                             
                                 
-    <li class="subnavigation__list-item ">
-        <a href="../path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             
@@ -216,11 +216,11 @@
   
     
       
-        <li>Reference</li>
+        <li>Cookbook</li>
       
     
   
-  <li class="active">Custom Resources</li>
+  <li class="active">Using the ResourceGenerator in path-segregated middleware</li>
 </ol>
 
 
@@ -229,68 +229,263 @@
 
     
     
+        <div class="toc">
+            <h6 class="toc__headline">In This Article</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#virtual-services" class="toc__link">Virtual services</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#using-virtual-services-with-a-handler" class="toc__link">Using virtual services with a handler</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#creating-our-pipeline-and-routes" class="toc__link">Creating our pipeline and routes</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#creating-a-path-segregated-pipeline" class="toc__link">Creating a path-segregated pipeline</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
 
 
-    <h1 id="generating-custom-resources">Generating custom resources</h1>
-<p>The <code>ResourceGenerator</code> allows composing <code>Zend\Expressive\Hal\ResourceGenerator\StrategyInterface</code>
-instances. The <code>StrategyInterface</code> defines the following:</p>
-<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\ResourceGenerator;
+    <h1 id="using-the-resourcegenerator-in-path-segregated-middleware">Using the ResourceGenerator in path-segregated middleware</h1>
+<ul>
+<li>Since 1.1.0.</li>
+</ul>
+<p>You may want to develop your API as a separate module that you can then drop in
+to an existing application; you may even want to <a href="https://docs.zendframework.com/zend-expressive/v3/features/router/piping/#path-segregation">path-segregate</a> it.</p>
+<p>In such cases, you will want to use a different router instance, which has a
+huge number of ramifications:</p>
+<ul>
+<li>You'll need separate routing middleware.</li>
+<li>You'll need a separate <a href="https://docs.zendframework.com/zend-expressive/v3/features/helpers/url-helper/">UrlHelper</a> instance, as well as its related middleware.</li>
+<li>You'll need a separate URL generator for HAL that consumes the separate
+  <code>UrlHelper</code> instance.</li>
+<li>You'll need a separate <code>LinkGenerator</code> for HAL that consumes the separate URL
+  generator.</li>
+<li>You'll need a separate <code>ResourceGenerator</code> for HAL that consumes the separate
+  <code>LinkGenerator</code>.</li>
+</ul>
+<p>This can be accomplished by writing your own factories, but that means a lot of
+extra code, and the potential for it to go out-of-sync with the official
+factories for these services. What should you do?</p>
+<h2 id="virtual-services">Virtual services</h2>
+<p>Since version 1.1.0 of this package, and versions 3.1.0 of
+zend-expressive-router and 5.1.0 of zend-expressive-helpers, you can now pass
+additional constructor arguments to a number of factories to allow varying the
+service dependencies they look for.</p>
+<p>In our example below, we will create an <code>Api</code> module. This module will have its
+own router, and be segregated in the path <code>/api</code>; all routes we create will be
+relative to that path, and not include it in their definitions. The handler we
+create will return HAL-JSON, and thus need to generate links using the
+configured router and base path.</p>
+<p>To begin, we will alter the <code>ConfigProvider</code> for our module to add the
+definitions noted below:</p>
+<pre class="codehilite"><code class="language-php">// in src/Api/ConfigProvider.php:
+namespace Api;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Hal\HalResource;
-use Zend\Expressive\Hal\Metadata;
-use Zend\Expressive\Hal\ResourceGenerator;
+use Zend\Expressive\Hal\LinkGeneratorFactory;
+use Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGeneratorFactory;
+use Zend\Expressive\Hal\Metadata\MetadataMap;
+use Zend\Expressive\Hal\ResourceGeneratorFactory;
+use Zend\Expressive\Helper\UrlHelperFactory;
+use Zend\Expressive\Helper\UrlHelperMiddlewareFactory;
+use Zend\Expressive\Router\FastRouteRouter;
+use Zend\Expressive\Router\Middleware\RouteMiddlewareFactory;
 
-interface StrategyInterface
+class ConfigProvider
 {
-    /**
-     * @param object $instance Instance from which to create Resource.
-     * @throws Exception\UnexpectedMetadataTypeException for metadata types the
-     *     strategy cannot handle.
-     */
-    public function createResource(
-        $instance,
-        Metadata\AbstractMetadata $metadata,
-        ResourceGenerator $resourceGenerator,
-        ServerRequestInterface $request
-    ) : HalResource;
+    public function __invoke() : array
+    {
+        return [
+            'dependencies' =&gt; $this-&gt;getDependencies(),
+            MetadataMap::class =&gt; $this-&gt;getMetadataMap(),
+        ];
+    }
+
+    public function getDependencies() : array
+    {
+        return [
+            'factories' =&gt; [
+                // module-specific class name =&gt; factory
+                LinkGenerator::class          =&gt; new LinkGeneratorFactory(UrlGenerator::class),
+                ResourceGenerator::class      =&gt; new ResourceGeneratorFactory(LinkGenerator::class),
+                Router::class                 =&gt; FastRouteRouterFactory::class,
+                UrlHelper::class              =&gt; new UrlHelperFactory('/api', Router::class),
+                UrlHelperMiddleware::class    =&gt; new UrlHelperMiddlewareFactory(UrlHelper::class),
+                UrlGenerator::class           =&gt; new ExpressiveUrlGeneratorFactory(UrlHelper::class),
+
+                // Our handler:
+                CreateBookHandler::class =&gt; CreateBookHandlerFactory::class,
+
+                // And our pipeline:
+                Pipeline::class =&gt; PipelineFactory::class,
+            ],
+        ];
+    }
+
+    public function getMetadataMap() : array
+    {
+        return [
+            // ...
+        ];
+    }
 }</code></pre>
 
-<p>When you register a strategy, you will map a metadata type to the strategy; the
-<code>ResourceGenerator</code> will then call your strategy whenever it encounteres
-metadata of that type.</p>
-<pre class="codehilite"><code class="language-php">$resourceGenerator-&gt;addStrategy(CustomMetadata::class, CustomStrategy::class);
+<p>Note that the majority of these service names are <em>virtual</em>; they do not resolve
+to actual classes. PHP allows usage of the <code>::class</code> pseudo-constant anywhere,
+and will resolve the value based on the current namespace. This gives us virtual
+services such as <code>Api\Router</code>, <code>Api\UrlHelper</code>, etc.</p>
+<p>Also note that we are creating factory <em>instances</em>. Normally, we recommend not
+using closures or instances for factories due to potential problems with
+configuration caching. Fortunately, we have provided functionality in each of
+these factories that allows them to be safely cached, retaining the
+context-specific configuration required.</p>
+<blockquote>
+<h3 id="what-about-the-hard-coded-path">What about the hard-coded path?</h3>
+<p>You'll note that the above example hard-codes the base path for the
+<code>UrlHelper</code>. What if you want to use a different path?</p>
+<p>You can override the service in an application-specific configuration under
+<code>config/autoload/</code>, specifying a different path!</p>
+<pre class="codehilite"><code class="language-php">\Api\UrlHelper::class =&gt; new UrlHelperFactory('/different/path', \Api\Router::class),</code></pre>
 
-// or:
-$resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</code></pre>
+</blockquote>
+<h2 id="using-virtual-services-with-a-handler">Using virtual services with a handler</h2>
+<p>Now let's turn to our <code>CreateBookHandler</code>. We'll define it as follows:</p>
+<pre class="codehilite"><code class="language-php">// in src/Api/CreateBookHandler.php:
+namespace Api;
 
-<p>You can also add your strategies via the configuration:</p>
-<pre class="codehilite"><code class="language-php">return [
-    'zend-expressive-hal' =&gt; [
-        'resource-generator' =&gt; [
-            'strategies' =&gt; [
-                CustomMetadata::class =&gt; CustomStrategy::class,
-            ],
-        ],
-    ],
-];</code></pre>
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Expressive\Hal\HalResponseFactory;
+use Zend\Expressive\Hal\ResourceGenerator;
 
-<p>If a strategy already is mapped for the given metadata type, this method will
-override it.</p>
-<p>To facilitate common operations, this library provides two traits,
-<code>Zend\Expressive\Hal\ResourceGenerator\ExtractCollectionTrait</code> and
-<code>Zend\Expressive\Hal\ResourceGenerator\ExtractInstanceTrait</code>; inspect these if you
-decide to write your own strategies.</p>
-<p>In order for the <code>MetadataMap</code> to be able to use your <code>CustomMetadata</code> you need to register 
-a factory (implementing <code>Zend\Expressive\Hal\Metadata\MetadataFactoryInterface</code>) for it.
-You can register them via the configuration:</p>
-<pre class="codehilite"><code class="language-php">return [
-    'zend-expressive-hal' =&gt; [
-        'metadata-factories' =&gt; [
-            CustomMetadata::class =&gt; CustomMetadataFactory::class,
-        ],
-    ],
-];</code></pre>
+class CreateBookHandler implements RequestHandlerInterface
+{
+    private $resourceGenerator;
+
+    private $responseFactory;
+
+    public function __construct(ResourceGenerator $resourceGenerator, HalResponseFactory $responseFactory)
+    {
+        $this-&gt;resourceGenerator = $resourceGenerator;
+        $this-&gt;responseFactory = $responseFactory;
+    }
+
+    public function handle(ServerRequestInterface $request) : ResponseInterface
+    {
+        // do some work ...
+
+        $resource = $this-&gt;resourceGenerator-&gt;fromObject($book, $request);
+        return $this-&gt;responseFactory-&gt;createResponse($request, $book);
+    }
+}</code></pre>
+
+<p>This handler needs a HAL resource generator. More specifically, it needs the one
+specific to our module. As such, we'll define our factory as follows:</p>
+<pre class="codehilite"><code class="language-php">// in src/Api/CreateBookHandlerFactory.php:
+namespace Api;
+
+use Psr\Container\ContainerInterface;
+use Zend\Expressive\Hal\HalResponseFactory;
+
+class CreateBookHandlerFactory
+{
+    public function __invoke(ContainerInterface $container) : CreateBookHandler
+    {
+        return new CreateBookHandler(
+            ResourceGenerator::class, // module-specific service name!
+            HalResponseFactory::class
+        );
+    }
+}</code></pre>
+
+<p>You can create any number of such handlers for your module; the above
+demonstrates how and where injection of the alternate resource generator occurs.</p>
+<h2 id="creating-our-pipeline-and-routes">Creating our pipeline and routes</h2>
+<p>Now we can create our pipeline and routes.</p>
+<p>Generally when piping to an application instance, we can specify a class name of
+middleware to pipe, or an array of middleware:</p>
+<pre class="codehilite"><code class="language-php">// in config/pipeline.php:
+$app-&gt;pipe('/api', [
+    \Zend\ProblemDetails\ProblemDetailsMiddleware::class,
+    \Api\RouteMiddleware::class,     // module-specific routing middleware!
+    ImplicitHeadMiddleware::class,
+    ImplicitOptionsMiddleware::class,
+    MethodNotAllowedMiddleware::class,
+    \Api\UrlHelperMiddleware::class, // module-specific URL helper middleware!
+    DispatchMiddleware::class,
+    \Zend\ProblemDetails\ProblemDetailsNotFoundHandler::class,
+]);</code></pre>
+
+<p>However, we have both the pipeline <em>and</em> routes, and we likely want to indicate
+the exact behavior of this pipeline. Additionally, we may want to re-use this
+pipeline in other applications; pushing this into the application configuration
+makes that more error-prone.</p>
+<p>As such, we will create a factory that generates and returns a
+<code>Zend\Stratigility\MiddlewarePipe</code> instance that is fully configured for our
+module. As part of this functionality, we will also add our module-specific
+routing.</p>
+<pre class="codehilite"><code class="language-php">// In src/Api/PipelineFactory.php:
+namespace Api;
+
+use Psr\Container\ContainerInterface;
+use Zend\Expressive\MiddlewareFactory;
+use Zend\Expressive\Router\Middleware as RouterMiddleware;
+use Zend\ProblemDetails\ProblemDetailsMiddleware;
+use Zend\ProblemDetails\ProblemDetailsNotFoundHandler;
+use Zend\Stratigility\MiddlewarePipe;
+
+class PipelineFactory
+{
+    public function __invoke(ContainerInterface $container) : MiddlewarePipe
+    {
+        $factory = $container-&gt;get(MiddlewareFactory::class);
+
+        // First, create our middleware pipeline
+        $pipeline = new MiddlewarePipe();
+        $pipeline-&gt;pipe($factory-&gt;lazy(ProblemDetailsMiddleware::class));
+        $pipeline-&gt;pipe($factory-&gt;lazy(RouteMiddleware::class)); // module-specific!
+        $pipeline-&gt;pipe($factory-&gt;lazy(RouterMiddleware\ImplicitHeadMiddleware::class));
+        $pipeline-&gt;pipe($factory-&gt;lazy(RouterMiddleware\ImplicitOptionsMiddleware::class));
+        $pipeline-&gt;pipe($factory-&gt;lazy(RouterMiddleware\MethodNotAllowedMiddleware::class));
+        $pipeline-&gt;pipe($factory-&gt;lazy(UrlHelperMiddlweare::class)); // module-specific!
+        $pipeline-&gt;pipe($factory-&gt;lazy(RouterMiddleware\DispatchMiddleware::class));
+        $pipeline-&gt;pipe($factory-&gt;lazy(ProblemDetailsNotFoundHandler::class));
+
+        // Second, we'll create our routes
+        $router = $container-&gt;get(Router::class); // Retrieve our module-specific router
+        $routes = new RouteCollector($router);    // Create a route collector to simplify routing
+
+        // Start routing:
+        $routes-&gt;post('/books', $factory-&gt;lazy(CreateBookHandler::class));
+
+        // Return the pipeline now that we're done!
+        return $pipeline;
+    }
+}</code></pre>
+
+<p>Note that the routing definitions do <strong>not</strong> include the prefix <code>/api</code>; this is
+because that prefix will be stripped when we path-segregate our API middleware
+pipeline. All routing will be <em>relative</em> to that path.</p>
+<h2 id="creating-a-path-segregated-pipeline">Creating a path-segregated pipeline</h2>
+<p>Finally, we will attach our pipeline to the application, using path segregation:</p>
+<pre class="codehilite"><code class="language-php">// in config/pipeline.php:
+$app-&gt;pipe('/api', \Api\Pipeline::class);</code></pre>
+
+<p>This statement tells the application to pipe the pipeline returned by our
+<code>PipelineFactory</code> under the path <code>/api</code>; that path will be stripped from
+requests when passed to the underlying middleware.</p>
+<p>At this point, we now have a re-usable module, complete with its own routing,
+with URI generation that will include the base path under which we have
+segregated the pipeline!</p>
 
 
 
@@ -300,7 +495,7 @@ You can register them via the configuration:</p>
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../../resource-generator/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../generating-custom-links-in-middleware/">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
             
@@ -308,10 +503,6 @@ You can register them via the configuration:</p>
 
         
         <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../../representations/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
             
         </li>
     </ul>
@@ -321,7 +512,7 @@ You can register them via the configuration:</p>
 <div class="help-wanted">
     <p>
         Found a mistake or want to contribute to the documentation?
-        <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/cookbook/generating-custom-resources.md" target="_blank" class="help-wanted__link">
+        <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/cookbook/path-segregated-uri-generation.md" target="_blank" class="help-wanted__link">
             Edit this page on GitHub!
         </a>
     </p>
@@ -385,8 +576,8 @@ You can register them via the configuration:</p>
 
                             
                                 
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Custom Resources</a>
+    <li class="subnavigation__list-item ">
+        <a href="../generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
@@ -418,8 +609,8 @@ You can register them via the configuration:</p>
 
                             
                                 
-    <li class="subnavigation__list-item ">
-        <a href="../path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             

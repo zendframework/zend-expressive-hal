@@ -65,6 +65,12 @@
      <changefreq>daily</changefreq>
     </url>
         
+    <url>
+     <loc>/cookbook/path-segregated-uri-generation/</loc>
+     <lastmod>2018-06-05</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
 </urlset>
