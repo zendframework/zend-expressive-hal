@@ -17,12 +17,33 @@ use function is_array;
 
 class ResourceGeneratorFactory
 {
+    /** @var string */
+    private $linkGeneratorServiceName;
+
+    /**
+     * Allow serialization
+     */
+    public static function __set_state(array $data) : self
+    {
+        return new self(
+            $data['linkGeneratorServiceName'] ?? LinkGenerator::class
+        );
+    }
+
+    /**
+     * Allow varying behavior based on link generator service name.
+     */
+    public function __construct(string $linkGeneratorServiceName = LinkGenerator::class)
+    {
+        $this->linkGeneratorServiceName = $linkGeneratorServiceName;
+    }
+
     public function __invoke(ContainerInterface $container) : ResourceGenerator
     {
         $generator = new ResourceGenerator(
             $container->get(Metadata\MetadataMap::class),
             $container->get(HydratorPluginManager::class),
-            $container->get(LinkGenerator::class)
+            $container->get($this->linkGeneratorServiceName)
         );
 
         $this->injectStrategies($container, $generator);
