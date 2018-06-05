@@ -27,4 +27,26 @@ class LinkGeneratorFactoryTest extends TestCase
         self::assertInstanceOf(LinkGenerator::class, $instance);
         self::assertAttributeSame($urlGenerator, 'urlGenerator', $instance);
     }
+
+    public function testConstructorAllowsSpecifyingUrlGeneratorServiceName()
+    {
+        $urlGenerator = $this->prophesize(LinkGenerator\UrlGeneratorInterface::class)->reveal();
+
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->get(UrlGenerator::class)->willReturn($urlGenerator);
+
+        $instance = (new LinkGeneratorFactory(UrlGenerator::class))($container->reveal());
+        self::assertInstanceOf(LinkGenerator::class, $instance);
+        self::assertAttributeSame($urlGenerator, 'urlGenerator', $instance);
+    }
+
+    public function testFactoryIsSerializable()
+    {
+        $factory = LinkGeneratorFactory::__set_state([
+            'urlGeneratorServiceName' => UrlGenerator::class,
+        ]);
+
+        $this->assertInstanceOf(LinkGeneratorFactory::class, $factory);
+        $this->assertAttributeSame(UrlGenerator::class, 'urlGeneratorServiceName', $factory);
+    }
 }
