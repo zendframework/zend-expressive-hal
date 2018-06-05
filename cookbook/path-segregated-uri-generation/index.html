@@ -317,6 +317,7 @@ class ConfigProvider
                 LinkGenerator::class          =&gt; new LinkGeneratorFactory(UrlGenerator::class),
                 ResourceGenerator::class      =&gt; new ResourceGeneratorFactory(LinkGenerator::class),
                 Router::class                 =&gt; FastRouteRouterFactory::class,
+                RouteMiddleware::class        =&gt; new RotueMiddlewareFactory(Router::class),
                 UrlHelper::class              =&gt; new UrlHelperFactory('/api', Router::class),
                 UrlHelperMiddleware::class    =&gt; new UrlHelperMiddlewareFactory(UrlHelper::class),
                 UrlGenerator::class           =&gt; new ExpressiveUrlGeneratorFactory(UrlHelper::class),
