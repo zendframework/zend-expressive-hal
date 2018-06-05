@@ -4,15 +4,20 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 1.1.0 - TBD
+## 1.1.0 - 2018-06-05
 
 ### Added
 
-- Nothing.
+- [#39](https://github.com/zendframework/zend-expressive-hal/pull/39) adds a cookbook recipe detailing how to create a fully contained, path-segregated
+  module, complete with its own router, capable of generating HAL resources.
 
 ### Changed
 
-- Nothing.
+- [#39](https://github.com/zendframework/zend-expressive-hal/pull/39) updates `LinkGeneratorFactory` to allow passing an alternate service name to use when
+  retrieving the `LinkGenerator\UriGeneratorInterface` dependency.
+
+- [#39](https://github.com/zendframework/zend-expressive-hal/pull/39) updates `ResourceGeneratorFactory` to allow passing an alternate service name to use when
+  retrieving the `LinkGenerator` dependency.
 
 ### Deprecated
 
