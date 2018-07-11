@@ -117,7 +117,7 @@ class XmlRenderer implements RendererInterface
         if ($data === null) {
             return $doc->createElement($name, $data);
         }
-        
+
         if (is_scalar($data)) {
             $data = $this->normalizeConstantValue($data);
             return $doc->createElement($name, $data);
