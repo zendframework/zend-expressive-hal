@@ -13,7 +13,7 @@ pages:
     - Cookbook:
         - "Generating Custom Links In Middleware and Request Handlers": cookbook/generating-custom-links-in-middleware.md
         - "Using the ResourceGenerator in path-segregated middleware": cookbook/path-segregated-uri-generation.md
-site_name: Hypertext Application Language
+site_name: zend-expressive-hal
 site_description: 'Hypertext Application Language for PSR-7 Applications'
 repo_url: 'https://github.com/zendframework/zend-expressive-hal'
 copyright: 'Copyright (c) 2017-2018 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
