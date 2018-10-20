@@ -68,7 +68,7 @@ class ConfigProvider
                 LinkGenerator::class          => new LinkGeneratorFactory(UrlGenerator::class),
                 ResourceGenerator::class      => new ResourceGeneratorFactory(LinkGenerator::class),
                 Router::class                 => FastRouteRouterFactory::class,
-                RouteMiddleware::class        => new RotueMiddlewareFactory(Router::class),
+                RouteMiddleware::class        => new RouteMiddlewareFactory(Router::class),
                 UrlHelper::class              => new UrlHelperFactory('/api', Router::class),
                 UrlHelperMiddleware::class    => new UrlHelperMiddlewareFactory(UrlHelper::class),
                 UrlGenerator::class           => new ExpressiveUrlGeneratorFactory(UrlHelper::class),
@@ -230,7 +230,7 @@ class PipelineFactory
         $pipeline->pipe($factory->lazy(RouterMiddleware\ImplicitHeadMiddleware::class));
         $pipeline->pipe($factory->lazy(RouterMiddleware\ImplicitOptionsMiddleware::class));
         $pipeline->pipe($factory->lazy(RouterMiddleware\MethodNotAllowedMiddleware::class));
-        $pipeline->pipe($factory->lazy(UrlHelperMiddlweare::class)); // module-specific!
+        $pipeline->pipe($factory->lazy(UrlHelperMiddleware::class)); // module-specific!
         $pipeline->pipe($factory->lazy(RouterMiddleware\DispatchMiddleware::class));
         $pipeline->pipe($factory->lazy(ProblemDetailsNotFoundHandler::class));
 
