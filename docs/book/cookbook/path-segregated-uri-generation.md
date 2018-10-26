@@ -5,7 +5,7 @@
 You may want to develop your API as a separate module that you can then drop in
 to an existing application; you may even want to [path-segregate](https://docs.zendframework.com/zend-expressive/v3/features/router/piping/#path-segregation) it.
 
-In such cases, you will want to use a different router instance, which has a
+In such cases, you will want to use a different router instance to isolate your routes, which has a
 huge number of ramifications:
 
 - You'll need separate routing middleware.
@@ -49,6 +49,7 @@ use Zend\Expressive\Helper\UrlHelperFactory;
 use Zend\Expressive\Helper\UrlHelperMiddlewareFactory;
 use Zend\Expressive\Router\FastRouteRouter;
 use Zend\Expressive\Router\Middleware\RouteMiddlewareFactory;
+use Zend\Expressive\Router\FastRouteRouterFactory;
 
 class ConfigProvider
 {
@@ -213,6 +214,7 @@ namespace Api;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\MiddlewareFactory;
 use Zend\Expressive\Router\Middleware as RouterMiddleware;
+use Zend\Expressive\Router\RouteCollector;
 use Zend\ProblemDetails\ProblemDetailsMiddleware;
 use Zend\ProblemDetails\ProblemDetailsNotFoundHandler;
 use Zend\Stratigility\MiddlewarePipe;
