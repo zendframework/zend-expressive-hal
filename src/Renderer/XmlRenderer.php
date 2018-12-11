@@ -90,7 +90,7 @@ class XmlRenderer implements RendererInterface
     }
 
     /**
-     * Convert true, false, and null to appropriate strings.
+     * Convert true and false to appropriate strings.
      *
      * In all other cases, return the value as-is.
      *

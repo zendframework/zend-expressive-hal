@@ -95,4 +95,16 @@ EOX;
         $xml = $renderer->render($resource);
         $this->assertContains((string) $instance, $xml);
     }
+
+    public function testRendersNullValuesAsTagsWithNoContent()
+    {
+        $resource = new HalResource([
+            'key' => null,
+        ]);
+        $resource = $resource->withLink(new Link('self', '/example'));
+
+        $renderer = new XmlRenderer();
+        $xml = $renderer->render($resource);
+        $this->assertContains('<key/>', $xml);
+    }
 }
