@@ -26,7 +26,7 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 - Nothing.
 
-## 1.1.1 - TBD
+## 1.1.1 - 2018-12-11
 
 ### Added
 
