@@ -9,8 +9,11 @@ namespace ZendTest\Expressive\Hal;
 
 use Zend\Expressive\Hal\HalResource;
 use Zend\Expressive\Hal\Link;
+use Zend\Hydrator\ObjectProperty;
+use Zend\Hydrator\ObjectPropertyHydrator;
 
 use function array_shift;
+use function class_exists;
 use function count;
 use function get_class;
 use function gettype;
@@ -21,6 +24,13 @@ use function var_export;
 
 trait Assertions
 {
+    public static function getObjectPropertyHydratorClass() : string
+    {
+        return class_exists(ObjectPropertyHydrator::class)
+            ? ObjectPropertyHydrator::class
+            : ObjectProperty::class;
+    }
+
     public static function getLinkByRel(string $rel, HalResource $resource) : Link
     {
         $links = $resource->getLinksByRel($rel);
