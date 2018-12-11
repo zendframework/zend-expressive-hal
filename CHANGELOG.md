@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
+## 1.2.0 - 2018-12-11
+
+### Added
+
+- [#51](https://github.com/zendframework/zend-expressive-hal/pull/51) adds support for zend-hydrator version 3 releases. You may continue to use
+  version 2 releases as well.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.1.1 - 2018-12-11
 
 ### Added

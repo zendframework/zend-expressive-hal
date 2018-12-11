@@ -23,7 +23,6 @@ use Zend\Expressive\Hal\LinkGenerator;
 use Zend\Expressive\Hal\Metadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Expressive\Hal\ResourceGenerator\Exception\OutOfBoundsException;
-use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
 use ZendTest\Expressive\Hal\TestAsset\TestMetadata;
@@ -121,13 +120,15 @@ class ResourceGeneratorTest extends TestCase
         $metadata = new Metadata\UrlBasedResourceMetadata(
             TestAsset\FooBar::class,
             '/api/foo/XXXX-YYYY-ZZZZ',
-            ObjectPropertyHydrator::class
+            self::getObjectPropertyHydratorClass()
         );
 
         $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
         $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($metadata);
 
-        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
+        $this->hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
         $this->linkGenerator->fromRoute()->shouldNotBeCalled();
 
         $resource = $this->generator->fromObject($instance, $this->request->reveal());
@@ -154,7 +155,7 @@ class ResourceGeneratorTest extends TestCase
         $metadata = new Metadata\RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'foo_bar_id',
             ['test' => 'param']
@@ -163,7 +164,9 @@ class ResourceGeneratorTest extends TestCase
         $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
         $this->metadataMap->get(TestAsset\FooBar::class)->willReturn($metadata);
 
-        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
+        $this->hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
         $this->linkGenerator
             ->fromRoute(
                 'self',
@@ -205,7 +208,7 @@ class ResourceGeneratorTest extends TestCase
         $resourceMetadata = new Metadata\UrlBasedResourceMetadata(
             TestAsset\FooBar::class,
             '/api/foo/XXXX-YYYY-ZZZZ',
-            ObjectPropertyHydrator::class
+            self::getObjectPropertyHydratorClass()
         );
 
         $this->metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
@@ -222,7 +225,9 @@ class ResourceGeneratorTest extends TestCase
 
         $collection = new ArrayIterator([$first, $second, $third]);
 
-        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
+        $this->hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
         $this->linkGenerator->fromRoute()->shouldNotBeCalled();
 
         $resource = $this->generator->fromObject($collection, $this->request->reveal());
@@ -263,7 +268,7 @@ class ResourceGeneratorTest extends TestCase
         $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'foo_bar_id',
             ['test' => 'param']
@@ -346,7 +351,9 @@ class ResourceGeneratorTest extends TestCase
             )
             ->willReturn(new Link('last', '/api/foo-bar?page=5'));
 
-        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
+        $this->hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
 
         $this->request->getQueryParams()->willReturn(['page' => 3]);
 
@@ -391,7 +398,7 @@ class ResourceGeneratorTest extends TestCase
         $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'foo_bar_id',
             ['test' => 'param']
@@ -474,7 +481,9 @@ class ResourceGeneratorTest extends TestCase
             )
             ->willReturn(new Link('last', '/api/foo-bar?page=5'));
 
-        $this->hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
+        $this->hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
 
         $this->request->getQueryParams()->willReturn(['page' => '3']);
 
@@ -497,7 +506,7 @@ class ResourceGeneratorTest extends TestCase
         $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'foo_bar_id',
             ['test' => 'param']
@@ -553,7 +562,7 @@ class ResourceGeneratorTest extends TestCase
         $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'foo_bar_id',
             ['test' => 'param']
@@ -609,7 +618,7 @@ class ResourceGeneratorTest extends TestCase
         $resourceMetadata = new Metadata\RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'foo_bar_id',
             ['test' => 'param']
