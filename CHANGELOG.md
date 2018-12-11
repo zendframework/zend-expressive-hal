@@ -46,7 +46,9 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
-- Nothing.
+- [#41](https://github.com/zendframework/zend-expressive-hal/pull/41) fixes how `null` values in resources are handled when rendering as XML.
+  Previously, these would lead to an `InvalidResourceValueException`; now they
+  are rendered as content-less tags.
 
 ## 1.1.0 - 2018-06-05
 

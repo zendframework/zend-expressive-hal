@@ -90,7 +90,7 @@ class XmlRenderer implements RendererInterface
     }
 
     /**
-     * Convert true, false, and null to appropriate strings.
+     * Convert true and false to appropriate strings.
      *
      * In all other cases, return the value as-is.
      *
@@ -101,7 +101,6 @@ class XmlRenderer implements RendererInterface
     {
         $value = $value === true ? 'true' : $value;
         $value = $value === false ? 'false' : $value;
-        $value = $value === null ? '' : $value;
         return $value;
     }
 
@@ -115,6 +114,10 @@ class XmlRenderer implements RendererInterface
      */
     private function createResourceElement(DOMDocument $doc, string $name, $data)
     {
+        if ($data === null) {
+            return $doc->createElement($name, $data);
+        }
+
         if (is_scalar($data)) {
             $data = $this->normalizeConstantValue($data);
             return $doc->createElement($name, $data);
