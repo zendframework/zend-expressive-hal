@@ -17,7 +17,6 @@ use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
-use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use ZendTest\Expressive\Hal\Assertions;
 use ZendTest\Expressive\Hal\TestAsset;
 
@@ -91,7 +90,7 @@ class NestedCollectionResourceGenerationTest extends TestCase
         $fooBarMetadata = new RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class
+            self::getObjectPropertyHydratorClass()
         );
 
         $metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
@@ -100,7 +99,7 @@ class NestedCollectionResourceGenerationTest extends TestCase
         $childMetadata = new RouteBasedResourceMetadata(
             TestAsset\Child::class,
             'child',
-            ObjectPropertyHydrator::class
+            self::getObjectPropertyHydratorClass()
         );
 
         $metadataMap->has(TestAsset\Child::class)->willReturn(true);
@@ -120,8 +119,10 @@ class NestedCollectionResourceGenerationTest extends TestCase
 
     private function createHydrators()
     {
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
         $hydrators = $this->prophesize(ContainerInterface::class);
-        $hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
         return $hydrators;
     }
 
