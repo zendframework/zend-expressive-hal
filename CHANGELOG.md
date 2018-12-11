@@ -24,6 +24,10 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
+- [#50](https://github.com/zendframework/zend-expressive-hal/pull/50) fixes the `Halresource` constructor documentation of the `$embedded`
+  argument to correctly be an array of `HalResource` arrays (and not just an
+  array of `HalResource` instances).
+
 - [#41](https://github.com/zendframework/zend-expressive-hal/pull/41) fixes how `null` values in resources are handled when rendering as XML.
   Previously, these would lead to an `InvalidResourceValueException`; now they
   are rendered as content-less tags.
