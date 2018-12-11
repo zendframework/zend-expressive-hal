@@ -17,7 +17,6 @@ use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Expressive\Hal\Metadata\UrlBasedCollectionMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
-use Zend\Hydrator\ObjectProperty as ObjectPropertyHydrator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
 use ZendTest\Expressive\Hal\Assertions;
@@ -43,7 +42,7 @@ class UrlBasedCollectionWithRouteParamsTest extends TestCase
         $resourceMetadata = new RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'bar_id',
             ['foo_id' => 1234]
@@ -63,8 +62,10 @@ class UrlBasedCollectionWithRouteParamsTest extends TestCase
         $metadataMap->has(Paginator::class)->willReturn(true);
         $metadataMap->get(Paginator::class)->willReturn($collectionMetadata);
 
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
         $hydrators = $this->prophesize(ContainerInterface::class);
-        $hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
 
         $collection = new Paginator(new ArrayAdapter($this->createCollectionItems($linkGenerator, $request)));
         $collection->setItemCountPerPage(3);
@@ -113,7 +114,7 @@ class UrlBasedCollectionWithRouteParamsTest extends TestCase
         $resourceMetadata = new RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            ObjectPropertyHydrator::class,
+            self::getObjectPropertyHydratorClass(),
             'id',
             'bar_id',
             ['foo_id' => 1234]
@@ -134,8 +135,10 @@ class UrlBasedCollectionWithRouteParamsTest extends TestCase
         $metadataMap->has(\ArrayObject::class)->willReturn(true);
         $metadataMap->get(\ArrayObject::class)->willReturn($collectionMetadata);
 
+        $hydratorClass = self::getObjectPropertyHydratorClass();
+
         $hydrators = $this->prophesize(ContainerInterface::class);
-        $hydrators->get(ObjectPropertyHydrator::class)->willReturn(new ObjectPropertyHydrator());
+        $hydrators->get($hydratorClass)->willReturn(new $hydratorClass());
 
         $collection = new \ArrayObject();
 
