@@ -120,6 +120,17 @@ class HalResource implements EvolvableLinkProviderInterface, JsonSerializable
     }
 
     /**
+     * Check if embedded resources contain a specific key
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function hasEmbedded(string $name): bool
+    {
+        return array_key_exists($name, $this->embedded);
+    }
+
+    /**
      * Retrieve all elements of the resource.
      *
      * Returned as a set of key/value pairs. Embedded resources are mixed
