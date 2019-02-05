@@ -8,6 +8,7 @@
 namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Countable;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 use Zend\Expressive\Hal\HalResource;
@@ -55,6 +56,10 @@ trait ExtractCollectionTrait
             return $this->extractPaginator($collection, $metadata, $resourceGenerator, $request);
         }
 
+        if ($collection instanceof DoctrinePaginator) {
+            return $this->extractDoctrinePaginator($collection, $metadata, $resourceGenerator, $request);
+        }
+
         return $this->extractIterator($collection, $metadata, $resourceGenerator, $request);
     }
 
@@ -97,6 +102,73 @@ trait ExtractCollectionTrait
             }
 
             $collection->setCurrentPageNumber($page);
+
+            $links[] = $this->generateLinkForPage('self', $page, $metadata, $resourceGenerator, $request);
+            if ($page > 1) {
+                $links[] = $this->generateLinkForPage('first', 1, $metadata, $resourceGenerator, $request);
+                $links[] = $this->generateLinkForPage('prev', $page - 1, $metadata, $resourceGenerator, $request);
+            }
+            if ($page < $pageCount) {
+                $links[] = $this->generateLinkForPage('next', $page + 1, $metadata, $resourceGenerator, $request);
+                $links[] = $this->generateLinkForPage('last', $pageCount, $metadata, $resourceGenerator, $request);
+            }
+
+            $data['_page'] = $page;
+            $data['_page_count'] = $pageCount;
+        }
+
+        if (empty($links)) {
+            $links[] = $this->generateSelfLink($metadata, $resourceGenerator, $request);
+        }
+
+        $resources = [];
+        foreach ($collection as $item) {
+            $resources[] = $resourceGenerator->fromObject($item, $request);
+        }
+
+        return new HalResource($data, $links, [
+            $metadata->getCollectionRelation() => $resources,
+        ]);
+    }
+
+    /**
+     * Extract a collection from a Doctrine paginator.
+     *
+     * When pagination is requested, and a valid page is found, calls the
+     * paginator's `setFirstResult()` method with an offset based on the
+     * max results value set on the paginator.
+     */
+    private function extractDoctrinePaginator(
+        DoctrinePaginator $collection,
+        AbstractCollectionMetadata $metadata,
+        ResourceGenerator $resourceGenerator,
+        ServerRequestInterface $request
+    ) : HalResource {
+        $query      = $collection->getQuery();
+        $totalItems = count($collection);
+        $perPage    = $query->getMaxResults();
+        $pageCount  = (int) ceil($totalItems / $perPage);
+
+        $data  = ['_total_items' => $totalItems];
+        $links = [];
+
+        $paginationParamType = $metadata->getPaginationParamType();
+        if (in_array($paginationParamType, $this->paginationTypes, true)) {
+            $paginationParam = $metadata->getPaginationParam();
+            $page = $paginationParamType === AbstractCollectionMetadata::TYPE_QUERY
+                ? (int) ($request->getQueryParams()[$paginationParam] ?? 1)
+                : (int) $request->getAttribute($paginationParam, 1);
+
+            if ($page < 1 || ($page > $pageCount && $pageCount > 0)) {
+                throw new Exception\OutOfBoundsException(sprintf(
+                    'Page %d is out of bounds. Collection has %d page%s.',
+                    $page,
+                    $pageCount,
+                    $pageCount > 1 ? 's' : ''
+                ));
+            }
+
+            $query->setFirstResult($pageCount * ($page - 1));
 
             $links[] = $this->generateLinkForPage('self', $page, $metadata, $resourceGenerator, $request);
             if ($page > 1) {
