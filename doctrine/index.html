@@ -9,7 +9,7 @@
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
     <link rel="shortcut icon" href="../img/favicon.ico">
 
-    <title>Generating Resources - zend-expressive-hal</title>
+    <title>Generating HAL for Doctrine Entities - zend-expressive-hal</title>
 
     <link rel="stylesheet" href="../css/styles-e95dab66f8.css">
 </head>
@@ -97,8 +97,8 @@
 
                             
                                 
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Generating Resources</a>
+    <li class="subnavigation__list-item ">
+        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
@@ -115,8 +115,8 @@
 
                             
                                 
-    <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
@@ -224,7 +224,7 @@
                 
             
 
-            <li class="active">Generating Resources</li>
+            <li class="active">Generating HAL for Doctrine Entities</li>
         
     
 </ol>
@@ -240,11 +240,11 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#metadata" class="toc__link">Metadata</a>
+                        <a href="#example-paginated-albums" class="toc__link">Example: Paginated Albums</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#resourcegenerator" class="toc__link">ResourceGenerator</a>
+                        <a href="#example-doctrine-collections" class="toc__link">Example: Doctrine Collections</a>
                     </li>
                 
             </ul>
@@ -252,177 +252,394 @@
     
 
 
-    <h1 id="generating-resources-from-php-objects">Generating Resources from PHP Objects</h1>
-<p>In the previous chapter, <a href="../links-and-resources/">we discussed links and resources</a>.
-The primitive objects allow us to create representations easily, but do not
-answer one critical question: how can we create resources based on existing PHP
-object types?</p>
-<p>To answer that question, we provide two related features: metadata, and a
-resource generator.</p>
-<h2 id="metadata">Metadata</h2>
-<p>Metadata allows you to detail the requirements for generating a HAL
-representation of a PHP object. Metadata might include:</p>
+    <h1 id="generating-hal-from-doctrine">Generating HAL from Doctrine</h1>
+<blockquote>
 <ul>
-<li>The PHP class name to represent.</li>
-<li>A URI to use for the generated resource's self relational link.</li>
-<li>Alternately, routing information to use with the <code>LinkGenerator</code>.</li>
-<li>A zend-hydrator extractor to use to serialize the object to a representation.</li>
-<li>Whether or not the resource is a collection, and, if so, whether pagination is
-  handled as a path parameter or a query string argument, the name of the
-  parameter, etc.</li>
+<li>Since 1.3.0</li>
 </ul>
-<p>All metadata types inherit from <code>Zend\Expressive\Hal\Metadata\AbstractMetadata</code>,
-which defines a single method, <code>getClass()</code>, for retrieving the name of the PHP
-class to represent; all metadata are expected to inherit from this class.</p>
-<p>The component also provides four concrete metadata types, requiring the
-following information:</p>
-<ul>
-<li><code>Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata</code>:<ul>
-<li>string <code>$class</code></li>
-<li>string <code>$collectionRelation</code></li>
-<li>string <code>$route</code></li>
-<li>string <code>$paginationParam = 'page'</code> (name of the parameter indicating the
-  current page of results)</li>
-<li>string <code>$paginationParamType = self::TYPE_QUERY</code> (one of "query" or "placeholder")</li>
-<li>array <code>$routeParams = []</code> (associative array of substitutions to use with
-  the designated route)</li>
-<li>array <code>$queryStringArguments = []</code> (associative array of query string
-  arguments to include in the generated URI)</li>
-</ul>
-</li>
-<li><code>Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata</code>:<ul>
-<li>string <code>$class</code></li>
-<li>string <code>$route</code></li>
-<li>string <code>$extractor</code> (string service name of the zend-hydrator hydrator to
-  use for extracting data from the instance)</li>
-<li>string <code>$resourceIdentifier = 'id'</code> (name of the property uniquely
-  identifying the resource)</li>
-<li>string <code>$routeIdentifierPlaceholder = 'id'</code> (name of the routing parameter
-  that maps to the resource identifier)</li>
-<li>array <code>$routeParams = []</code> (associative array of additional routing
-  parameters to substitute when generating the URI)</li>
-</ul>
-</li>
-<li><code>Zend\Expressive\Hal\Metadata\UrlBasedCollectionMetadata</code>:<ul>
-<li>string <code>$class</code></li>
-<li>string <code>$collectionRelation</code></li>
-<li>string <code>$url</code></li>
-<li>string <code>$paginationParam = 'page'</code> (name of the parameter indicating the
-  current page of results)</li>
-<li>string <code>$paginationParamType = self::TYPE_QUERY</code> (one of "query" or "placeholder")</li>
-</ul>
-</li>
-<li><code>Zend\Expressive\Hal\Metadata\UrlBasedResourceMetadata</code><ul>
-<li>string <code>$class</code></li>
-<li>string <code>$url</code></li>
-<li>string <code>$extractor</code> (string service name of the zend-hydrator hydrator to
-    use for extracting data from the instance)</li>
-</ul>
-</li>
-</ul>
-<p>We aggregate metadata in a <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> instance:</p>
-<pre class="codehilite"><code class="language-php">$bookMetadata = new RouteBasedResourceMetadata(
-    Book::class,
-    'book',
-    ObjectPropertyHydrator::class
-);
-$booksMetadata = new RouteBasedCollectionMetadata(
-    BookCollection::class,
-    'book',
-    'books',
-);
+</blockquote>
+<p><a href="https://www.doctrine-project.org/">Doctrine</a> is a well-known and popular Object
+Relational Mapper; you will find it in use across pretty much every PHP
+framework. Expressive is no different.</p>
+<p>How do you generate HAL for Doctrine resources? As it turns out, the same way
+you would for any other objects you might have: create metadata mapping the
+objects you want to represent to the routes and the hydrators/collections to use
+when extracting them.</p>
+<h2 id="example-paginated-albums">Example: Paginated Albums</h2>
+<p>In this example, we have an entity named <code>Album</code> that we want to expose via a
+paginated HAL representation. Over the course of the example, we will create a
+custom collection class based off of the Doctrine <code>Paginator</code> class, and map it
+as a HAL collection.</p>
+<p>Our first step is defining an entity:</p>
+<pre class="codehilite"><code class="language-php">declare(strict_types=1);
 
-$metadataMap = new MetadataMap();
-$metadataMap-&gt;add($bookMetadata);
-$metadataMap-&gt;add($booksMetadata);</code></pre>
+namespace Album\Entity;
 
-<h3 id="configuration-based-metadata">Configuration-based metadata</h3>
-<p>To automate generation of the <code>MetadataMap</code>, we provide
-<code>Zend\Expressive\Hal\Metadata\MetadataMapFactory</code>. This factory may be used with any
-<a href="https://www.php-fig.org/psr/psr-11/">PSR-11</a> container. It utilizes the <code>config</code>
-service, and pulls its configuration from a key named after the
-<code>Zend\Expressive\Hal\Metadata\MetadataMap</code> class.</p>
-<p>Each item in the map will be an associative array. The member <code>__class__</code> will
-describe which metadata class to create, and the remaining properties will then
-be used to generate an instance. As an example, the above could be configured as
-follows:</p>
-<pre class="codehilite"><code class="language-php">use Api\Books\Book;
-use Api\Books\BookCollection;
-use Zend\Expressive\Hal\Metadata\MetadataMap;
+use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+
+/**
+ * https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html
+ *
+ * @ORM\Entity
+ * @ORM\Table(name=&quot;albums&quot;)
+ **/
+class Album
+{
+    /**
+     * @var Uuid
+     *
+     * @ORM\Id
+     * @ORM\Column(type=&quot;uuid&quot;, unique=true)
+     * @ORM\GeneratedValue(strategy=&quot;CUSTOM&quot;)
+     * @ORM\CustomIdGenerator(class=&quot;Ramsey\Uuid\Doctrine\UuidGenerator&quot;)
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type=&quot;string&quot;, nullable=false)
+     */
+    protected $title;
+
+    /**
+     * @ORM\Column(type=&quot;datetime&quot;, nullable=false)
+     */
+    protected $created;
+
+    /**
+     * @ORM\Column(type=&quot;datetime&quot;)
+     */
+    protected $modified;
+
+    /**
+     * @return Uuid
+     */
+    public function getId(): Uuid
+    {
+        return $this-&gt;id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this-&gt;title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
+    {
+        $this-&gt;title = $title;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this-&gt;created;
+    }
+
+    /**
+     * @param \DateTime $created
+     * @throws \Exception
+     */
+    public function setCreated(\DateTime $created = null): void
+    {
+        if (!$created &amp;&amp; empty($this-&gt;getId())) {
+            $this-&gt;created = new \DateTime(&quot;now&quot;);
+        } else {
+            $this-&gt;created = $created;
+        }
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getModified(): \DateTime
+    {
+        return $this-&gt;modified;
+    }
+
+    /**
+     * @param \DateTime $modified
+     * @throws \Exception
+     */
+    public function setModified(\DateTime $modified = null): void
+    {
+        if (!$modified) {
+            $this-&gt;modified = new \DateTime(&quot;now&quot;);
+        } else {
+            $this-&gt;modified = $modified;
+        }
+    }
+}</code></pre>
+
+<p>In order to work with this, we need to provide Doctrine persistence mapping
+configuration. We will do this in the <code>ConfigProvider</code> for this module:</p>
+<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+
+namespace Album;
+
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+
+class ConfigProvider
+{
+    public function __invoke() : array
+    {
+        return [
+            'dependencies' =&gt; $this-&gt;getDependencies(),
+            'doctrine'     =&gt; $this-&gt;getDoctrineEntities(),
+        ];
+    }
+
+    public function getDependencies() : array
+    {
+        return [
+        ];
+    }
+
+    public function getDoctrineEntities() : array
+    {
+        return [
+            'driver' =&gt; [
+                'orm_default' =&gt; [
+                    'class' =&gt; MappingDriverChain::class,
+                    'drivers' =&gt; [
+                        'Album\Entity' =&gt; 'album_entity',
+                    ],
+                ],
+                'album_entity' =&gt; [
+                    'class' =&gt; AnnotationDriver::class,
+                    'cache' =&gt; 'array',
+                    'paths' =&gt; [__DIR__ . '/Entity'],
+                ],
+            ],
+        ];
+    }
+}</code></pre>
+
+<p>Next, in order to provide a HAL <em>collection</em> representation, we will create a
+custom <code>Doctrine\ORM\Tools\Pagination\Paginator</code> extension:</p>
+<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+
+namespace Album\Entity;
+
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
+class AlbumCollection extends Paginator
+{
+}</code></pre>
+
+<p>From here, we will add configuration of our HAL metadata map to the
+<code>ConfigProvider</code>. First, we will add the following method to configure both our
+entity and our collection:</p>
+<pre class="codehilite"><code class="language-php">// Add these imports to the top of the class file
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
-use Zend\Hydrator\ObjectProperty;
+use Zend\Hydrator\ReflectionHydrator;
 
-return [
-    'Zend\Expressive\Hal\Metadata\MetadataMap' =&gt; [
-        [
-            '__class__' =&gt; RouteBasedResourceMetadata::class,
-            'resource_class' =&gt; Book::class,
-            'route' =&gt; 'book',
-            'extractor' =&gt; ObjectProperty::class,
-        ],
-        [
-            '__class__' =&gt; RouteBasedCollectionMetadata::class,
-            'collection_class' =&gt; BookCollection::class,
-            'collection_relation' =&gt; 'book',
-            'route' =&gt; 'books',
-        ],
-    ],
-];</code></pre>
 
-<p>The rest of the parameters follow underscore delimiter naming convention:</p>
+    // Add this method inside the ConfigProvider class:
+    public function getHalMetadataMap()
+    {
+        return [
+            [
+                '__class__'      =&gt; RouteBasedResourceMetadata::class,
+                'resource_class' =&gt; Entity\Album::class,
+                'route'          =&gt; 'albums.show', // assumes a route named 'albums.show' has been created
+                'extractor'      =&gt; ReflectionHydrator::class,
+            ],
+            [
+                '__class__'           =&gt; RouteBasedCollectionMetadata::class,
+                'collection_class'    =&gt; Entity\AlbumCollection::class,
+                'collection_relation' =&gt; 'album',
+                'route'               =&gt; 'albums.list', // assumes a route named 'albums.list' has been created
+            ],
+        ];
+    }</code></pre>
+
+<p>Then, within the <code>__invoke()</code> method, we will assign the return value of that
+method to the key <code>MetadataMap::class</code>:</p>
+<pre class="codehilite"><code class="language-php">// Add this import to the top of the class file:
+use Zend\Expressive\Hal\Metadata\MetadataMap;
+
+    // Modify this ConfigProvider method to read:
+    public function __invoke() : array
+    {
+        return [
+            'dependencies' =&gt; $this-&gt;getDependencies(),
+            'templates'    =&gt; $this-&gt;getTemplates(),
+            'doctrine'     =&gt; $this-&gt;getDoctrineEntities(),
+            MetadataMap::class =&gt; $this-&gt;getHalMetadataMap(),
+        ];
+    }</code></pre>
+
+<p>With these in place, we can write a handler that will display a collection as
+follows:</p>
+<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+
+namespace Album\Handler;
+
+use Album\Entity\Album;
+use Album\Entity\AlbumCollection;
+use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Expressive\Hal\HalResponseFactory;
+use Zend\Expressive\Hal\ResourceGenerator;
+
+class ListAlbumsHandler implements RequestHandlerInterface
+{
+    protected $entityManager;
+    protected $pageCount;
+    protected $responseFactory;
+    protected $resourceGenerator;
+
+    public function __construct(
+        EntityManager $entityManager,
+        int $pageCount,
+        HalResponseFactory $responseFactory,
+        ResourceGenerator $resourceGenerator
+    ) {
+        $this-&gt;entityManager     = $entityManager;
+        $this-&gt;pageCount         = $pageCount;
+        $this-&gt;responseFactory   = $responseFactory;
+        $this-&gt;resourceGenerator = $resourceGenerator;
+    }
+
+    public function handle(ServerRequestInterface $request) : ResponseInterface
+    {
+        $repository = $this-&gt;entityManager-&gt;getRepository(Album::class);
+
+        $query = $repository
+            -&gt;createQueryBuilder('c')
+            -&gt;getQuery();
+        $query-&gt;setMaxResults($this-&gt;pageCount);
+
+        $paginator = new AlbumCollection($query);
+        $resource  = $this-&gt;resourceGenerator-&gt;fromObject($paginator, $request);
+        return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
+    }
+}</code></pre>
+
+<p>And another handler for displaying an individual album:</p>
+<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+
+namespace Album\Handler;
+
+use Album\Entity\Album;
+use Doctrine\ORM\EntityManager;
+use Zend\Expressive\Helper\ServerUrlHelper;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class ShowAlbumHandler implements RequestHandlerInterface
+{
+    protected $entityManager;
+    protected $urlHelper;
+
+    /**
+     * AnnouncementsViewHandler constructor.
+     * @param EntityManager $entityManager
+     * @param ServerUrlHelper $urlHelper
+     */
+    public function __construct(
+        EntityManager $entityManager,
+    ) {
+        $this-&gt;entityManager = $entityManager;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request) : ResponseInterface
+    {
+        $entityRepository = $this-&gt;entityManager-&gt;getRepository(Album::class);
+
+        $result = $entityRepository-&gt;find($request-&gt;getAttribute('id'));
+
+        if (empty($return)) {
+            throw new RuntimeException('Not Found', 404);
+        }
+
+        $resource = $this-&gt;resourceGenerator-&gt;fromObject($result, $request);
+        return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
+    }
+}</code></pre>
+
+<p>In the above example, we map our <code>Album</code> entity such that:</p>
 <ul>
-<li><code>RouteBasedResourceMetadata::class</code><ul>
-<li><code>resource_identifier</code> (name of the property uniquely identifying the resource)</li>
-<li><code>route_identifier_placeholder</code> (name of the routing parameter that maps to the resource identifier)</li>
-<li><code>route_params</code> (associative array of substitutions to use with the designated route)</li>
+<li>it is route-based; we will generate relational links to such entities based on
+  existing routing definitions. (In this example, "albums.show".)</li>
+<li>it uses the <code>ReflectionHydrator</code> from the <a href="https://docs.zendframework.com/zend-hydrator">zend-hydrator
+  package</a> to extract a
+  representation of the object to use with HAL.</li>
 </ul>
-</li>
-<li><code>RouteBasedCollectionMetadata::class</code><ul>
-<li><code>pagination_param</code>  (name of the parameter indicating the current page of results)</li>
-<li><code>pagination_param_type</code> (one of "query" or "placeholder")</li>
-<li><code>route_params</code> (associative array of substitutions to use with the designated route)</li>
-<li><code>query_string_arguments</code> (associative array of additional routing parameters to substitute when generating the URI)</li>
+<p>For our <code>AlbumCollection</code>, we define it such that:</p>
+<ul>
+<li>it, too, is route-based. (In this example, it maps to the route
+  "albums.list".)</li>
+<li>the collection will map to the property "album".</li>
 </ul>
-</li>
-<li><code>UrlBasedResourceMetadata::class</code><ul>
-<li><code>resource_class</code></li>
-<li><code>url</code></li>
-<li><code>extractor</code></li>
+<p>Since these mappings are in place, our handlers need only use the Doctrine
+<code>EntityManager</code> in order to retrieve the appropriate repository, and from there
+either retrieve appropriate entities (in the case of the <code>ShowAlbumHandler</code>), or
+seed a collection paginator (in the case of the <code>ListAlbumsHandler</code>). These
+values are known by the metadata map, and, as such, we can generate HAL
+resources for them without needing any other information.</p>
+<h2 id="example-doctrine-collections">Example: Doctrine Collections</h2>
+<p>Sometimes we will want to return an entire collection at once. The <code>getResult()</code>
+method of <code>Doctrine\ORM\Query</code> will return an array of results by default, with
+each item in the array an object based on provided mappings.</p>
+<p>zend-expressive-hal will not work with arrays by default, as it needs a typed
+object in order to appropriately map it to a representation. To accomplish this,
+then, we have several options:</p>
+<ul>
+<li>Create a custom extension of an SPL iterator such as <code>ArrayIterator</code> to wrap
+  the results.</li>
+<li>Create a custom extension of something like <code>Doctrine\Common\Collections\ArrayCollection</code>
+  to wrap the results.</li>
 </ul>
-</li>
-<li><code>UrlBasedCollectionMetadata::class</code><ul>
-<li><code>collection_class</code></li>
-<li><code>collection_relation</code></li>
-<li><code>url</code></li>
-<li><code>pagination_param</code> (name of the parameter indicating the current page of results)</li>
-<li><code>pagination_param_type</code> (one of "query" or "placeholder")</li>
-</ul>
-</li>
-</ul>
-<h2 id="resourcegenerator">ResourceGenerator</h2>
-<p>Once you have defined the metadata for the various objects you will represent in
-your API, you can start generating resources.</p>
-<p><code>Zend\Expressive\Hal\ResourceGenerator</code> has the following constructor:</p>
-<pre class="codehilite"><code class="language-php">public function __construct(
-    Zend\Expressive\Hal\Metadata\MetadataMap $metadataMap,
-    Psr\Container\ContainerInterface $hydrators,
-    Zend\Expressive\Hal\LinkGenerator $linkGenerator
-) {</code></pre>
+<p>The following examples are based on the paginated collection from above;
+familiarize yourself with that code before continuing.</p>
+<p>The first change we will make is to modify our <code>AlbumCollection</code> to extend the
+Doctrine <code>ArrayCollection</code>, instead of its <code>Paginator</code>:</p>
+<pre class="codehilite"><code class="language-php">namespace Album\Entity;
 
-<p>We described the <code>MetadataMap</code> in the previous section, and the <code>LinkGenerator</code>
-in the <a href="../links-and-resources/#route-based-link-uris">previous chapter</a>.</p>
-<p>Hydrators are defind in the <a href="https://docs.zendframework.com/zend-hydrator/">zend-hydrator component</a>,
-and are objects which can <em>hdyrate</em> associative arrays to object instances and
-<em>extract</em> associative arrays from object instances. Generally speaking, the
-<code>$hydrators</code> instance may be any PSR-11 container, but you will generally want
-to use the <code>Zend\Hydrator\HydratorPluginManager</code>.</p>
-<p>Once you have your instance created, you can start generating resources:</p>
-<pre class="codehilite"><code class="language-php">$resource = $resourceGenerator-&gt;fromObject($book, $request);</code></pre>
+use Doctrine\Common\Collections\ArrayCollection;
 
-<p>(Where <code>$request</code> is a <code>Psr\Http\Message\ServerRequestInterface</code> instance; the
-instance is passed along to the <code>LinkGenerator</code> in order to generate route-based
-URIs for <code>Link</code> instances.)</p>
+class AlbumCollection extends ArrayCollection
+{
+}</code></pre>
+
+<p>The only other changes we then need to make are to our <code>ListAlbumsHandler</code>:</p>
+<pre class="codehilite"><code class="language-php">    public function handle(ServerRequestInterface $request) : ResponseInterface
+    {
+        $repository = $this-&gt;entityManager-&gt;getRepository(Album::class);
+
+        // Note that this removes the call to setMaxResults()
+        $query = $repository
+            -&gt;createQueryBuilder('c')
+            -&gt;getQuery();
+
+        // Note that we pass the collection class the query result, and not the
+        // query instance:
+        $collection = new AlbumCollection($query-&gt;getResult());
+
+        $resource  = $this-&gt;resourceGenerator-&gt;fromObject($collection, $request);
+        return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
+    }</code></pre>
+
+<p>With these in place, we will now get representation of all items returned by the
+query.</p>
 
 
 
@@ -432,7 +649,7 @@ URIs for <code>Link</code> instances.)</p>
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../links-and-resources/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../representations/">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
             
@@ -441,7 +658,7 @@ URIs for <code>Link</code> instances.)</p>
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../cookbook/generating-custom-resources/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../factories/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -454,7 +671,7 @@ URIs for <code>Link</code> instances.)</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/resource-generator.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/doctrine.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>
@@ -507,8 +724,8 @@ URIs for <code>Link</code> instances.)</p>
 
                             
                                 
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Generating Resources</a>
+    <li class="subnavigation__list-item ">
+        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
@@ -525,8 +742,8 @@ URIs for <code>Link</code> instances.)</p>
 
                             
                                 
-    <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
