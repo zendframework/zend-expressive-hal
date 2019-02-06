@@ -4,11 +4,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 1.2.1 - TBD
+## 1.3.0 - 2019-02-06
 
 ### Added
 
-- Nothing.
+- [#55](https://github.com/zendframework/zend-expressive-hal/pull/55) adds the ability to generate paginated HAL collections from
+  `Doctrine\ORM\Tools\Pagination\Paginator` instances.
 
 ### Changed
 
