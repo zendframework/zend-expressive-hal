@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
-## 1.3.1 - TBD
+## 1.3.1 - 2019-02-11
 
 ### Added
 
@@ -24,7 +24,7 @@ Versions prior to 0.4.0 were released as the package "weierophinney/hal".
 
 ### Fixed
 
-- Nothing.
+- [#56](https://github.com/zendframework/zend-expressive-hal/pull/56) fixes an issue calculating the offset when generating a paginated Doctrine collection.
 
 ## 1.3.0 - 2019-02-06
 
