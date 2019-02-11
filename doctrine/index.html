@@ -595,6 +595,15 @@ either retrieve appropriate entities (in the case of the <code>ShowAlbumHandler<
 seed a collection paginator (in the case of the <code>ListAlbumsHandler</code>). These
 values are known by the metadata map, and, as such, we can generate HAL
 resources for them without needing any other information.</p>
+<blockquote>
+<h3 id="setting-the-offset">Setting the offset</h3>
+<p>When you plan to use paginated Doctrine result sets, you DO NOT need to
+call <code>$query-&gt;setFirstResult()</code>. This will be called when generating the
+result set based on the current page and the value of
+<code>$query-&gt;getMaxResults()</code>.</p>
+<p>You MUST call <code>$query-&gt;setMaxResults()</code> prior to generating your resource if
+you want it to be paginated, however.</p>
+</blockquote>
 <h2 id="example-doctrine-collections">Example: Doctrine Collections</h2>
 <p>Sometimes we will want to return an entire collection at once. The <code>getResult()</code>
 method of <code>Doctrine\ORM\Query</code> will return an array of results by default, with
