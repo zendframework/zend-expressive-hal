@@ -365,6 +365,16 @@ seed a collection paginator (in the case of the `ListAlbumsHandler`). These
 values are known by the metadata map, and, as such, we can generate HAL
 resources for them without needing any other information.
 
+> ### Setting the offset
+>
+> When you plan to use paginated Doctrine result sets, you DO NOT need to
+> call `$query->setFirstResult()`. This will be called when generating the
+> result set based on the current page and the value of
+> `$query->getMaxResults()`.
+>
+> You MUST call `$query->setMaxResults()` prior to generating your resource if
+> you want it to be paginated, however.
+
 ## Example: Doctrine Collections
 
 Sometimes we will want to return an entire collection at once. The `getResult()`
