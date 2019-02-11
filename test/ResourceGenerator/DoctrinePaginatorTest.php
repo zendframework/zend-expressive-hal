@@ -153,6 +153,9 @@ class DoctrinePaginatorTest extends TestCase
             ->method('getMaxResults')
             ->with()
             ->willReturn(15);
+        $query->expects($this->once())
+            ->method('setFirstResult')
+            ->with(30);
         $this->paginator->getQuery()->willReturn($query);
         $this->paginator->count()->willReturn(100);
 
@@ -218,6 +221,9 @@ class DoctrinePaginatorTest extends TestCase
             ->method('getMaxResults')
             ->with()
             ->willReturn(15);
+        $query->expects($this->once())
+            ->method('setFirstResult')
+            ->with(30);
         $this->paginator->getQuery()->willReturn($query);
         $this->paginator->count()->willReturn(100);
 

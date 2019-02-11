@@ -118,8 +118,8 @@ trait ExtractCollectionTrait
         return $this->createPaginatedCollectionResource(
             $pageCount,
             $data,
-            function (int $page) use ($query, $pageCount) {
-                $query->setFirstResult($pageCount * ($page - 1));
+            function (int $page) use ($query, $perPage) {
+                $query->setFirstResult($perPage * ($page - 1));
             },
             $collection,
             $metadata,
