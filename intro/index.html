@@ -12,6 +12,7 @@
     <title>Introduction - zend-expressive-hal</title>
 
     <link rel="stylesheet" href="../css/styles-18b942728f.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
 </head>
 <body id="page-top">
 
@@ -66,7 +67,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-expressive-hal</a>
+            <a href="">zend-expressive-hal</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -75,7 +76,7 @@
             
                 
                     <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Introduction</a>
+                        <a href="intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
@@ -86,43 +87,43 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../hal/" class="subnavigation__link">HAL</a>
+        <a href="hal/" class="subnavigation__link">HAL</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../links-and-resources/" class="subnavigation__link">Links and Resources</a>
+        <a href="links-and-resources/" class="subnavigation__link">Links and Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
+        <a href="resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
+        <a href="cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../representations/" class="subnavigation__link">Representations</a>
+        <a href="representations/" class="subnavigation__link">Representations</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+        <a href="doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../factories/" class="subnavigation__link">Factories</a>
+        <a href="factories/" class="subnavigation__link">Factories</a>
     </li>
 
                             
@@ -137,13 +138,13 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
+        <a href="cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+        <a href="cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             
@@ -227,7 +228,7 @@
         <li><a href="https://docs.zendframework.com/">Documentation</a></li>
 
         
-            <li><a href="..">zend-expressive-hal</a></li>
+            <li><a href="">zend-expressive-hal</a></li>
 
             
 
@@ -436,12 +437,12 @@ class BookAction implements RequestHandlerInterface
 <p>The <code>JsonRenderer</code> returns the JSON string representing the data and links in
 the resource. The payload generated might look like the following:</p>
 <pre class="codehilite"><code class="language-json">{
-    &quot;_links&quot;: {
-        &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
+    "_links": {
+        "self": { "href": "/api/books/1234" }
     },
-    &quot;id&quot;: 1234,
-    &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
-    &quot;author&quot;: &quot;Adams, Douglas&quot;
+    "id": 1234,
+    "title": "Hitchhiker's Guide to the Galaxy",
+    "author": "Adams, Douglas"
 }</code></pre>
 
 <p>The above example uses no metadata, and manually creates the <code>HalResource</code>
@@ -511,12 +512,12 @@ response factory:</p>
 </ul>
 <p>The generated payload might look like the following:</p>
 <pre class="codehilite"><code class="language-json">{
-    &quot;_links&quot;: {
-        &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
+    "_links": {
+        "self": { "href": "/api/books/1234" }
     },
-    &quot;id&quot;: 1234,
-    &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
-    &quot;author&quot;: &quot;Adams, Douglas&quot;
+    "id": 1234,
+    "title": "Hitchhiker's Guide to the Galaxy",
+    "author": "Adams, Douglas"
 }</code></pre>
 
 <h3 id="request-handler-returning-a-collection">Request handler returning a collection</h3>
@@ -576,41 +577,41 @@ extracting the data from our value objects and generating links for us.</p>
 <p>In this particular example, since we are using a paginator for our collection
 class, we might get back something like the following:</p>
 <pre class="codehilite"><code class="language-json">{
-    &quot;_links&quot;: {
-        &quot;self&quot;: { &quot;href&quot;: &quot;/api/books?page=7&quot; },
-        &quot;first&quot;: { &quot;href&quot;: &quot;/api/books?page=1&quot; },
-        &quot;prev&quot;: { &quot;href&quot;: &quot;/api/books?page=6&quot; },
-        &quot;next&quot;: { &quot;href&quot;: &quot;/api/books?page=8&quot; },
-        &quot;last&quot;: { &quot;href&quot;: &quot;/api/books?page=17&quot; }
-        &quot;search&quot;: {
-            &quot;href&quot;: &quot;/api/books?query={searchTerms}&quot;,
-            &quot;templated&quot;: true
+    "_links": {
+        "self": { "href": "/api/books?page=7" },
+        "first": { "href": "/api/books?page=1" },
+        "prev": { "href": "/api/books?page=6" },
+        "next": { "href": "/api/books?page=8" },
+        "last": { "href": "/api/books?page=17" }
+        "search": {
+            "href": "/api/books?query={searchTerms}",
+            "templated": true
         }
     },
-    &quot;_embedded&quot;: {
-        &quot;book&quot;: [
+    "_embedded": {
+        "book": [
             {
-                &quot;_links&quot;: {
-                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
+                "_links": {
+                    "self": { "href": "/api/books/1234" }
                 }
-                &quot;id&quot;: 1234,
-                &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
-                &quot;author&quot;: &quot;Adams, Douglas&quot;
+                "id": 1234,
+                "title": "Hitchhiker's Guide to the Galaxy",
+                "author": "Adams, Douglas"
             },
             {
-                &quot;_links&quot;: {
-                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/6789&quot; }
+                "_links": {
+                    "self": { "href": "/api/books/6789" }
                 }
-                &quot;id&quot;: 6789,
-                &quot;title&quot;: &quot;Ancillary Justice&quot;,
-                &quot;author&quot;: &quot;Leckie, Ann&quot;
+                "id": 6789,
+                "title": "Ancillary Justice",
+                "author": "Leckie, Ann"
             },
             /* ... */
         ]
     },
-    &quot;_page&quot;: 7,
-    &quot;_per_page&quot;: 25,
-    &quot;_total&quot;: 407
+    "_page": 7,
+    "_per_page": 25,
+    "_total": 407
 }</code></pre>
 
 <h2 id="next-steps">Next steps</h2>
@@ -634,7 +635,7 @@ return HAL resources. In the following chapters, we'll cover:</p>
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="..">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
             
@@ -643,7 +644,7 @@ return HAL resources. In the following chapters, we'll cover:</p>
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../hal/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="hal/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -678,7 +679,7 @@ return HAL resources. In the following chapters, we'll cover:</p>
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-expressive-hal</a>
+            <a href="">zend-expressive-hal</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -687,7 +688,7 @@ return HAL resources. In the following chapters, we'll cover:</p>
             
                 
                     <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Introduction</a>
+                        <a href="intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
@@ -698,43 +699,43 @@ return HAL resources. In the following chapters, we'll cover:</p>
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../hal/" class="subnavigation__link">HAL</a>
+        <a href="hal/" class="subnavigation__link">HAL</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../links-and-resources/" class="subnavigation__link">Links and Resources</a>
+        <a href="links-and-resources/" class="subnavigation__link">Links and Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
+        <a href="resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
+        <a href="cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../representations/" class="subnavigation__link">Representations</a>
+        <a href="representations/" class="subnavigation__link">Representations</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+        <a href="doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../factories/" class="subnavigation__link">Factories</a>
+        <a href="factories/" class="subnavigation__link">Factories</a>
     </li>
 
                             
@@ -749,13 +750,13 @@ return HAL resources. In the following chapters, we'll cover:</p>
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
+        <a href="cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+        <a href="cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             
@@ -837,9 +838,8 @@ return HAL resources. In the following chapters, we'll cover:</p>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-0bcb0a3bb3.js"></script>
-        <script src="../search/require.js"></script>
-        <script src="../search/search.js"></script>
+    <script src="../js/scripts-edc4cfa790.js"></script>
+        <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
@@ -868,6 +868,14 @@ return HAL resources. In the following chapters, we'll cover:</p>
             </div>
         </div>
     </div>
+
+<script>
+// Anchors
+anchors.options.placement = 'left';
+anchors.add(
+    '.content h1:not(.content__title), .content h2, .content > h3, .content h4, .content h5'
+);
+</script>
 
 
 

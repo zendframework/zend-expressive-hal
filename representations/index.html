@@ -12,6 +12,7 @@
     <title>Representations - zend-expressive-hal</title>
 
     <link rel="stylesheet" href="../css/styles-18b942728f.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
 </head>
 <body id="page-top">
 
@@ -66,7 +67,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-expressive-hal</a>
+            <a href="">zend-expressive-hal</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -75,7 +76,7 @@
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../intro/" class="subnavigation__link">Introduction</a>
+                        <a href="intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
@@ -86,43 +87,43 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../hal/" class="subnavigation__link">HAL</a>
+        <a href="hal/" class="subnavigation__link">HAL</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../links-and-resources/" class="subnavigation__link">Links and Resources</a>
+        <a href="links-and-resources/" class="subnavigation__link">Links and Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
+        <a href="resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
+        <a href="cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Representations</a>
+        <a href="representations/" class="subnavigation__link">Representations</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+        <a href="doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../factories/" class="subnavigation__link">Factories</a>
+        <a href="factories/" class="subnavigation__link">Factories</a>
     </li>
 
                             
@@ -137,13 +138,13 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
+        <a href="cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+        <a href="cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             
@@ -227,7 +228,7 @@
         <li><a href="https://docs.zendframework.com/">Documentation</a></li>
 
         
-            <li><a href="..">zend-expressive-hal</a></li>
+            <li><a href="">zend-expressive-hal</a></li>
 
             
                 
@@ -391,9 +392,9 @@ an array of links, even if only one link for that relation is present.</p>
 $resource = $resource-&gt;withLink($link);</code></pre>
 
 <p>In the above, you will then get the following within your representation:</p>
-<pre class="codehilite"><code class="language-json">&quot;_links&quot;: {
-  &quot;wheels&quot;: [
-    {&quot;href&quot;: &quot;/api/car/XXXX-YYYY-ZZZZ/wheels/111&quot;}
+<pre class="codehilite"><code class="language-json">"_links": {
+  "wheels": [
+    {"href": "/api/car/XXXX-YYYY-ZZZZ/wheels/111"}
   ]
 }</code></pre>
 
@@ -417,11 +418,11 @@ to force an array:</p>
 
 <p>In each of these cases, assuming no other wheels were provided to the final
 resource, you might get a representation such as the following:</p>
-<pre class="codehilite"><code class="language-json">&quot;_embedded&quot;: {
-  &quot;wheels&quot;: [
+<pre class="codehilite"><code class="language-json">"_embedded": {
+  "wheels": [
     {
-      &quot;_links&quot; =&gt; {&quot;self&quot;: {&quot;href&quot;: &quot;...&quot;}}
-      &quot;id&quot;: &quot;...&quot;
+      "_links" =&gt; {"self": {"href": "..."}}
+      "id": "..."
     },
   ]
 }</code></pre>
@@ -434,7 +435,7 @@ resource, you might get a representation such as the following:</p>
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../cookbook/generating-custom-resources/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="cookbook/generating-custom-resources/">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
             
@@ -443,7 +444,7 @@ resource, you might get a representation such as the following:</p>
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../doctrine/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="doctrine/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -478,7 +479,7 @@ resource, you might get a representation such as the following:</p>
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-expressive-hal</a>
+            <a href="">zend-expressive-hal</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -487,7 +488,7 @@ resource, you might get a representation such as the following:</p>
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../intro/" class="subnavigation__link">Introduction</a>
+                        <a href="intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
@@ -498,43 +499,43 @@ resource, you might get a representation such as the following:</p>
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../hal/" class="subnavigation__link">HAL</a>
+        <a href="hal/" class="subnavigation__link">HAL</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../links-and-resources/" class="subnavigation__link">Links and Resources</a>
+        <a href="links-and-resources/" class="subnavigation__link">Links and Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
+        <a href="resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
+        <a href="cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Representations</a>
+        <a href="representations/" class="subnavigation__link">Representations</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+        <a href="doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../factories/" class="subnavigation__link">Factories</a>
+        <a href="factories/" class="subnavigation__link">Factories</a>
     </li>
 
                             
@@ -549,13 +550,13 @@ resource, you might get a representation such as the following:</p>
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
+        <a href="cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+        <a href="cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             
@@ -637,9 +638,8 @@ resource, you might get a representation such as the following:</p>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-0bcb0a3bb3.js"></script>
-        <script src="../search/require.js"></script>
-        <script src="../search/search.js"></script>
+    <script src="../js/scripts-edc4cfa790.js"></script>
+        <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
@@ -668,6 +668,14 @@ resource, you might get a representation such as the following:</p>
             </div>
         </div>
     </div>
+
+<script>
+// Anchors
+anchors.options.placement = 'left';
+anchors.add(
+    '.content h1:not(.content__title), .content h2, .content > h3, .content h4, .content h5'
+);
+</script>
 
 
 

@@ -12,6 +12,7 @@
     <title>HAL - zend-expressive-hal</title>
 
     <link rel="stylesheet" href="../css/styles-18b942728f.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
 </head>
 <body id="page-top">
 
@@ -66,7 +67,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-expressive-hal</a>
+            <a href="">zend-expressive-hal</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -75,7 +76,7 @@
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../intro/" class="subnavigation__link">Introduction</a>
+                        <a href="intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
@@ -86,43 +87,43 @@
                             
                                 
     <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">HAL</a>
+        <a href="hal/" class="subnavigation__link">HAL</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../links-and-resources/" class="subnavigation__link">Links and Resources</a>
+        <a href="links-and-resources/" class="subnavigation__link">Links and Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
+        <a href="resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
+        <a href="cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../representations/" class="subnavigation__link">Representations</a>
+        <a href="representations/" class="subnavigation__link">Representations</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+        <a href="doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../factories/" class="subnavigation__link">Factories</a>
+        <a href="factories/" class="subnavigation__link">Factories</a>
     </li>
 
                             
@@ -137,13 +138,13 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
+        <a href="cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+        <a href="cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             
@@ -227,7 +228,7 @@
         <li><a href="https://docs.zendframework.com/">Documentation</a></li>
 
         
-            <li><a href="..">zend-expressive-hal</a></li>
+            <li><a href="">zend-expressive-hal</a></li>
 
             
                 
@@ -289,9 +290,9 @@ for a resource into a subkey (e.g., "data", "collection.items", etc.), HAL
 specifies resources as the primary payload.</p>
 <p>As such, a resource is simply a <em>document</em>:</p>
 <pre class="codehilite"><code class="language-json">{
-  &quot;id&quot;: &quot;XXXX-YYYY-ZZZZ-AAAA&quot;,
-  &quot;title&quot;: &quot;Life, the Universe, and Everything&quot;,
-  &quot;author&quot;: &quot;Adams, Douglas&quot;
+  "id": "XXXX-YYYY-ZZZZ-AAAA",
+  "title": "Life, the Universe, and Everything",
+  "author": "Adams, Douglas"
 }</code></pre>
 
 <p>For XML documents, the element <code>&lt;resource&gt;</code> is reserved to detail the resource;
@@ -325,9 +326,9 @@ is named for the link relation, and the value is either an array, or a link
 object. A link object contains minimally an <code>href</code> property, with several other
 properties allowed. As an example:</p>
 <pre class="codehilite"><code class="language-json">{
-  &quot;_links&quot;: {
-    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot; },
-    &quot;books&quot;: { &quot;href&quot;: &quot;/api/books&quot; }
+  "_links": {
+    "self": { "href": "/api/books/XXXX-YYYY-ZZZZ-AAAA" },
+    "books": { "href": "/api/books" }
   }
 }</code></pre>
 
@@ -340,8 +341,8 @@ is defined in the <code>&lt;resource&gt;</code> element. Second, the specificati
 the <code>&lt;link&gt;</code> element; the relation, URI, and other attributes become attributes
 of that XML element.</p>
 <p>An equivalent XML document to the JSON document above looks like the following:</p>
-<pre class="codehilite"><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot;&gt;
-  &lt;link rel=&quot;books&quot; href=&quot;/api/books&quot;/&gt;
+<pre class="codehilite"><code class="language-xml">&lt;resource rel="self" href="/api/books/XXXX-YYYY-ZZZZ-AAAA"&gt;
+  &lt;link rel="books" href="/api/books"/&gt;
 &lt;/resource&gt;</code></pre>
 
 <h2 id="child-resources">Child Resources</h2>
@@ -360,57 +361,57 @@ or arrays of resources. Each resource follows the same structure as a basic
 HAL resource, with a <code>_links</code> member, other members representing the resource,
 and optionally an <code>_embedded</code> member.</p>
 <pre class="codehilite"><code class="language-json">{
-    &quot;_links&quot;: {
-        &quot;self&quot;: { &quot;href&quot;: &quot;/api/books?page=7&quot; },
-        &quot;first&quot;: { &quot;href&quot;: &quot;/api/books?page=1&quot; },
-        &quot;prev&quot;: { &quot;href&quot;: &quot;/api/books?page=6&quot; },
-        &quot;next&quot;: { &quot;href&quot;: &quot;/api/books?page=8&quot; },
-        &quot;last&quot;: { &quot;href&quot;: &quot;/api/books?page=17&quot; }
-        &quot;search&quot;: {
-            &quot;href&quot;: &quot;/api/books?query={searchTerms}&quot;,
-            &quot;templated&quot;: true
+    "_links": {
+        "self": { "href": "/api/books?page=7" },
+        "first": { "href": "/api/books?page=1" },
+        "prev": { "href": "/api/books?page=6" },
+        "next": { "href": "/api/books?page=8" },
+        "last": { "href": "/api/books?page=17" }
+        "search": {
+            "href": "/api/books?query={searchTerms}",
+            "templated": true
         }
     },
-    &quot;_embedded&quot;: {
-        &quot;book&quot;: [
+    "_embedded": {
+        "book": [
             {
-                &quot;_links&quot;: {
-                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
+                "_links": {
+                    "self": { "href": "/api/books/1234" }
                 }
-                &quot;id&quot;: 1234,
-                &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
-                &quot;author&quot;: &quot;Adams, Douglas&quot;
+                "id": 1234,
+                "title": "Hitchhiker's Guide to the Galaxy",
+                "author": "Adams, Douglas"
             },
             {
-                &quot;_links&quot;: {
-                    &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/6789&quot; }
+                "_links": {
+                    "self": { "href": "/api/books/6789" }
                 }
-                &quot;id&quot;: 6789,
-                &quot;title&quot;: &quot;Ancillary Justice&quot;,
-                &quot;author&quot;: &quot;Leckie, Ann&quot;
+                "id": 6789,
+                "title": "Ancillary Justice",
+                "author": "Leckie, Ann"
             }
         ]
     },
-    &quot;_page&quot;: 7,
-    &quot;_per_page&quot;: 2,
-    &quot;_total&quot;: 33
+    "_page": 7,
+    "_per_page": 2,
+    "_total": 33
 }</code></pre>
 
 <p>The above represents a <em>collection</em> of <em>book</em> resources.</p>
 <p>To address XML, the specification uses the <code>&lt;resource&gt;</code> element to embed
 additional resources. Resources of the same type use the same <code>rel</code> attribute.
 The XML equivalent of the above JSON documentation thus becomes:</p>
-<pre class="codehilite"><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books?page=7&quot;&gt;
-    &lt;link rel=&quot;first&quot; href=&quot;/api/books?page=1&quot;/&gt;
-    &lt;link rel=&quot;prev&quot; href=&quot;/api/books?page=6&quot;/&gt;
-    &lt;link rel=&quot;next&quot; href=&quot;/api/books?page=8&quot;/&gt;
-    &lt;link rel=&quot;last&quot; href=&quot;/api/books?page=17&quot; templated=&quot;true&quot;/&gt;
-    &lt;resource rel=&quot;book&quot; href=&quot;/api/books/1234&quot;&gt;
+<pre class="codehilite"><code class="language-xml">&lt;resource rel="self" href="/api/books?page=7"&gt;
+    &lt;link rel="first" href="/api/books?page=1"/&gt;
+    &lt;link rel="prev" href="/api/books?page=6"/&gt;
+    &lt;link rel="next" href="/api/books?page=8"/&gt;
+    &lt;link rel="last" href="/api/books?page=17" templated="true"/&gt;
+    &lt;resource rel="book" href="/api/books/1234"&gt;
         &lt;id&gt;1234&lt;/id&gt;
         &lt;title&gt;Hitchhiker's Guide to the Galaxy&lt;/title&gt;
         &lt;author&gt;Adams, Douglas&lt;/author&gt;
     &lt;/resource&gt;
-    &lt;resource rel=&quot;book&quot; href=&quot;/api/books/6789&quot;&gt;
+    &lt;resource rel="book" href="/api/books/6789"&gt;
         &lt;id&gt;6789&lt;/id&gt;
         &lt;title&gt;Ancillary Justice&lt;/title&gt;
         &lt;author&gt;Leckie, Ann&lt;/author&gt;
@@ -434,7 +435,7 @@ necessary to allow API consumers to know what resources they can access next.</p
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../intro/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="intro/">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
             
@@ -443,7 +444,7 @@ necessary to allow API consumers to know what resources they can access next.</p
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../links-and-resources/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="links-and-resources/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -478,7 +479,7 @@ necessary to allow API consumers to know what resources they can access next.</p
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-expressive-hal</a>
+            <a href="">zend-expressive-hal</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -487,7 +488,7 @@ necessary to allow API consumers to know what resources they can access next.</p
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../intro/" class="subnavigation__link">Introduction</a>
+                        <a href="intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
@@ -498,43 +499,43 @@ necessary to allow API consumers to know what resources they can access next.</p
                             
                                 
     <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">HAL</a>
+        <a href="hal/" class="subnavigation__link">HAL</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../links-and-resources/" class="subnavigation__link">Links and Resources</a>
+        <a href="links-and-resources/" class="subnavigation__link">Links and Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../resource-generator/" class="subnavigation__link">Generating Resources</a>
+        <a href="resource-generator/" class="subnavigation__link">Generating Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
+        <a href="cookbook/generating-custom-resources/" class="subnavigation__link">Custom Resources</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../representations/" class="subnavigation__link">Representations</a>
+        <a href="representations/" class="subnavigation__link">Representations</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
+        <a href="doctrine/" class="subnavigation__link">Generating HAL for Doctrine Entities</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../factories/" class="subnavigation__link">Factories</a>
+        <a href="factories/" class="subnavigation__link">Factories</a>
     </li>
 
                             
@@ -549,13 +550,13 @@ necessary to allow API consumers to know what resources they can access next.</p
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
+        <a href="cookbook/generating-custom-links-in-middleware/" class="subnavigation__link">Generating Custom Links In Middleware and Request Handlers</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
+        <a href="cookbook/path-segregated-uri-generation/" class="subnavigation__link">Using the ResourceGenerator in path-segregated middleware</a>
     </li>
 
                             
@@ -637,9 +638,8 @@ necessary to allow API consumers to know what resources they can access next.</p
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-0bcb0a3bb3.js"></script>
-        <script src="../search/require.js"></script>
-        <script src="../search/search.js"></script>
+    <script src="../js/scripts-edc4cfa790.js"></script>
+        <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
@@ -668,6 +668,14 @@ necessary to allow API consumers to know what resources they can access next.</p
             </div>
         </div>
     </div>
+
+<script>
+// Anchors
+anchors.options.placement = 'left';
+anchors.add(
+    '.content h1:not(.content__title), .content h2, .content > h3, .content h4, .content h5'
+);
+</script>
 
 
 
