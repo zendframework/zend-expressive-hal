@@ -123,7 +123,8 @@ class DoctrinePaginatorTest extends TestCase
             $this->generator
                 ->fromObject(
                     (object) ['value' => $value],
-                    Argument::that([$this->request, 'reveal'])
+                    Argument::that([$this->request, 'reveal']),
+                    1
                 )
                 ->will(function () use ($testCase) {
                     $resource = $testCase->prophesize(HalResource::class);
@@ -182,7 +183,8 @@ class DoctrinePaginatorTest extends TestCase
             $this->generator
                 ->fromObject(
                     (object) ['value' => $value],
-                    Argument::that([$this->request, 'reveal'])
+                    Argument::that([$this->request, 'reveal']),
+                    1
                 )
                 ->will(function () use ($testCase) {
                     $resource = $testCase->prophesize(HalResource::class);
@@ -250,7 +252,8 @@ class DoctrinePaginatorTest extends TestCase
             $this->generator
                 ->fromObject(
                     (object) ['value' => $value],
-                    Argument::that([$this->request, 'reveal'])
+                    Argument::that([$this->request, 'reveal']),
+                    1
                 )
                 ->will(function () use ($testCase) {
                     $resource = $testCase->prophesize(HalResource::class);

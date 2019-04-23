@@ -73,7 +73,11 @@ class ResourceWithNestedInstancesTest extends TestCase
         $fooBarMetadata = new RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            self::getObjectPropertyHydratorClass()
+            self::getObjectPropertyHydratorClass(),
+            'id',
+            'id',
+            [],
+            10
         );
 
         $metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
@@ -82,7 +86,11 @@ class ResourceWithNestedInstancesTest extends TestCase
         $childMetadata = new RouteBasedResourceMetadata(
             TestAsset\Child::class,
             'child',
-            self::getObjectPropertyHydratorClass()
+            self::getObjectPropertyHydratorClass(),
+            'id',
+            'id',
+            [],
+            10
         );
 
         $metadataMap->has(TestAsset\Child::class)->willReturn(true);

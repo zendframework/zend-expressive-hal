@@ -10,6 +10,7 @@ namespace Zend\Expressive\Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
+use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ExtractionInterface;
 
@@ -27,7 +28,8 @@ trait ExtractInstanceTrait
         $instance,
         AbstractMetadata $metadata,
         ResourceGenerator $resourceGenerator,
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
+        int $depth = 0
     ) : array {
         $hydrators = $resourceGenerator->getHydrators();
         $extractor = $hydrators->get($metadata->getExtractor());
@@ -36,6 +38,16 @@ trait ExtractInstanceTrait
         }
 
         $array = $extractor->extract($instance);
+
+        if ($metadata instanceof RouteBasedResourceMetadata) {
+            $maxDepth = $metadata->getMaxDepth();
+            if ($depth > $maxDepth) {
+                $resourceIdentifier = $metadata->getResourceIdentifier();
+                return [
+                    $resourceIdentifier => $array[$resourceIdentifier]
+                ];
+            }
+        }
 
         // Extract nested resources if present in metadata map
         $metadataMap = $resourceGenerator->getMetadataMap();
@@ -49,7 +61,7 @@ trait ExtractInstanceTrait
                 continue;
             }
 
-            $childData = $resourceGenerator->fromObject($value, $request);
+            $childData = $resourceGenerator->fromObject($value, $request, $depth + 1);
 
             // Nested collections need to be merged.
             $childMetadata = $metadataMap->get($childClass);

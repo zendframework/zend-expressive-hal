@@ -58,7 +58,7 @@ class ResourceWithSelfReferringInstanceTest extends TestCase
 
         $childResource = $resource->getElement('bar');
         $this->assertInstanceOf(HalResource::class, $childResource);
-        $this->assertSame($parent, $childResource);
+        $this->assertCount(0, $childResource->getElements());
     }
 
     public function createMetadataMap()
@@ -68,7 +68,11 @@ class ResourceWithSelfReferringInstanceTest extends TestCase
         $fooBarMetadata = new RouteBasedResourceMetadata(
             TestAsset\FooBar::class,
             'foo-bar',
-            self::getObjectPropertyHydratorClass()
+            self::getObjectPropertyHydratorClass(),
+            'id',
+            'id',
+            [],
+            0
         );
 
         $metadataMap->has(TestAsset\FooBar::class)->willReturn(true);
