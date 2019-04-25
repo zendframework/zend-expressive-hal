@@ -10,7 +10,6 @@ namespace Zend\Expressive\Hal\ResourceGenerator;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\Metadata\AbstractCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\AbstractMetadata;
-use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Expressive\Hal\ResourceGenerator;
 use Zend\Hydrator\ExtractionInterface;
 
@@ -39,14 +38,8 @@ trait ExtractInstanceTrait
 
         $array = $extractor->extract($instance);
 
-        if ($metadata instanceof RouteBasedResourceMetadata) {
-            $maxDepth = $metadata->getMaxDepth();
-            if ($depth > $maxDepth) {
-                $resourceIdentifier = $metadata->getResourceIdentifier();
-                return [
-                    $resourceIdentifier => $array[$resourceIdentifier]
-                ];
-            }
+        if ($metadata->hasReachedMaxDepth($depth)) {
+            return $array;
         }
 
         // Extract nested resources if present in metadata map

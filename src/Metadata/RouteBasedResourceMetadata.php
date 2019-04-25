@@ -67,8 +67,8 @@ class RouteBasedResourceMetadata extends AbstractResourceMetadata
         $this->routeParams = $routeParams;
     }
 
-    public function getMaxDepth(): int
+    public function hasReachedMaxDepth(int $currentDepth): bool
     {
-        return $this->maxDepth;
+        return $currentDepth > $this->maxDepth;
     }
 }

@@ -47,8 +47,7 @@ class RouteBasedResourceStrategy implements StrategyInterface
             $routeParams[$routeIdentifier] = $data[$resourceIdentifier];
         }
 
-        $maxDepth = $metadata->getMaxDepth();
-        if ($depth > $maxDepth) {
+        if ($metadata->hasReachedMaxDepth($depth)) {
             $data = [];
         }
 
