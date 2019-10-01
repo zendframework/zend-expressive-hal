@@ -321,28 +321,26 @@ provides <code>Zend\Expressive\Hal\HalResponseFactory</code> for generating a
 representation. This chapter dives into that with more detail.</p>
 <h2 id="renderers">Renderers</h2>
 <p>All renderers implement <code>Zend\Expressive\Hal\Renderer\RendererInterface</code>:</p>
-<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\Renderer;
+<p> <pre class=codehilite><code class=language-php>namespace Zend\Expressive\Hal\Renderer;
 
 use Zend\Expressive\Hal\HalResource;
 
 interface RendererInterface
 {
     public function render(HalResource $resource) : string;
-}</code></pre>
-
+}</code></pre></p>
 <p>Two implementations are provided, <code>Zend\Expressive\Hal\Renderer\JsonRenderer</code> and
 <code>Zend\Expressive\Hal\Renderer\XmlRenderer</code></p>
-<h3 id="jsonrenderer">JsonRenderer</h3>
+<h3>JsonRenderer</h3>
 <p>The <code>JsonRenderer</code> constructor allows you to specify a bitmask of flags for use
 with <code>json_encode()</code>. By default, if none are provided, it uses the value of
 <code>JsonRenderer::DEFAULT_JSON_FLAGS</code>, which evaluates to:</p>
-<pre class="codehilite"><code class="language-php">JSON_UNESCAPED_SLASHES
+<p> <pre class=codehilite><code class=language-php>JSON_UNESCAPED_SLASHES
 | JSON_UNESCAPED_UNICODE
-| JSON_PRESERVE_ZERO_FRACTION</code></pre>
-
+| JSON_PRESERVE_ZERO_FRACTION</code></pre></p>
 <p>When your application is in "debug" mode, it also adds the <code>JSON_PRETTY_PRINT</code>
 flag to the default list, in order to provide human-readable JSON output.</p>
-<h3 id="xmlrenderer">XmlRenderer</h3>
+<h3>XmlRenderer</h3>
 <p>The <code>XmlRenderer</code> produces XML representations of HAL resources. It has no
 constructor arguments at this time.</p>
 <h2 id="halresponsefactory">HalResponseFactory</h2>
@@ -351,7 +349,7 @@ the provided <code>HalResource</code> instance. In order to keep the component a
 PSR-7 implementation, <code>HalResponseFactory</code> itself composes a callable factory
 capable of producing an empty PSR-7 response.</p>
 <p>As an example:</p>
-<pre class="codehilite"><code class="language-php">use Slim\Http\Response;
+<p> <pre class=codehilite><code class=language-php>use Slim\Http\Response;
 use Slim\Http\Stream;
 use Zend\Expressive\Hal\HalResponseFactory;
 
@@ -359,8 +357,7 @@ $factory = new HalResponseFactory(
     function () {
         return new Response();
     }
-);</code></pre>
-
+);</code></pre></p>
 <p>Additionally, the <code>HalResponseFactory</code> constructor can accept the following
 arguments, with the described defaults if none is provided:</p>
 <ul>
@@ -372,7 +369,7 @@ generating the <code>HalResponseFactory</code>, described in <a href="../factori
 chapter</a>.</p>
 <h2 id="using-the-factory">Using the factory</h2>
 <p>The factory exposes one method:</p>
-<pre class="codehilite"><code class="language-php">use Psr\Http\Message\ResponseInterface;
+<p> <pre class=codehilite><code class=language-php>use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\HalResource;
 
@@ -380,8 +377,7 @@ public function createResponse(
     ServerRequestInterface $request,
     HalResource $resource,
     string $mediaType = self::DEFAULT_CONTENT_TYPE
-) : ResponseInterface {</code></pre>
-
+) : ResponseInterface {</code></pre></p>
 <p>Generally speaking, you'll pass the current request instance, and the resource
 for which you want to generate a response, and the factory will return a
 response based on its response prototype, with the following:</p>
@@ -399,12 +395,11 @@ representations. While they will still be HAL, this allows you to document the
 specific structure of your resources, and potentially even validate them against
 JSON schema.</p>
 <p>To do this, pass the media type when creating the response:</p>
-<pre class="codehilite"><code class="language-php">$response = $factory-&gt;createResponse(
+<p> <pre class=codehilite><code class=language-php>$response = $factory-&gt;createResponse(
     $request,
     $resource,
     'application/vnd.book'
-);</code></pre>
-
+);</code></pre></p>
 <p><em>Do not</em> pass the format (e.g., <code>+json</code>, <code>+xml</code>) when doing so; the factory will
 append the appropriate one based on content negotiation.</p>
 <h2 id="forcing-collections-for-relations">Forcing collections for relations</h2>
@@ -422,50 +417,46 @@ if that's all the car currently has associated with it.</p>
 <p>For links, you may pass a special attribute, <code>Zend\Expressive\Hal\Link::AS_COLLECTION</code>,
 with a boolean value of <code>true</code>; when encountered, this will then be rendered as
 an array of links, even if only one link for that relation is present.</p>
-<pre class="codehilite"><code class="language-php">$link = new Link(
+<p> <pre class=codehilite><code class=language-php>$link = new Link(
     'wheels',
     '/api/car/XXXX-YYYY-ZZZZ/wheels/111',
     false,
     [Link::AS_COLLECTION =&gt; true]
 );
 
-$resource = $resource-&gt;withLink($link);</code></pre>
-
+$resource = $resource-&gt;withLink($link);</code></pre></p>
 <p>In the above, you will then get the following within your representation:</p>
-<pre class="codehilite"><code class="language-json">"_links": {
-  "wheels": [
-    {"href": "/api/car/XXXX-YYYY-ZZZZ/wheels/111"}
+<p> <pre class=codehilite><code class=language-json>&quot;_links&quot;: {
+  &quot;wheels&quot;: [
+    {&quot;href&quot;: &quot;/api/car/XXXX-YYYY-ZZZZ/wheels/111&quot;}
   ]
-}</code></pre>
-
+}</code></pre></p>
 <p>To force an embedded resource to be rendered within an array, you have two
 options.</p>
 <p>First, and simplest, pass the resource within an array when calling
 <code>withElement()</code>, <code>embed()</code>, or passing data to the constructor:</p>
-<pre class="codehilite"><code class="language-php">// Constructor:
+<p> <pre class=codehilite><code class=language-php>// Constructor:
 $resource = new HalResource(['wheels' =&gt; [$wheel]]);
 
 // withElement():
 $resource = $resource-&gt;withElement('wheels', [$wheel]);
 
 // embed():
-$resource = $resource-&gt;embed('wheels', [$wheel]);</code></pre>
-
+$resource = $resource-&gt;embed('wheels', [$wheel]);</code></pre></p>
 <p>Alternately, you can call the <code>HalResource::embed</code> method with only the
 resource, passing the method a third argument, a flag indicating whether or not
 to force an array:</p>
-<pre class="codehilite"><code class="language-php">$resource = $resource-&gt;embed('wheels', $wheel, true);</code></pre>
-
+<p> <pre class=codehilite><code class=language-php>$resource = $resource-&gt;embed('wheels', $wheel, true);</code></pre></p>
 <p>In each of these cases, assuming no other wheels were provided to the final
 resource, you might get a representation such as the following:</p>
-<pre class="codehilite"><code class="language-json">"_embedded": {
-  "wheels": [
+<p> <pre class=codehilite><code class=language-json>&quot;_embedded&quot;: {
+  &quot;wheels&quot;: [
     {
-      "_links" =&gt; {"self": {"href": "..."}}
-      "id": "..."
+      &quot;_links&quot; =&gt; {&quot;self&quot;: {&quot;href&quot;: &quot;...&quot;}}
+      &quot;id&quot;: &quot;...&quot;
     },
   ]
-}</code></pre>
+}</code></pre></p>
 
 
 
@@ -499,7 +490,7 @@ resource, you might get a representation such as the following:</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/representations.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/representations.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

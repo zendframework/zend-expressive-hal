@@ -291,14 +291,6 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#note-on-naming" class="toc__link">Note on naming</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#psr-13" class="toc__link">PSR-13</a>
-                    </li>
-                
-                    <li class="toc__entry">
                         <a href="#links" class="toc__link">Links</a>
                     </li>
                 
@@ -319,11 +311,11 @@
 <li><code>Zend\Expressive\Hal\HalResource</code></li>
 </ul>
 <blockquote>
-<h3 id="note-on-naming">Note on naming</h3>
+<h3>Note on naming</h3>
 <p>Why <code>HalResource</code> and not the simpler <code>Resource</code>? The answer: PHP. As of PHP
 7, <code>resource</code> has been designated a potential future language keyword. In
 order to be forwards compatible, we opted to name our class <code>HalResource</code>.</p>
-<h3 id="psr-13">PSR-13</h3>
+<h3>PSR-13</h3>
 <p>zendframework/zend-expressive-hal implements <a href="https://www.php-fig.org/psr/psr-13/">PSR-13</a>,
 which provides interfaces for relational links and collections of relational
 links. <code>Zend\Expressive\Hal\Link</code> implements <code>Psr\Link\EvolvableLinkInterface</code>, and
@@ -342,32 +334,29 @@ Additionally, links:</p>
 </ul>
 <p>To model these, we provide the <code>Zend\Expressive\Hal\Link</code> class. It has the
 following constructor:</p>
-<pre class="codehilite"><code class="language-php">public function __construct(
+<p> <pre class=codehilite><code class=language-php>public function __construct(
     $relation,
     string $uri = '',
     bool $isTemplated = false,
     array $attributes = []
-)</code></pre>
-
+)</code></pre></p>
 <p><code>$relation</code> can be a string value, or an array of string values, representing
 the relation.</p>
 <p>To access these various properties, you can use the following methods:</p>
-<pre class="codehilite"><code class="language-php">$link-&gt;getRels()       // get the list of relations for the link
+<p> <pre class=codehilite><code class=language-php>$link-&gt;getRels()       // get the list of relations for the link
 $link-&gt;getHref()       // retrieve the URI
 $link-&gt;isTemplated()   // is the link templated?
-$link-&gt;getAttributes() // get any additional link attributes</code></pre>
-
+$link-&gt;getAttributes() // get any additional link attributes</code></pre></p>
 <p>A <code>Link</code> is <em>immutable</em>; you cannot change it after the fact. If you need a
 modified version of the link, we provide several methods that will return <em>new
 instances</em> containing the changes:</p>
-<pre class="codehilite"><code class="language-php">$link = $link-&gt;withRel($rel);    // or provide an array of relations
+<p> <pre class=codehilite><code class=language-php>$link = $link-&gt;withRel($rel);    // or provide an array of relations
 $link = $link-&gt;withoutRel($rel); // or provide an array of relations
 $link = $link-&gt;withHref($href);
 $link = $link-&gt;withAttribute($attribute, $value);
-$link = $link-&gt;withoutAttribute($attribute);</code></pre>
-
+$link = $link-&gt;withoutAttribute($attribute);</code></pre></p>
 <p>With these tools, you can describe any relational link.</p>
-<h3 id="route-based-link-uris">Route-based link URIs</h3>
+<h3>Route-based link URIs</h3>
 <p>Most frameworks provide routing capabilities, and delegate URI generation to
 their routers to ensure that generated links conform to known routing
 specifications. <code>Link</code> expects only a string URI, however; how can you prevent
@@ -375,7 +364,7 @@ hard-coding that URI?</p>
 <p>This component provides a tool for that: <code>Zend\Expressive\Hal\LinkGenerator</code>.
 This class composes a <code>Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface</code>
 instance, which defines the following:</p>
-<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\LinkGenerator;
+<p> <pre class=codehilite><code class=language-php>namespace Zend\Expressive\Hal\LinkGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -399,14 +388,13 @@ interface UrlGeneratorInterface
         array $routeParams = [],
         array $queryParams = []
     ) : string;
-}</code></pre>
-
+}</code></pre></p>
 <p>We provide a default implementation for Expressive users,
 <code>Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator</code>,  that uses the
 <code>UrlHelper</code> and <code>ServerUrlHelper</code> from zend-expressive-helpers in order to
 generate URIs.</p>
 <p>The <code>LinkGenerator</code> itself defines two methods:</p>
-<pre class="codehilite"><code class="language-php">$link = $linkGenerator-&gt;fromRoute(
+<p> <pre class=codehilite><code class=language-php>$link = $linkGenerator-&gt;fromRoute(
     $relation,
     $request,
     $routeName,
@@ -422,14 +410,13 @@ $link = $linkGenerator-&gt;templatedFromRoute(
     $routeParams, // Array of additional route parameters to inject
     $queryParams, // Array of query string arguments to inject
     $attributes   // Array of Link attributes to use
-);</code></pre>
-
+);</code></pre></p>
 <p><code>fromRoute()</code> will generate a non-templated <code>Link</code> instance, while
 <code>templatedFromRoute()</code> generates a templated instance.</p>
 <p>If you need to generate custom links based on routing, we recommend composing
 the <code>LinkGenerator</code> in your own classes to do so.</p>
 <blockquote>
-<h3 id="limitation">Limitation</h3>
+<h3>Limitation</h3>
 <p>There is a <a href="https://github.com/zendframework/zend-expressive-hal/issues/5">known limitation</a>
 with zend-router when using routes with optional parameters (e.g., <code>/books[/:id]</code>,
 where <code>:id</code> is optional). In such cases, if no matching parameter is provided
@@ -443,12 +430,11 @@ parameter. See the issue for a comprehensive example.</p>
 <code>Zend\Expressive\Hal\HalResource</code> allows you to model these representations,
 along with any relational links and child resources.</p>
 <p>It defines the following constructor:</p>
-<pre class="codehilite"><code class="language-php">public function __construct(
+<p> <pre class=codehilite><code class=language-php>public function __construct(
     array $data = [],
     array $links = [],
     array $embedded = []
-)</code></pre>
-
+)</code></pre></p>
 <p><code>$data</code> should be an associative array of data you wish to include in your
 representation; the only limitation is you may not use the keys <code>_links</code> or
 <code>_embedded</code>, as these are reserved keywords.</p>
@@ -457,21 +443,19 @@ representation; the only limitation is you may not use the keys <code>_links</co
 Most often, however, you will include these with <code>$data</code>, as the class contains
 logic for identifying them.</p>
 <p>Once you have created an instance, you can access its properties:</p>
-<pre class="codehilite"><code class="language-php">$resource-&gt;getElement($name) // retrieve an element or embedded resource by name
+<p> <pre class=codehilite><code class=language-php>$resource-&gt;getElement($name) // retrieve an element or embedded resource by name
 $resource-&gt;getElements()     // retrieve all elements and embedded resources
 $resource-&gt;getLinks()        // retrieve all relational links
 $resource-&gt;getLinksByRel()   // retrieve links for a specific relation
-$resource-&gt;toArray()         // retrieve associative array representation</code></pre>
-
+$resource-&gt;toArray()         // retrieve associative array representation</code></pre></p>
 <p><code>HalResource</code> instances are <em>immutable</em>. We provide a number of methods that
 allow you to create <em>new instances</em> with changes:</p>
-<pre class="codehilite"><code class="language-php">$resource = $resource-&gt;withElement($name, $value);
+<p> <pre class=codehilite><code class=language-php>$resource = $resource-&gt;withElement($name, $value);
 $resource = $resource-&gt;withoutElement($name);
 $resource = $resource-&gt;withElements($elements);
 $resource = $resource-&gt;embed($name, $resource);
 $resource = $resource-&gt;withLink($link);
-$resource = $resource-&gt;withoutLink($link);</code></pre>
-
+$resource = $resource-&gt;withoutLink($link);</code></pre></p>
 <p>With these tools, you can describe any resource you want to represent.</p>
 
 
@@ -506,7 +490,7 @@ $resource = $resource-&gt;withoutLink($link);</code></pre>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/links-and-resources.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/links-and-resources.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

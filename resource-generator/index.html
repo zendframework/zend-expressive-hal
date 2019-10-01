@@ -373,7 +373,7 @@ following information:</p>
 </li>
 </ul>
 <p>We aggregate metadata in a <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> instance:</p>
-<pre class="codehilite"><code class="language-php">$bookMetadata = new RouteBasedResourceMetadata(
+<p> <pre class=codehilite><code class=language-php>$bookMetadata = new RouteBasedResourceMetadata(
     Book::class,
     'book',
     ObjectPropertyHydrator::class
@@ -386,9 +386,8 @@ $booksMetadata = new RouteBasedCollectionMetadata(
 
 $metadataMap = new MetadataMap();
 $metadataMap-&gt;add($bookMetadata);
-$metadataMap-&gt;add($booksMetadata);</code></pre>
-
-<h3 id="configuration-based-metadata">Configuration-based metadata</h3>
+$metadataMap-&gt;add($booksMetadata);</code></pre></p>
+<h3>Configuration-based metadata</h3>
 <p>To automate generation of the <code>MetadataMap</code>, we provide
 <code>Zend\Expressive\Hal\Metadata\MetadataMapFactory</code>. This factory may be used with any
 <a href="https://www.php-fig.org/psr/psr-11/">PSR-11</a> container. It utilizes the <code>config</code>
@@ -398,7 +397,7 @@ service, and pulls its configuration from a key named after the
 describe which metadata class to create, and the remaining properties will then
 be used to generate an instance. As an example, the above could be configured as
 follows:</p>
-<pre class="codehilite"><code class="language-php">use Api\Books\Book;
+<p> <pre class=codehilite><code class=language-php>use Api\Books\Book;
 use Api\Books\BookCollection;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
@@ -420,8 +419,7 @@ return [
             'route' =&gt; 'books',
         ],
     ],
-];</code></pre>
-
+];</code></pre></p>
 <p>The rest of the parameters follow underscore delimiter naming convention:</p>
 <ul>
 <li><code>RouteBasedResourceMetadata::class</code><ul>
@@ -456,12 +454,11 @@ return [
 <p>Once you have defined the metadata for the various objects you will represent in
 your API, you can start generating resources.</p>
 <p><code>Zend\Expressive\Hal\ResourceGenerator</code> has the following constructor:</p>
-<pre class="codehilite"><code class="language-php">public function __construct(
+<p> <pre class=codehilite><code class=language-php>public function __construct(
     Zend\Expressive\Hal\Metadata\MetadataMap $metadataMap,
     Psr\Container\ContainerInterface $hydrators,
     Zend\Expressive\Hal\LinkGenerator $linkGenerator
-) {</code></pre>
-
+) {</code></pre></p>
 <p>We described the <code>MetadataMap</code> in the previous section, and the <code>LinkGenerator</code>
 in the <a href="../links-and-resources/#route-based-link-uris">previous chapter</a>.</p>
 <p>Hydrators are defind in the <a href="https://docs.zendframework.com/zend-hydrator/">zend-hydrator component</a>,
@@ -470,8 +467,7 @@ and are objects which can <em>hdyrate</em> associative arrays to object instance
 <code>$hydrators</code> instance may be any PSR-11 container, but you will generally want
 to use the <code>Zend\Hydrator\HydratorPluginManager</code>.</p>
 <p>Once you have your instance created, you can start generating resources:</p>
-<pre class="codehilite"><code class="language-php">$resource = $resourceGenerator-&gt;fromObject($book, $request);</code></pre>
-
+<p> <pre class=codehilite><code class=language-php>$resource = $resourceGenerator-&gt;fromObject($book, $request);</code></pre></p>
 <p>(Where <code>$request</code> is a <code>Psr\Http\Message\ServerRequestInterface</code> instance; the
 instance is passed along to the <code>LinkGenerator</code> in order to generate route-based
 URIs for <code>Link</code> instances.)</p>
@@ -508,7 +504,7 @@ URIs for <code>Link</code> instances.)</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/resource-generator.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/resource-generator.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

@@ -292,7 +292,7 @@
     <h1 id="generating-custom-resources">Generating custom resources</h1>
 <p>The <code>ResourceGenerator</code> allows composing <code>Zend\Expressive\Hal\ResourceGenerator\StrategyInterface</code>
 instances. The <code>StrategyInterface</code> defines the following:</p>
-<pre class="codehilite"><code class="language-php">namespace Zend\Expressive\Hal\ResourceGenerator;
+<p> <pre class=codehilite><code class=language-php>namespace Zend\Expressive\Hal\ResourceGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\HalResource;
@@ -312,18 +312,16 @@ interface StrategyInterface
         ResourceGenerator $resourceGenerator,
         ServerRequestInterface $request
     ) : HalResource;
-}</code></pre>
-
+}</code></pre></p>
 <p>When you register a strategy, you will map a metadata type to the strategy; the
 <code>ResourceGenerator</code> will then call your strategy whenever it encounteres
 metadata of that type.</p>
-<pre class="codehilite"><code class="language-php">$resourceGenerator-&gt;addStrategy(CustomMetadata::class, CustomStrategy::class);
+<p> <pre class=codehilite><code class=language-php>$resourceGenerator-&gt;addStrategy(CustomMetadata::class, CustomStrategy::class);
 
 // or:
-$resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</code></pre>
-
+$resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</code></pre></p>
 <p>You can also add your strategies via the configuration:</p>
-<pre class="codehilite"><code class="language-php">return [
+<p> <pre class=codehilite><code class=language-php>return [
     'zend-expressive-hal' =&gt; [
         'resource-generator' =&gt; [
             'strategies' =&gt; [
@@ -331,8 +329,7 @@ $resourceGenerator-&gt;addStrategy(CustomMetadata::class, $strategyInstance);</c
             ],
         ],
     ],
-];</code></pre>
-
+];</code></pre></p>
 <p>If a strategy already is mapped for the given metadata type, this method will
 override it.</p>
 <p>To facilitate common operations, this library provides two traits,
@@ -342,13 +339,13 @@ decide to write your own strategies.</p>
 <p>In order for the <code>MetadataMap</code> to be able to use your <code>CustomMetadata</code> you need to register 
 a factory (implementing <code>Zend\Expressive\Hal\Metadata\MetadataFactoryInterface</code>) for it.
 You can register them via the configuration:</p>
-<pre class="codehilite"><code class="language-php">return [
+<p> <pre class=codehilite><code class=language-php>return [
     'zend-expressive-hal' =&gt; [
         'metadata-factories' =&gt; [
             CustomMetadata::class =&gt; CustomMetadataFactory::class,
         ],
     ],
-];</code></pre>
+];</code></pre></p>
 
 
 
@@ -382,7 +379,7 @@ You can register them via the configuration:</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/cookbook/generating-custom-resources.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/cookbook/generating-custom-resources.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

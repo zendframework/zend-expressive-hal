@@ -394,11 +394,10 @@ directly to a factory that will return a valid instance.</p>
 <p>This service uses the <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> key of the <code>config</code> service in
 order to configure and return a <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> instance. It expects
 that value to be an array of elements, each with the following structure:</p>
-<pre class="codehilite"><code class="language-php">[
+<p> <pre class=codehilite><code class=language-php>[
     '__class__' =&gt; 'Fully qualified class name of an AbstractMetadata type',
     // additional key/value pairs as required by the metadata type.
-]</code></pre>
-
+]</code></pre></p>
 <p>The additional pairs are as follows:</p>
 <ul>
 <li>For <code>UrlBasedResourceMetadata</code>:<ul>
@@ -463,7 +462,7 @@ support them. Create <code>create&lt;type&gt;(array $metadata)</code> methods fo
 type you wish to support, where <code>&lt;type&gt;</code> is your custom class name, minus
 the namespace.</p>
 <blockquote>
-<h3 id="limitation">Limitation</h3>
+<h3>Limitation</h3>
 <p>There is a <a href="https://github.com/zendframework/zend-expressive-hal/issues/5">known limitation</a>
 with zend-router when using routes with optional parameters (e.g., <code>/books[/:id]</code>,
 where <code>:id</code> is optional). In such cases, if no matching parameter is provided
@@ -525,7 +524,7 @@ consumes it, and an alternate <code>LinkGenerator</code> consuming the URL gener
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/factories.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/factories.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

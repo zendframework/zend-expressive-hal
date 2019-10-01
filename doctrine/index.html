@@ -323,7 +323,7 @@ paginated HAL representation. Over the course of the example, we will create a
 custom collection class based off of the Doctrine <code>Paginator</code> class, and map it
 as a HAL collection.</p>
 <p>Our first step is defining an entity:</p>
-<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
 
 namespace Album\Entity;
 
@@ -334,7 +334,7 @@ use Ramsey\Uuid\Uuid;
  * https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html
  *
  * @ORM\Entity
- * @ORM\Table(name="albums")
+ * @ORM\Table(name=&quot;albums&quot;)
  **/
 class Album
 {
@@ -342,24 +342,24 @@ class Album
      * @var Uuid
      *
      * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     * @ORM\Column(type=&quot;uuid&quot;, unique=true)
+     * @ORM\GeneratedValue(strategy=&quot;CUSTOM&quot;)
+     * @ORM\CustomIdGenerator(class=&quot;Ramsey\Uuid\Doctrine\UuidGenerator&quot;)
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type=&quot;string&quot;, nullable=false)
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Column(type=&quot;datetime&quot;, nullable=false)
      */
     protected $created;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type=&quot;datetime&quot;)
      */
     protected $modified;
 
@@ -402,7 +402,7 @@ class Album
     public function setCreated(\DateTime $created = null): void
     {
         if (!$created &amp;&amp; empty($this-&gt;getId())) {
-            $this-&gt;created = new \DateTime("now");
+            $this-&gt;created = new \DateTime(&quot;now&quot;);
         } else {
             $this-&gt;created = $created;
         }
@@ -423,16 +423,15 @@ class Album
     public function setModified(\DateTime $modified = null): void
     {
         if (!$modified) {
-            $this-&gt;modified = new \DateTime("now");
+            $this-&gt;modified = new \DateTime(&quot;now&quot;);
         } else {
             $this-&gt;modified = $modified;
         }
     }
-}</code></pre>
-
+}</code></pre></p>
 <p>In order to work with this, we need to provide Doctrine persistence mapping
 configuration. We will do this in the <code>ConfigProvider</code> for this module:</p>
-<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
 
 namespace Album;
 
@@ -473,11 +472,10 @@ class ConfigProvider
             ],
         ];
     }
-}</code></pre>
-
+}</code></pre></p>
 <p>Next, in order to provide a HAL <em>collection</em> representation, we will create a
 custom <code>Doctrine\ORM\Tools\Pagination\Paginator</code> extension:</p>
-<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
 
 namespace Album\Entity;
 
@@ -485,12 +483,11 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class AlbumCollection extends Paginator
 {
-}</code></pre>
-
+}</code></pre></p>
 <p>From here, we will add configuration of our HAL metadata map to the
 <code>ConfigProvider</code>. First, we will add the following method to configure both our
 entity and our collection:</p>
-<pre class="codehilite"><code class="language-php">// Add these imports to the top of the class file
+<p> <pre class=codehilite><code class=language-php>// Add these imports to the top of the class file
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Hydrator\ReflectionHydrator;
@@ -513,11 +510,10 @@ use Zend\Hydrator\ReflectionHydrator;
                 'route'               =&gt; 'albums.list', // assumes a route named 'albums.list' has been created
             ],
         ];
-    }</code></pre>
-
+    }</code></pre></p>
 <p>Then, within the <code>__invoke()</code> method, we will assign the return value of that
 method to the key <code>MetadataMap::class</code>:</p>
-<pre class="codehilite"><code class="language-php">// Add this import to the top of the class file:
+<p> <pre class=codehilite><code class=language-php>// Add this import to the top of the class file:
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 
     // Modify this ConfigProvider method to read:
@@ -529,11 +525,10 @@ use Zend\Expressive\Hal\Metadata\MetadataMap;
             'doctrine'     =&gt; $this-&gt;getDoctrineEntities(),
             MetadataMap::class =&gt; $this-&gt;getHalMetadataMap(),
         ];
-    }</code></pre>
-
+    }</code></pre></p>
 <p>With these in place, we can write a handler that will display a collection as
 follows:</p>
-<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
 
 namespace Album\Handler;
 
@@ -578,10 +573,9 @@ class ListAlbumsHandler implements RequestHandlerInterface
         $resource  = $this-&gt;resourceGenerator-&gt;fromObject($paginator, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
     }
-}</code></pre>
-
+}</code></pre></p>
 <p>And another handler for displaying an individual album:</p>
-<pre class="codehilite"><code class="language-php">declare(strict_types=1);
+<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
 
 namespace Album\Handler;
 
@@ -625,8 +619,7 @@ class ShowAlbumHandler implements RequestHandlerInterface
         $resource = $this-&gt;resourceGenerator-&gt;fromObject($result, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
     }
-}</code></pre>
-
+}</code></pre></p>
 <p>In the above example, we map our <code>Album</code> entity such that:</p>
 <ul>
 <li>it is route-based; we will generate relational links to such entities based on
@@ -648,7 +641,7 @@ seed a collection paginator (in the case of the <code>ListAlbumsHandler</code>).
 values are known by the metadata map, and, as such, we can generate HAL
 resources for them without needing any other information.</p>
 <blockquote>
-<h3 id="setting-the-offset">Setting the offset</h3>
+<h3>Setting the offset</h3>
 <p>When you plan to use paginated Doctrine result sets, you DO NOT need to
 call <code>$query-&gt;setFirstResult()</code>. This will be called when generating the
 result set based on the current page and the value of
@@ -673,16 +666,15 @@ then, we have several options:</p>
 familiarize yourself with that code before continuing.</p>
 <p>The first change we will make is to modify our <code>AlbumCollection</code> to extend the
 Doctrine <code>ArrayCollection</code>, instead of its <code>Paginator</code>:</p>
-<pre class="codehilite"><code class="language-php">namespace Album\Entity;
+<p> <pre class=codehilite><code class=language-php>namespace Album\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AlbumCollection extends ArrayCollection
 {
-}</code></pre>
-
+}</code></pre></p>
 <p>The only other changes we then need to make are to our <code>ListAlbumsHandler</code>:</p>
-<pre class="codehilite"><code class="language-php">    public function handle(ServerRequestInterface $request) : ResponseInterface
+<p> <pre class=codehilite><code class=language-php>    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $repository = $this-&gt;entityManager-&gt;getRepository(Album::class);
 
@@ -697,8 +689,7 @@ class AlbumCollection extends ArrayCollection
 
         $resource  = $this-&gt;resourceGenerator-&gt;fromObject($collection, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
-    }</code></pre>
-
+    }</code></pre></p>
 <p>With these in place, we will now get representation of all items returned by the
 query.</p>
 
@@ -734,7 +725,7 @@ query.</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/doctrine.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-hal/edit/master/docs/book/doctrine.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>
