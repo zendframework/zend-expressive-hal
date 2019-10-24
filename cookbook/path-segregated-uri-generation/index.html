@@ -412,8 +412,9 @@ context-specific configuration required.</p>
 <code>UrlHelper</code>. What if you want to use a different path?</p>
 <p>You can override the service in an application-specific configuration under
 <code>config/autoload/</code>, specifying a different path!</p>
-<p><code>php
-\Api\UrlHelper::class =&gt; new UrlHelperFactory('/different/path', \Api\Router::class),</code></p>
+<p><pre class=codehilite><code class=language-php>
+\Api\UrlHelper::class =&gt; new UrlHelperFactory('/different/path', \Api\Router::class),
+</code></pre></p>
 </blockquote>
 <h2 id="using-virtual-services-with-a-handler">Using virtual services with a handler</h2>
 <p>Now let's turn to our <code>CreateBookHandler</code>. We'll define it as follows:</p>
