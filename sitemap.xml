@@ -2,57 +2,57 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/intro/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/hal/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/links-and-resources/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/resource-generator/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/cookbook/generating-custom-resources/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/representations/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/doctrine/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/factories/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/cookbook/generating-custom-links-in-middleware/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-hal/cookbook/path-segregated-uri-generation/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
