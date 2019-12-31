@@ -1,5 +1,9 @@
 # Hypertext Application Language (HAL) for PSR-7 Applications
 
+> ## Repository abandoned 2019-12-31
+>
+> This repository has moved to mezzio/mezzio-hal.
+
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-expressive-hal.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-expressive-hal)
 [![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-expressive-hal/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-expressive-hal?branch=master)
 
