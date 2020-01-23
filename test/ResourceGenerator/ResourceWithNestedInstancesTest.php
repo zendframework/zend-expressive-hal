@@ -66,6 +66,41 @@ class ResourceWithNestedInstancesTest extends TestCase
         $this->assertEquals($child->message, $childResource->getElement('message'));
     }
 
+    public function testNullValuedNestedObjectIsEmbedded()
+    {
+        $foo = new TestAsset\FooBar;
+        $foo->id = 1234;
+        $foo->foo = 'FOO';
+        $foo->bar = null;
+
+        $request = $this->prophesize(ServerRequestInterface::class);
+
+        $metadataMap = $this->createMetadataMap();
+        $hydrators = $this->createHydrators();
+        $linkGenerator = $this->createLinkGenerator($request);
+
+        $generator = new ResourceGenerator(
+            $metadataMap->reveal(),
+            $hydrators->reveal(),
+            $linkGenerator->reveal()
+        );
+
+        $generator->addStrategy(
+            RouteBasedResourceMetadata::class,
+            ResourceGenerator\RouteBasedResourceStrategy::class
+        );
+
+        $generator->addStrategy(
+            RouteBasedCollectionMetadata::class,
+            ResourceGenerator\RouteBasedCollectionStrategy::class
+        );
+
+        $resource = $generator->fromObject($foo, $request->reveal());
+        $this->assertInstanceOf(HalResource::class, $resource);
+
+        $this->assertTrue($resource->hasEmbedded('bar'));
+    }
+
     public function createMetadataMap()
     {
         $metadataMap = $this->prophesize(MetadataMap::class);
