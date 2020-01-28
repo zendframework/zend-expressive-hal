@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-hal/representations/">
+    <link rel="canonical" href="https://docs.zendframework.com/representations/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Representations - zend-expressive-hal - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -234,9 +234,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-expressive-hal/">mezzio/mezzio-expressive-hal.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -321,23 +321,27 @@ provides <code>Zend\Expressive\Hal\HalResponseFactory</code> for generating a
 representation. This chapter dives into that with more detail.</p>
 <h2 id="renderers">Renderers</h2>
 <p>All renderers implement <code>Zend\Expressive\Hal\Renderer\RendererInterface</code>:</p>
-<p> <pre class=codehilite><code class=language-php>namespace Zend\Expressive\Hal\Renderer;
+<pre><code class="language-php">namespace Zend\Expressive\Hal\Renderer;
 
 use Zend\Expressive\Hal\HalResource;
 
 interface RendererInterface
 {
     public function render(HalResource $resource) : string;
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Two implementations are provided, <code>Zend\Expressive\Hal\Renderer\JsonRenderer</code> and
 <code>Zend\Expressive\Hal\Renderer\XmlRenderer</code></p>
 <h3>JsonRenderer</h3>
 <p>The <code>JsonRenderer</code> constructor allows you to specify a bitmask of flags for use
 with <code>json_encode()</code>. By default, if none are provided, it uses the value of
 <code>JsonRenderer::DEFAULT_JSON_FLAGS</code>, which evaluates to:</p>
-<p> <pre class=codehilite><code class=language-php>JSON_UNESCAPED_SLASHES
+<pre><code class="language-php">JSON_UNESCAPED_SLASHES
 | JSON_UNESCAPED_UNICODE
-| JSON_PRESERVE_ZERO_FRACTION</code></pre></p>
+| JSON_PRESERVE_ZERO_FRACTION
+</code></pre>
+
 <p>When your application is in "debug" mode, it also adds the <code>JSON_PRETTY_PRINT</code>
 flag to the default list, in order to provide human-readable JSON output.</p>
 <h3>XmlRenderer</h3>
@@ -349,7 +353,7 @@ the provided <code>HalResource</code> instance. In order to keep the component a
 PSR-7 implementation, <code>HalResponseFactory</code> itself composes a callable factory
 capable of producing an empty PSR-7 response.</p>
 <p>As an example:</p>
-<p> <pre class=codehilite><code class=language-php>use Slim\Http\Response;
+<pre><code class="language-php">use Slim\Http\Response;
 use Slim\Http\Stream;
 use Zend\Expressive\Hal\HalResponseFactory;
 
@@ -357,7 +361,9 @@ $factory = new HalResponseFactory(
     function () {
         return new Response();
     }
-);</code></pre></p>
+);
+</code></pre>
+
 <p>Additionally, the <code>HalResponseFactory</code> constructor can accept the following
 arguments, with the described defaults if none is provided:</p>
 <ul>
@@ -369,7 +375,7 @@ generating the <code>HalResponseFactory</code>, described in <a href="../factori
 chapter</a>.</p>
 <h2 id="using-the-factory">Using the factory</h2>
 <p>The factory exposes one method:</p>
-<p> <pre class=codehilite><code class=language-php>use Psr\Http\Message\ResponseInterface;
+<pre><code class="language-php">use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Hal\HalResource;
 
@@ -377,7 +383,9 @@ public function createResponse(
     ServerRequestInterface $request,
     HalResource $resource,
     string $mediaType = self::DEFAULT_CONTENT_TYPE
-) : ResponseInterface {</code></pre></p>
+) : ResponseInterface {
+</code></pre>
+
 <p>Generally speaking, you'll pass the current request instance, and the resource
 for which you want to generate a response, and the factory will return a
 response based on its response prototype, with the following:</p>
@@ -395,11 +403,13 @@ representations. While they will still be HAL, this allows you to document the
 specific structure of your resources, and potentially even validate them against
 JSON schema.</p>
 <p>To do this, pass the media type when creating the response:</p>
-<p> <pre class=codehilite><code class=language-php>$response = $factory-&gt;createResponse(
+<pre><code class="language-php">$response = $factory-&gt;createResponse(
     $request,
     $resource,
     'application/vnd.book'
-);</code></pre></p>
+);
+</code></pre>
+
 <p><em>Do not</em> pass the format (e.g., <code>+json</code>, <code>+xml</code>) when doing so; the factory will
 append the appropriate one based on content negotiation.</p>
 <h2 id="forcing-collections-for-relations">Forcing collections for relations</h2>
@@ -417,46 +427,55 @@ if that's all the car currently has associated with it.</p>
 <p>For links, you may pass a special attribute, <code>Zend\Expressive\Hal\Link::AS_COLLECTION</code>,
 with a boolean value of <code>true</code>; when encountered, this will then be rendered as
 an array of links, even if only one link for that relation is present.</p>
-<p> <pre class=codehilite><code class=language-php>$link = new Link(
+<pre><code class="language-php">$link = new Link(
     'wheels',
     '/api/car/XXXX-YYYY-ZZZZ/wheels/111',
     false,
     [Link::AS_COLLECTION =&gt; true]
 );
 
-$resource = $resource-&gt;withLink($link);</code></pre></p>
+$resource = $resource-&gt;withLink($link);
+</code></pre>
+
 <p>In the above, you will then get the following within your representation:</p>
-<p> <pre class=codehilite><code class=language-json>&quot;_links&quot;: {
+<pre><code class="language-json">&quot;_links&quot;: {
   &quot;wheels&quot;: [
     {&quot;href&quot;: &quot;/api/car/XXXX-YYYY-ZZZZ/wheels/111&quot;}
   ]
-}</code></pre></p>
+}
+</code></pre>
+
 <p>To force an embedded resource to be rendered within an array, you have two
 options.</p>
 <p>First, and simplest, pass the resource within an array when calling
 <code>withElement()</code>, <code>embed()</code>, or passing data to the constructor:</p>
-<p> <pre class=codehilite><code class=language-php>// Constructor:
+<pre><code class="language-php">// Constructor:
 $resource = new HalResource(['wheels' =&gt; [$wheel]]);
 
 // withElement():
 $resource = $resource-&gt;withElement('wheels', [$wheel]);
 
 // embed():
-$resource = $resource-&gt;embed('wheels', [$wheel]);</code></pre></p>
+$resource = $resource-&gt;embed('wheels', [$wheel]);
+</code></pre>
+
 <p>Alternately, you can call the <code>HalResource::embed</code> method with only the
 resource, passing the method a third argument, a flag indicating whether or not
 to force an array:</p>
-<p> <pre class=codehilite><code class=language-php>$resource = $resource-&gt;embed('wheels', $wheel, true);</code></pre></p>
+<pre><code class="language-php">$resource = $resource-&gt;embed('wheels', $wheel, true);
+</code></pre>
+
 <p>In each of these cases, assuming no other wheels were provided to the final
 resource, you might get a representation such as the following:</p>
-<p> <pre class=codehilite><code class=language-json>&quot;_embedded&quot;: {
+<pre><code class="language-json">&quot;_embedded&quot;: {
   &quot;wheels&quot;: [
     {
       &quot;_links&quot; =&gt; {&quot;self&quot;: {&quot;href&quot;: &quot;...&quot;}}
       &quot;id&quot;: &quot;...&quot;
     },
   ]
-}</code></pre></p>
+}
+</code></pre>
 
 
 
@@ -657,7 +676,7 @@ resource, you might get a representation such as the following:</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -665,10 +684,10 @@ resource, you might get a representation such as the following:</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -676,27 +695,28 @@ resource, you might get a representation such as the following:</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

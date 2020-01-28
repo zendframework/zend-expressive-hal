@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-hal/intro/">
+    <link rel="canonical" href="https://docs.zendframework.com/intro/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Introduction - zend-expressive-hal - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -234,9 +234,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-expressive-hal/">mezzio/mezzio-expressive-hal.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -338,7 +338,9 @@ this, we provide two components:</p>
 relational links, from PHP objects.</strong></p>
 <h2 id="installation">Installation</h2>
 <p>Use Composer:</p>
-<p> <pre class=codehilite><code class=language-bash>$ composer require zendframework/zend-expressive-hal</code></pre></p>
+<pre><code class="language-bash">$ composer require zendframework/zend-expressive-hal
+</code></pre>
+
 <p>If you are adding this to an Expressive application, and have the
 <a href="https://docs.zendframework.com/zend-component-installer/">zend-component-installer</a>
 package installed, this will prompt you to ask if you wish to add it to your
@@ -347,31 +349,39 @@ factories.</p>
 <p>We also recommend installing <a href="https://docs.zendframework.com/zend-hydrator/">zend-hydrator</a>,
 which provides facilities for extracting associative array representations of
 PHP objects:</p>
-<p> <pre class=codehilite><code class=language-bash>$ composer require zendframework/zend-hydrator</code></pre></p>
+<pre><code class="language-bash">$ composer require zendframework/zend-hydrator
+</code></pre>
+
 <p>Finally, if you want to provide paginated collections, we recommend installing
 <a href="https://docs.zendframework.com/zend-paginator/">zend-paginator</a>:</p>
-<p> <pre class=codehilite><code class=language-bash>$ composer require zendframework/zend-paginator</code></pre></p>
+<pre><code class="language-bash">$ composer require zendframework/zend-paginator
+</code></pre>
+
 <h2 id="quick-start">Quick Start</h2>
 <p>The following examples assume that you have added this package to an Expressive
 application.</p>
 <h3>Entity and collection classes</h3>
 <p>For each of our examples, we'll assume the following class exists:</p>
-<p> <pre class=codehilite><code class=language-php>namespace Api\Books;
+<pre><code class="language-php">namespace Api\Books;
 
 class Book
 {
     public $id;
     public $title;
     public $author;
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Additionally, we'll have a class representing a paginated group of books:</p>
-<p> <pre class=codehilite><code class=language-php>namespace Api\Books;
+<pre><code class="language-php">namespace Api\Books;
 
 use Zend\Paginator\Paginator;
 
 class BookCollection extends Paginator
 {
-}</code></pre></p>
+}
+</code></pre>
+
 <h3>Routes</h3>
 <p>The examples below assume that we have the following routes defined in our
 application somehow:</p>
@@ -389,7 +399,7 @@ configuration, which you could put in one of the following places:</p>
   you will need to add an entry for this class to your <code>config/config.php</code> file.</li>
 </ul>
 <p>The configuration will look like this:</p>
-<p> <pre class=codehilite><code class=language-php>// Provide the following imports:
+<pre><code class="language-php">// Provide the following imports:
 use Api\Books\Book;
 use Api\Books\BookCollection;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
@@ -411,14 +421,16 @@ MetadataMap::class =&gt; [
         'collection_relation' =&gt; 'book',
         'route' =&gt; 'books',
     ],
-],</code></pre></p>
+],
+</code></pre>
+
 <h3>Manually creating and rendering a resource</h3>
 <p>The following request handler creates a <code>HalResource</code> with its associated links,
 and then manually renders it using <code>Zend\Expressive\Hal\Renderer\JsonRenderer</code>.
 (An <code>XmlRenderer</code> is also provided, but not demonstrated here.)</p>
 <p>We'll assume that <code>Api\Books\Repository</code> handles retrieving data from persistent
 storage.</p>
-<p> <pre class=codehilite><code class=language-php>namespace Api\Books\Action;
+<pre><code class="language-php">namespace Api\Books\Action;
 
 use Api\Books\Repository;
 use Psr\Http\Message\ResponseInterface;
@@ -461,17 +473,21 @@ class BookAction implements RequestHandlerInterface
             ['Content-Type' =&gt; 'application/hal+json']
         );
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>The <code>JsonRenderer</code> returns the JSON string representing the data and links in
 the resource. The payload generated might look like the following:</p>
-<p> <pre class=codehilite><code class=language-json>{
+<pre><code class="language-json">{
     &quot;_links&quot;: {
         &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
     },
     &quot;id&quot;: 1234,
     &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
     &quot;author&quot;: &quot;Adams, Douglas&quot;
-}</code></pre></p>
+}
+</code></pre>
+
 <p>The above example uses no metadata, and manually creates the <code>HalResource</code>
 instance. As the complexity of your objects increase, and the number of objects
 you want to represent via HAL increases, you may not want to manually generate
@@ -484,7 +500,7 @@ them.</p>
 returned resource.</p>
 <p>First, we'll look at a handler that displays a single book. We'll assume that
 <code>Api\Books\Repository</code> handles retrieving data from persistent storage.</p>
-<p> <pre class=codehilite><code class=language-php>namespace Api\Books\Action;
+<pre><code class="language-php">namespace Api\Books\Action;
 
 use Api\Books\Repository;
 use Psr\Http\Message\ResponseInterface;
@@ -528,7 +544,9 @@ class BookAction implements RequestHandlerInterface
         $resource = $this-&gt;resourceGenerator-&gt;fromObject($book, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Note that the <code>$request</code> instance is passed to both the resource generator and
 response factory:</p>
 <ul>
@@ -537,20 +555,22 @@ response factory:</p>
   payload should be generated.</li>
 </ul>
 <p>The generated payload might look like the following:</p>
-<p> <pre class=codehilite><code class=language-json>{
+<pre><code class="language-json">{
     &quot;_links&quot;: {
         &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/1234&quot; }
     },
     &quot;id&quot;: 1234,
     &quot;title&quot;: &quot;Hitchhiker's Guide to the Galaxy&quot;,
     &quot;author&quot;: &quot;Adams, Douglas&quot;
-}</code></pre></p>
+}
+</code></pre>
+
 <h3>Request handler returning a collection</h3>
 <p>Next, we'll create a request handler that returns a <em>collection</em> of books. The
 collection will be <em>paginated</em> (assume our repository class creates a
 <code>BookCollection</code> backed by an appropriate adapter), and use a query string
 parameter to determine which page of results to return.</p>
-<p> <pre class=codehilite><code class=language-php>namespace Api\Books\Action;
+<pre><code class="language-php">namespace Api\Books\Action;
 
 use Api\Books\Repository;
 use Psr\Http\Message\ResponseInterface;
@@ -594,13 +614,15 @@ class BooksAction implements RequestHandlerInterface
         $resource = $this-&gt;resourceGenerator-&gt;fromObject($books, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Note that resource and response generation <em>is exactly the same</em> as our previous
 example! This is because the metadata map takes care of the details of
 extracting the data from our value objects and generating links for us.</p>
 <p>In this particular example, since we are using a paginator for our collection
 class, we might get back something like the following:</p>
-<p> <pre class=codehilite><code class=language-json>{
+<pre><code class="language-json">{
     &quot;_links&quot;: {
         &quot;self&quot;: { &quot;href&quot;: &quot;/api/books?page=7&quot; },
         &quot;first&quot;: { &quot;href&quot;: &quot;/api/books?page=1&quot; },
@@ -636,7 +658,9 @@ class, we might get back something like the following:</p>
     &quot;_page&quot;: 7,
     &quot;_per_page&quot;: 25,
     &quot;_total&quot;: 407
-}</code></pre></p>
+}
+</code></pre>
+
 <h2 id="next-steps">Next steps</h2>
 <p>The above examples demonstrate setting up your application to generate and
 return HAL resources. In the following chapters, we'll cover:</p>
@@ -849,7 +873,7 @@ return HAL resources. In the following chapters, we'll cover:</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -857,10 +881,10 @@ return HAL resources. In the following chapters, we'll cover:</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -868,27 +892,28 @@ return HAL resources. In the following chapters, we'll cover:</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-hal/doctrine/">
+    <link rel="canonical" href="https://docs.zendframework.com/doctrine/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Generating HAL for Doctrine Entities - zend-expressive-hal - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -234,9 +234,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-expressive-hal/">mezzio/mezzio-expressive-hal.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -323,7 +323,7 @@ paginated HAL representation. Over the course of the example, we will create a
 custom collection class based off of the Doctrine <code>Paginator</code> class, and map it
 as a HAL collection.</p>
 <p>Our first step is defining an entity:</p>
-<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
+<pre><code class="language-php">declare(strict_types=1);
 
 namespace Album\Entity;
 
@@ -428,10 +428,12 @@ class Album
             $this-&gt;modified = $modified;
         }
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>In order to work with this, we need to provide Doctrine persistence mapping
 configuration. We will do this in the <code>ConfigProvider</code> for this module:</p>
-<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
+<pre><code class="language-php">declare(strict_types=1);
 
 namespace Album;
 
@@ -472,10 +474,12 @@ class ConfigProvider
             ],
         ];
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Next, in order to provide a HAL <em>collection</em> representation, we will create a
 custom <code>Doctrine\ORM\Tools\Pagination\Paginator</code> extension:</p>
-<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
+<pre><code class="language-php">declare(strict_types=1);
 
 namespace Album\Entity;
 
@@ -483,11 +487,13 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class AlbumCollection extends Paginator
 {
-}</code></pre></p>
+}
+</code></pre>
+
 <p>From here, we will add configuration of our HAL metadata map to the
 <code>ConfigProvider</code>. First, we will add the following method to configure both our
 entity and our collection:</p>
-<p> <pre class=codehilite><code class=language-php>// Add these imports to the top of the class file
+<pre><code class="language-php">// Add these imports to the top of the class file
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
 use Zend\Expressive\Hal\Metadata\RouteBasedResourceMetadata;
 use Zend\Hydrator\ReflectionHydrator;
@@ -510,10 +516,12 @@ use Zend\Hydrator\ReflectionHydrator;
                 'route'               =&gt; 'albums.list', // assumes a route named 'albums.list' has been created
             ],
         ];
-    }</code></pre></p>
+    }
+</code></pre>
+
 <p>Then, within the <code>__invoke()</code> method, we will assign the return value of that
 method to the key <code>MetadataMap::class</code>:</p>
-<p> <pre class=codehilite><code class=language-php>// Add this import to the top of the class file:
+<pre><code class="language-php">// Add this import to the top of the class file:
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 
     // Modify this ConfigProvider method to read:
@@ -525,10 +533,12 @@ use Zend\Expressive\Hal\Metadata\MetadataMap;
             'doctrine'     =&gt; $this-&gt;getDoctrineEntities(),
             MetadataMap::class =&gt; $this-&gt;getHalMetadataMap(),
         ];
-    }</code></pre></p>
+    }
+</code></pre>
+
 <p>With these in place, we can write a handler that will display a collection as
 follows:</p>
-<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
+<pre><code class="language-php">declare(strict_types=1);
 
 namespace Album\Handler;
 
@@ -573,9 +583,11 @@ class ListAlbumsHandler implements RequestHandlerInterface
         $resource  = $this-&gt;resourceGenerator-&gt;fromObject($paginator, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>And another handler for displaying an individual album:</p>
-<p> <pre class=codehilite><code class=language-php>declare(strict_types=1);
+<pre><code class="language-php">declare(strict_types=1);
 
 namespace Album\Handler;
 
@@ -619,7 +631,9 @@ class ShowAlbumHandler implements RequestHandlerInterface
         $resource = $this-&gt;resourceGenerator-&gt;fromObject($result, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>In the above example, we map our <code>Album</code> entity such that:</p>
 <ul>
 <li>it is route-based; we will generate relational links to such entities based on
@@ -666,15 +680,17 @@ then, we have several options:</p>
 familiarize yourself with that code before continuing.</p>
 <p>The first change we will make is to modify our <code>AlbumCollection</code> to extend the
 Doctrine <code>ArrayCollection</code>, instead of its <code>Paginator</code>:</p>
-<p> <pre class=codehilite><code class=language-php>namespace Album\Entity;
+<pre><code class="language-php">namespace Album\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AlbumCollection extends ArrayCollection
 {
-}</code></pre></p>
+}
+</code></pre>
+
 <p>The only other changes we then need to make are to our <code>ListAlbumsHandler</code>:</p>
-<p> <pre class=codehilite><code class=language-php>    public function handle(ServerRequestInterface $request) : ResponseInterface
+<pre><code class="language-php">    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $repository = $this-&gt;entityManager-&gt;getRepository(Album::class);
 
@@ -689,7 +705,9 @@ class AlbumCollection extends ArrayCollection
 
         $resource  = $this-&gt;resourceGenerator-&gt;fromObject($collection, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $resource);
-    }</code></pre></p>
+    }
+</code></pre>
+
 <p>With these in place, we will now get representation of all items returned by the
 query.</p>
 
@@ -892,7 +910,7 @@ query.</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -900,10 +918,10 @@ query.</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -911,27 +929,28 @@ query.</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

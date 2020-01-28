@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-hal/links-and-resources/">
+    <link rel="canonical" href="https://docs.zendframework.com/links-and-resources/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Links and Resources - zend-expressive-hal - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -234,9 +234,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-expressive-hal/">mezzio/mezzio-expressive-hal.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -334,27 +334,33 @@ Additionally, links:</p>
 </ul>
 <p>To model these, we provide the <code>Zend\Expressive\Hal\Link</code> class. It has the
 following constructor:</p>
-<p> <pre class=codehilite><code class=language-php>public function __construct(
+<pre><code class="language-php">public function __construct(
     $relation,
     string $uri = '',
     bool $isTemplated = false,
     array $attributes = []
-)</code></pre></p>
+)
+</code></pre>
+
 <p><code>$relation</code> can be a string value, or an array of string values, representing
 the relation.</p>
 <p>To access these various properties, you can use the following methods:</p>
-<p> <pre class=codehilite><code class=language-php>$link-&gt;getRels()       // get the list of relations for the link
+<pre><code class="language-php">$link-&gt;getRels()       // get the list of relations for the link
 $link-&gt;getHref()       // retrieve the URI
 $link-&gt;isTemplated()   // is the link templated?
-$link-&gt;getAttributes() // get any additional link attributes</code></pre></p>
+$link-&gt;getAttributes() // get any additional link attributes
+</code></pre>
+
 <p>A <code>Link</code> is <em>immutable</em>; you cannot change it after the fact. If you need a
 modified version of the link, we provide several methods that will return <em>new
 instances</em> containing the changes:</p>
-<p> <pre class=codehilite><code class=language-php>$link = $link-&gt;withRel($rel);    // or provide an array of relations
+<pre><code class="language-php">$link = $link-&gt;withRel($rel);    // or provide an array of relations
 $link = $link-&gt;withoutRel($rel); // or provide an array of relations
 $link = $link-&gt;withHref($href);
 $link = $link-&gt;withAttribute($attribute, $value);
-$link = $link-&gt;withoutAttribute($attribute);</code></pre></p>
+$link = $link-&gt;withoutAttribute($attribute);
+</code></pre>
+
 <p>With these tools, you can describe any relational link.</p>
 <h3>Route-based link URIs</h3>
 <p>Most frameworks provide routing capabilities, and delegate URI generation to
@@ -364,7 +370,7 @@ hard-coding that URI?</p>
 <p>This component provides a tool for that: <code>Zend\Expressive\Hal\LinkGenerator</code>.
 This class composes a <code>Zend\Expressive\Hal\LinkGenerator\UrlGeneratorInterface</code>
 instance, which defines the following:</p>
-<p> <pre class=codehilite><code class=language-php>namespace Zend\Expressive\Hal\LinkGenerator;
+<pre><code class="language-php">namespace Zend\Expressive\Hal\LinkGenerator;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -388,13 +394,15 @@ interface UrlGeneratorInterface
         array $routeParams = [],
         array $queryParams = []
     ) : string;
-}</code></pre></p>
+}
+</code></pre>
+
 <p>We provide a default implementation for Expressive users,
 <code>Zend\Expressive\Hal\LinkGenerator\ExpressiveUrlGenerator</code>,  that uses the
 <code>UrlHelper</code> and <code>ServerUrlHelper</code> from zend-expressive-helpers in order to
 generate URIs.</p>
 <p>The <code>LinkGenerator</code> itself defines two methods:</p>
-<p> <pre class=codehilite><code class=language-php>$link = $linkGenerator-&gt;fromRoute(
+<pre><code class="language-php">$link = $linkGenerator-&gt;fromRoute(
     $relation,
     $request,
     $routeName,
@@ -410,7 +418,9 @@ $link = $linkGenerator-&gt;templatedFromRoute(
     $routeParams, // Array of additional route parameters to inject
     $queryParams, // Array of query string arguments to inject
     $attributes   // Array of Link attributes to use
-);</code></pre></p>
+);
+</code></pre>
+
 <p><code>fromRoute()</code> will generate a non-templated <code>Link</code> instance, while
 <code>templatedFromRoute()</code> generates a templated instance.</p>
 <p>If you need to generate custom links based on routing, we recommend composing
@@ -430,11 +440,13 @@ parameter. See the issue for a comprehensive example.</p>
 <code>Zend\Expressive\Hal\HalResource</code> allows you to model these representations,
 along with any relational links and child resources.</p>
 <p>It defines the following constructor:</p>
-<p> <pre class=codehilite><code class=language-php>public function __construct(
+<pre><code class="language-php">public function __construct(
     array $data = [],
     array $links = [],
     array $embedded = []
-)</code></pre></p>
+)
+</code></pre>
+
 <p><code>$data</code> should be an associative array of data you wish to include in your
 representation; the only limitation is you may not use the keys <code>_links</code> or
 <code>_embedded</code>, as these are reserved keywords.</p>
@@ -443,19 +455,23 @@ representation; the only limitation is you may not use the keys <code>_links</co
 Most often, however, you will include these with <code>$data</code>, as the class contains
 logic for identifying them.</p>
 <p>Once you have created an instance, you can access its properties:</p>
-<p> <pre class=codehilite><code class=language-php>$resource-&gt;getElement($name) // retrieve an element or embedded resource by name
+<pre><code class="language-php">$resource-&gt;getElement($name) // retrieve an element or embedded resource by name
 $resource-&gt;getElements()     // retrieve all elements and embedded resources
 $resource-&gt;getLinks()        // retrieve all relational links
 $resource-&gt;getLinksByRel()   // retrieve links for a specific relation
-$resource-&gt;toArray()         // retrieve associative array representation</code></pre></p>
+$resource-&gt;toArray()         // retrieve associative array representation
+</code></pre>
+
 <p><code>HalResource</code> instances are <em>immutable</em>. We provide a number of methods that
 allow you to create <em>new instances</em> with changes:</p>
-<p> <pre class=codehilite><code class=language-php>$resource = $resource-&gt;withElement($name, $value);
+<pre><code class="language-php">$resource = $resource-&gt;withElement($name, $value);
 $resource = $resource-&gt;withoutElement($name);
 $resource = $resource-&gt;withElements($elements);
 $resource = $resource-&gt;embed($name, $resource);
 $resource = $resource-&gt;withLink($link);
-$resource = $resource-&gt;withoutLink($link);</code></pre></p>
+$resource = $resource-&gt;withoutLink($link);
+</code></pre>
+
 <p>With these tools, you can describe any resource you want to represent.</p>
 
 
@@ -657,7 +673,7 @@ $resource = $resource-&gt;withoutLink($link);</code></pre></p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -665,10 +681,10 @@ $resource = $resource-&gt;withoutLink($link);</code></pre></p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -676,27 +692,28 @@ $resource = $resource-&gt;withoutLink($link);</code></pre></p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

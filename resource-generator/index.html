@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-hal/resource-generator/">
+    <link rel="canonical" href="https://docs.zendframework.com/resource-generator/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Generating Resources - zend-expressive-hal - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -234,9 +234,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-expressive-hal/">mezzio/mezzio-expressive-hal.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -373,7 +373,7 @@ following information:</p>
 </li>
 </ul>
 <p>We aggregate metadata in a <code>Zend\Expressive\Hal\Metadata\MetadataMap</code> instance:</p>
-<p> <pre class=codehilite><code class=language-php>$bookMetadata = new RouteBasedResourceMetadata(
+<pre><code class="language-php">$bookMetadata = new RouteBasedResourceMetadata(
     Book::class,
     'book',
     ObjectPropertyHydrator::class
@@ -386,7 +386,9 @@ $booksMetadata = new RouteBasedCollectionMetadata(
 
 $metadataMap = new MetadataMap();
 $metadataMap-&gt;add($bookMetadata);
-$metadataMap-&gt;add($booksMetadata);</code></pre></p>
+$metadataMap-&gt;add($booksMetadata);
+</code></pre>
+
 <h3>Configuration-based metadata</h3>
 <p>To automate generation of the <code>MetadataMap</code>, we provide
 <code>Zend\Expressive\Hal\Metadata\MetadataMapFactory</code>. This factory may be used with any
@@ -397,7 +399,7 @@ service, and pulls its configuration from a key named after the
 describe which metadata class to create, and the remaining properties will then
 be used to generate an instance. As an example, the above could be configured as
 follows:</p>
-<p> <pre class=codehilite><code class=language-php>use Api\Books\Book;
+<pre><code class="language-php">use Api\Books\Book;
 use Api\Books\BookCollection;
 use Zend\Expressive\Hal\Metadata\MetadataMap;
 use Zend\Expressive\Hal\Metadata\RouteBasedCollectionMetadata;
@@ -419,7 +421,9 @@ return [
             'route' =&gt; 'books',
         ],
     ],
-];</code></pre></p>
+];
+</code></pre>
+
 <p>The rest of the parameters follow underscore delimiter naming convention:</p>
 <ul>
 <li><code>RouteBasedResourceMetadata::class</code><ul>
@@ -454,11 +458,13 @@ return [
 <p>Once you have defined the metadata for the various objects you will represent in
 your API, you can start generating resources.</p>
 <p><code>Zend\Expressive\Hal\ResourceGenerator</code> has the following constructor:</p>
-<p> <pre class=codehilite><code class=language-php>public function __construct(
+<pre><code class="language-php">public function __construct(
     Zend\Expressive\Hal\Metadata\MetadataMap $metadataMap,
     Psr\Container\ContainerInterface $hydrators,
     Zend\Expressive\Hal\LinkGenerator $linkGenerator
-) {</code></pre></p>
+) {
+</code></pre>
+
 <p>We described the <code>MetadataMap</code> in the previous section, and the <code>LinkGenerator</code>
 in the <a href="../links-and-resources/#route-based-link-uris">previous chapter</a>.</p>
 <p>Hydrators are defind in the <a href="https://docs.zendframework.com/zend-hydrator/">zend-hydrator component</a>,
@@ -467,7 +473,9 @@ and are objects which can <em>hdyrate</em> associative arrays to object instance
 <code>$hydrators</code> instance may be any PSR-11 container, but you will generally want
 to use the <code>Zend\Hydrator\HydratorPluginManager</code>.</p>
 <p>Once you have your instance created, you can start generating resources:</p>
-<p> <pre class=codehilite><code class=language-php>$resource = $resourceGenerator-&gt;fromObject($book, $request);</code></pre></p>
+<pre><code class="language-php">$resource = $resourceGenerator-&gt;fromObject($book, $request);
+</code></pre>
+
 <p>(Where <code>$request</code> is a <code>Psr\Http\Message\ServerRequestInterface</code> instance; the
 instance is passed along to the <code>LinkGenerator</code> in order to generate route-based
 URIs for <code>Link</code> instances.)</p>
@@ -671,7 +679,7 @@ URIs for <code>Link</code> instances.)</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -679,10 +687,10 @@ URIs for <code>Link</code> instances.)</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -690,27 +698,28 @@ URIs for <code>Link</code> instances.)</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

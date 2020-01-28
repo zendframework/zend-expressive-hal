@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-hal/cookbook/path-segregated-uri-generation/">
+    <link rel="canonical" href="https://docs.zendframework.com/cookbook/path-segregated-uri-generation/">
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Using the ResourceGenerator in path-segregated middleware - zend-expressive-hal - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -234,9 +234,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-expressive-hal/">mezzio/mezzio-expressive-hal.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -345,7 +345,7 @@ create will return HAL-JSON, and thus need to generate links using the
 configured router and base path.</p>
 <p>To begin, we will alter the <code>ConfigProvider</code> for our module to add the
 definitions noted below:</p>
-<p> <pre class=codehilite><code class=language-php>// in src/Api/ConfigProvider.php:
+<pre><code class="language-php">// in src/Api/ConfigProvider.php:
 namespace Api;
 
 use Zend\Expressive\Hal\LinkGeneratorFactory;
@@ -396,7 +396,9 @@ class ConfigProvider
             // ...
         ];
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Note that the majority of these service names are <em>virtual</em>; they do not resolve
 to actual classes. PHP allows usage of the <code>::class</code> pseudo-constant anywhere,
 and will resolve the value based on the current namespace. This gives us virtual
@@ -412,13 +414,13 @@ context-specific configuration required.</p>
 <code>UrlHelper</code>. What if you want to use a different path?</p>
 <p>You can override the service in an application-specific configuration under
 <code>config/autoload/</code>, specifying a different path!</p>
-<p><pre class=codehilite><code class=language-php>
+<pre class=codehilite><code class=language-php>
 \Api\UrlHelper::class =&gt; new UrlHelperFactory('/different/path', \Api\Router::class),
-</code></pre></p>
+</code></pre>
 </blockquote>
 <h2 id="using-virtual-services-with-a-handler">Using virtual services with a handler</h2>
 <p>Now let's turn to our <code>CreateBookHandler</code>. We'll define it as follows:</p>
-<p> <pre class=codehilite><code class=language-php>// in src/Api/CreateBookHandler.php:
+<pre><code class="language-php">// in src/Api/CreateBookHandler.php:
 namespace Api;
 
 use Psr\Http\Message\ResponseInterface;
@@ -446,10 +448,12 @@ class CreateBookHandler implements RequestHandlerInterface
         $resource = $this-&gt;resourceGenerator-&gt;fromObject($book, $request);
         return $this-&gt;responseFactory-&gt;createResponse($request, $book);
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>This handler needs a HAL resource generator. More specifically, it needs the one
 specific to our module. As such, we'll define our factory as follows:</p>
-<p> <pre class=codehilite><code class=language-php>// in src/Api/CreateBookHandlerFactory.php:
+<pre><code class="language-php">// in src/Api/CreateBookHandlerFactory.php:
 namespace Api;
 
 use Psr\Container\ContainerInterface;
@@ -464,14 +468,16 @@ class CreateBookHandlerFactory
             HalResponseFactory::class
         );
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>You can create any number of such handlers for your module; the above
 demonstrates how and where injection of the alternate resource generator occurs.</p>
 <h2 id="creating-our-pipeline-and-routes">Creating our pipeline and routes</h2>
 <p>Now we can create our pipeline and routes.</p>
 <p>Generally when piping to an application instance, we can specify a class name of
 middleware to pipe, or an array of middleware:</p>
-<p> <pre class=codehilite><code class=language-php>// in config/pipeline.php:
+<pre><code class="language-php">// in config/pipeline.php:
 $app-&gt;pipe('/api', [
     \Zend\ProblemDetails\ProblemDetailsMiddleware::class,
     \Api\RouteMiddleware::class,     // module-specific routing middleware!
@@ -481,7 +487,9 @@ $app-&gt;pipe('/api', [
     \Api\UrlHelperMiddleware::class, // module-specific URL helper middleware!
     DispatchMiddleware::class,
     \Zend\ProblemDetails\ProblemDetailsNotFoundHandler::class,
-]);</code></pre></p>
+]);
+</code></pre>
+
 <p>However, we have both the pipeline <em>and</em> routes, and we likely want to indicate
 the exact behavior of this pipeline. Additionally, we may want to re-use this
 pipeline in other applications; pushing this into the application configuration
@@ -490,7 +498,7 @@ makes that more error-prone.</p>
 <code>Zend\Stratigility\MiddlewarePipe</code> instance that is fully configured for our
 module. As part of this functionality, we will also add our module-specific
 routing.</p>
-<p> <pre class=codehilite><code class=language-php>// In src/Api/PipelineFactory.php:
+<pre><code class="language-php">// In src/Api/PipelineFactory.php:
 namespace Api;
 
 use Psr\Container\ContainerInterface;
@@ -528,14 +536,18 @@ class PipelineFactory
         // Return the pipeline now that we're done!
         return $pipeline;
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Note that the routing definitions do <strong>not</strong> include the prefix <code>/api</code>; this is
 because that prefix will be stripped when we path-segregate our API middleware
 pipeline. All routing will be <em>relative</em> to that path.</p>
 <h2 id="creating-a-path-segregated-pipeline">Creating a path-segregated pipeline</h2>
 <p>Finally, we will attach our pipeline to the application, using path segregation:</p>
-<p> <pre class=codehilite><code class=language-php>// in config/pipeline.php:
-$app-&gt;pipe('/api', \Api\Pipeline::class);</code></pre></p>
+<pre><code class="language-php">// in config/pipeline.php:
+$app-&gt;pipe('/api', \Api\Pipeline::class);
+</code></pre>
+
 <p>This statement tells the application to pipe the pipeline returned by our
 <code>PipelineFactory</code> under the path <code>/api</code>; that path will be stripped from
 requests when passed to the underlying middleware.</p>
@@ -738,7 +750,7 @@ segregated the pipeline!</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -746,10 +758,10 @@ segregated the pipeline!</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -757,27 +769,28 @@ segregated the pipeline!</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '../..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../../js/scripts-8d7ae56abf.js"></script>
-        <script src="../../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

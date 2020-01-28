@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hypertext Application Language for PSR-7 Applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-hal/hal/">
+    <link rel="canonical" href="https://docs.zendframework.com/hal/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>HAL - zend-expressive-hal - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -234,9 +234,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-expressive-hal/">mezzio/mezzio-expressive-hal.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -329,18 +329,22 @@ original specification targets JSON, an additional IETF proposal
 for a resource into a subkey (e.g., "data", "collection.items", etc.), HAL
 specifies resources as the primary payload.</p>
 <p>As such, a resource is simply a <em>document</em>:</p>
-<p> <pre class=codehilite><code class=language-json>{
+<pre><code class="language-json">{
   &quot;id&quot;: &quot;XXXX-YYYY-ZZZZ-AAAA&quot;,
   &quot;title&quot;: &quot;Life, the Universe, and Everything&quot;,
   &quot;author&quot;: &quot;Adams, Douglas&quot;
-}</code></pre></p>
+}
+</code></pre>
+
 <p>For XML documents, the element <code>&lt;resource&gt;</code> is reserved to detail the resource;
 every other element represents the document:</p>
-<p> <pre class=codehilite><code class=language-xml>&lt;resource&gt;
+<pre><code class="language-xml">&lt;resource&gt;
   &lt;id&gt;XXXX-YYYY-ZZZZ-AAAA&lt;/id&gt;
   &lt;title&gt;Life, the Universe, and Everything&lt;/title&gt;
   &lt;author&gt;Adams, Douglas&lt;/author&gt;
-&lt;/resource&gt;</code></pre></p>
+&lt;/resource&gt;
+</code></pre>
+
 <p>This decision makes both consuming and generating HAL payloads trivial.</p>
 <h2 id="links">Links</h2>
 <p>One goal of REST is to allow any given resource to provide <em>hypertext controls</em>,
@@ -363,12 +367,14 @@ structure for how links are represented. Each element of the <code>_links</code>
 is named for the link relation, and the value is either an array, or a link
 object. A link object contains minimally an <code>href</code> property, with several other
 properties allowed. As an example:</p>
-<p> <pre class=codehilite><code class=language-json>{
+<pre><code class="language-json">{
   &quot;_links&quot;: {
     &quot;self&quot;: { &quot;href&quot;: &quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot; },
     &quot;books&quot;: { &quot;href&quot;: &quot;/api/books&quot; }
   }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>At this point, the consumer knows they can access the current resource via the
 "self" relation, and a collection of "books" via the URI "/api/books".</p>
 <p>HAL addresses links in XML with two semantics. First, the <code>&lt;resource&gt;</code> element
@@ -378,9 +384,11 @@ is defined in the <code>&lt;resource&gt;</code> element. Second, the specificati
 the <code>&lt;link&gt;</code> element; the relation, URI, and other attributes become attributes
 of that XML element.</p>
 <p>An equivalent XML document to the JSON document above looks like the following:</p>
-<p> <pre class=codehilite><code class=language-xml>&lt;resource rel=&quot;self&quot; href=&quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot;&gt;
+<pre><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books/XXXX-YYYY-ZZZZ-AAAA&quot;&gt;
   &lt;link rel=&quot;books&quot; href=&quot;/api/books&quot;/&gt;
-&lt;/resource&gt;</code></pre></p>
+&lt;/resource&gt;
+</code></pre>
+
 <h2 id="child-resources">Child Resources</h2>
 <p>An API payload may have <em>child resources</em> for several reasons:</p>
 <ul>
@@ -396,7 +404,7 @@ an object, with the keys being the <em>relations</em>, and the values either res
 or arrays of resources. Each resource follows the same structure as a basic
 HAL resource, with a <code>_links</code> member, other members representing the resource,
 and optionally an <code>_embedded</code> member.</p>
-<p> <pre class=codehilite><code class=language-json>{
+<pre><code class="language-json">{
     &quot;_links&quot;: {
         &quot;self&quot;: { &quot;href&quot;: &quot;/api/books?page=7&quot; },
         &quot;first&quot;: { &quot;href&quot;: &quot;/api/books?page=1&quot; },
@@ -431,12 +439,14 @@ and optionally an <code>_embedded</code> member.</p>
     &quot;_page&quot;: 7,
     &quot;_per_page&quot;: 2,
     &quot;_total&quot;: 33
-}</code></pre></p>
+}
+</code></pre>
+
 <p>The above represents a <em>collection</em> of <em>book</em> resources.</p>
 <p>To address XML, the specification uses the <code>&lt;resource&gt;</code> element to embed
 additional resources. Resources of the same type use the same <code>rel</code> attribute.
 The XML equivalent of the above JSON documentation thus becomes:</p>
-<p> <pre class=codehilite><code class=language-xml>&lt;resource rel=&quot;self&quot; href=&quot;/api/books?page=7&quot;&gt;
+<pre><code class="language-xml">&lt;resource rel=&quot;self&quot; href=&quot;/api/books?page=7&quot;&gt;
     &lt;link rel=&quot;first&quot; href=&quot;/api/books?page=1&quot;/&gt;
     &lt;link rel=&quot;prev&quot; href=&quot;/api/books?page=6&quot;/&gt;
     &lt;link rel=&quot;next&quot; href=&quot;/api/books?page=8&quot;/&gt;
@@ -454,7 +464,9 @@ The XML equivalent of the above JSON documentation thus becomes:</p>
     &lt;_page&gt;7&lt;/_page&gt;
     &lt;_per_page&gt;2&lt;/_per_page&gt;
     &lt;_total&gt;33&lt;/_total&gt;
-&lt;/resource&gt;</code></pre></p>
+&lt;/resource&gt;
+</code></pre>
+
 <h2 id="summary">Summary</h2>
 <p>With these three semantics &mdash; resources, links, and child resources &mdash;
 HAL allows you to describe any payload, and provide the hypertext controls
@@ -660,7 +672,7 @@ necessary to allow API consumers to know what resources they can access next.</p
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -668,10 +680,10 @@ necessary to allow API consumers to know what resources they can access next.</p
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -679,27 +691,28 @@ necessary to allow API consumers to know what resources they can access next.</p
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-expressive-hal';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
