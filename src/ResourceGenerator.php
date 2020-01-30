@@ -123,7 +123,7 @@ class ResourceGenerator
      *     against types registered in the metadata map.
      * @param ServerRequestInterface $request
      */
-    public function fromObject($instance, ServerRequestInterface $request) : HalResource
+    public function fromObject($instance, ServerRequestInterface $request, int $depth = 0) : HalResource
     {
         if (! is_object($instance)) {
             throw Exception\InvalidObjectException::forNonObject($instance);
@@ -146,7 +146,8 @@ class ResourceGenerator
             $instance,
             $metadata,
             $this,
-            $request
+            $request,
+            $depth
         );
     }
 }

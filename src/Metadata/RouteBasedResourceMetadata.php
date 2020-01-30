@@ -21,13 +21,17 @@ class RouteBasedResourceMetadata extends AbstractResourceMetadata
     /** @var array */
     private $routeParams;
 
+    /** @var int */
+    private $maxDepth;
+
     public function __construct(
         string $class,
         string $route,
         string $extractor,
         string $resourceIdentifier = 'id',
         string $routeIdentifierPlaceholder = 'id',
-        array $routeParams = []
+        array $routeParams = [],
+        int $maxDepth = 10
     ) {
         $this->class = $class;
         $this->route = $route;
@@ -35,6 +39,7 @@ class RouteBasedResourceMetadata extends AbstractResourceMetadata
         $this->resourceIdentifier = $resourceIdentifier;
         $this->routeIdentifierPlaceholder = $routeIdentifierPlaceholder;
         $this->routeParams = $routeParams;
+        $this->maxDepth = $maxDepth;
     }
 
     public function getRoute() : string
@@ -60,5 +65,10 @@ class RouteBasedResourceMetadata extends AbstractResourceMetadata
     public function setRouteParams(array $routeParams) : void
     {
         $this->routeParams = $routeParams;
+    }
+
+    public function hasReachedMaxDepth(int $currentDepth): bool
+    {
+        return $currentDepth > $this->maxDepth;
     }
 }

@@ -50,6 +50,7 @@ following information:
       that maps to the resource identifier)
     - array `$routeParams = []` (associative array of additional routing
       parameters to substitute when generating the URI)
+    - int `$maxDepth = 10` max allowed nesting levels.
 - `Zend\Expressive\Hal\Metadata\UrlBasedCollectionMetadata`:
     - string `$class`
     - string `$collectionRelation`
